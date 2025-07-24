@@ -1,0 +1,59 @@
+---
+import {Unit} from "../components/unit";
+
+const today = new Date();
+const defaultExpiration = getDate(12);
+const maxExpiration = getDate(24);
+const unitKeys = Object.keys(Unit).filter(key => isNaN(Number(key))).sort() as Array<keyof typeof Unit>;
+console.log(unitKeys);
+
+function getDate(monthsFromNow: number) : Date {
+	const date = new Date();
+	date.setMonth(date.getMonth() + monthsFromNow);
+	return date;
+}
+
+function formatDate(date: Date) {
+	return date.toISOString().split('T')[0];
+}
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Kuraokami</title>
+	</head>
+	<body>
+		<h1>Kuraokami</h1>
+		<h2>The dragon that knows your freezer</h2>
+		<hr/>
+		<form>
+			<label for="name">Name</label>
+			<input type="text" id="name" name="name" required />
+
+			<label for="type">Product Type</label>
+			<input type="text" id="type" name="type" />
+
+			<label for="frozen">Date Frozen</label>
+			<input type="date" id="frozen" name="frozen" value={formatDate(today)} max={formatDate(today)} required />
+
+			<label for="expiration">Date Frozen</label>
+			<input type="date" id="expiration" name="expiration" value={formatDate(defaultExpiration)} max={formatDate(maxExpiration)} required />
+
+			<label for="amount">Amount</label>
+			<input type="number" id="amount" name="amount" min="1" required />
+
+			<label for="unit">Unit</label>
+			<select id="unit" name="unit" required>
+				{unitKeys.map(key => (
+					<option value={Unit[key]}>{key}</option>
+				))}
+			</select>
+
+			<button type="submit">Add</button>
+		</form>
+	</body>
+</html>
