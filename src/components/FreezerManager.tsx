@@ -2,7 +2,7 @@
 import {useState} from "react";
 import {Unit} from "./unit.ts";
 
-export const FreezerManager : React.FC = () => {
+export const FreezerManager: React.FC = () => {
     const [freezerItems, setFreezerItems] = useState<FreezerItem[]>([]);
 
     const handleAddItem = (newItem: FreezerItem) => {
@@ -18,11 +18,13 @@ export const FreezerManager : React.FC = () => {
             <AddFreezerItemForm onAddItem={handleAddItem} />
             <table>
                 <thead>
-                    <td>Name</td>
-                    <td>Type</td>
-                    <td>Amount</td>
-                    <td>Frozen on</td>
-                    <td>Expires on</td>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Frozen on</th>
+                    <th>Expires on</th>
+                </tr>
                 </thead>
                 <tbody>
                 {sortedItems.map((item, index) => (
