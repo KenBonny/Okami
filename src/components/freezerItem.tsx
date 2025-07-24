@@ -29,12 +29,6 @@ export const AddFreezerItemForm: React.FC<FreezerItemForm> = ({onAddItem}) => {
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-
-        if (item.expiration < item.frozen) {
-            alert("Expiration date cannot be before frozen date");
-            return;
-        }
-
         onAddItem(item);
         setItem(defaultValues());
     }
@@ -61,6 +55,7 @@ export const AddFreezerItemForm: React.FC<FreezerItemForm> = ({onAddItem}) => {
                    id="expiration"
                    name="expiration"
                    value={formatDate(item.expiration)}
+                   min={formatDate(today)}
                    max={formatDate(maxExpiration)}
                    onChange={handleChange}
                    required />
