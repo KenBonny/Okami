@@ -1,0 +1,110 @@
+﻿import {Unit} from "./unit.ts";
+import React, {useState} from "react";
+
+export interface FreezerItem {
+    name: string;
+    type: string;
+    amount: number;
+    unit: Unit;
+    frozen: Date;
+    expiration: Date;
+}
+
+export interface FreezerItemForm {
+    onAddItem: (item: FreezerItem) => void;
+}
+
+export const AddFreezerItemForm: React.FC<FreezerItemForm> = ({onAddItem}) => {
+    const [item, setItem] = useState<FreezerItem>(defaultValues());
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+        const {name, value} = e.target;
+        setItem(prev => ({
+            ...prev,
+            [name]: name === 'amount' ? Number(value) :
+                name === 'frozen' || name === 'expiration' ? new Date(value) :
+                    name === 'unit' ? Number(value) : value
+        }));
+    }
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
+        if (item.expiration < item.frozen) {
+            alert("Expiration date cannot be before frozen date");
+            return;
+        }
+
+        onAddItem(item);
+        setItem(defaultValues());
+    }
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <label htmlFor="name">Name</label>
+            <input type="text" id="name" name="name" value={item.name} onChange={handleChange} required />
+
+            <label htmlFor="type">Product Type</label>
+            <input type="text" id="type" name="type" value={item.type} onChange={handleChange} />
+
+            <label htmlFor="frozen">Date Frozen</label>
+            <input type="date"
+                   id="frozen"
+                   name="frozen"
+                   value={formatDate(item.frozen)}
+                   max={formatDate(today)}
+                   onChange={handleChange}
+                   required />
+
+            <label htmlFor="expiration">Date Frozen</label>
+            <input type="date"
+                   id="expiration"
+                   name="expiration"
+                   value={formatDate(item.expiration)}
+                   max={formatDate(maxExpiration)}
+                   onChange={handleChange}
+                   required />
+
+            <label htmlFor="amount">Amount</label>
+            <input type="number"
+                   id="amount"
+                   name="amount"
+                   min="1"
+                   value={item.amount}
+                   onChange={handleChange}
+                   required />
+
+            <select id="unit" name="unit" onChange={handleChange} required>
+                {unitKeys.map(key => (
+                    <option value={Unit[key]}>{key}</option>
+                ))}
+            </select>
+
+            <button type="submit">Add</button>
+        </form>
+    );
+}
+
+const today = new Date();
+const defaultExpiration = getDate(12);
+const maxExpiration = getDate(24);
+const unitKeys = Object.keys(Unit).filter(key => isNaN(Number(key))).sort() as Array<keyof typeof Unit>;
+const defaultValues = () => ({
+    name: "",
+    type: "",
+    amount: 1,
+    unit: Unit.gram,
+    frozen: today,
+    expiration: defaultExpiration
+} as FreezerItem);
+
+function getDate(monthsFromNow: number): Date {
+    const date = new Date();
+    date.setMonth(date.getMonth() + monthsFromNow);
+    return date;
+}
+
+// format: yyyy-mm-dd
+function formatDate(date: Date) {
+    return date.toISOString().split('T')[0];
+}
