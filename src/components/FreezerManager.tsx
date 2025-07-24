@@ -9,16 +9,34 @@ export const FreezerManager : React.FC = () => {
         setFreezerItems(prev => [...prev, newItem]);
     };
 
+    const sortedItems = [...freezerItems].sort((a, b) =>
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+    );
+
     return (
         <div>
             <AddFreezerItemForm onAddItem={handleAddItem} />
-            <ul>
-                {freezerItems.sort((a, b) => a.name > b.name ? 1 : 0).map((item, index) => (
-                    <li key={index}>
-                        {item.name} - {item.amount} {Unit[item.unit].toLowerCase()}
-                    </li>
+            <table>
+                <thead>
+                    <td>Name</td>
+                    <td>Type</td>
+                    <td>Amount</td>
+                    <td>Frozen on</td>
+                    <td>Expires on</td>
+                </thead>
+                <tbody>
+                {sortedItems.map((item, index) => (
+                    <tr key={index}>
+                        <td>{item.name}</td>
+                        <td>{item.type}</td>
+                        <td>{item.amount} {Unit[item.unit]}</td>
+                        <td>{item.frozen.toLocaleDateString()}</td>
+                        <td>{item.expiration.toLocaleDateString()}</td>
+                    </tr>
+
                 ))}
-            </ul>
+                </tbody>
+            </table>
 
         </div>
     );
