@@ -1,7 +1,8 @@
 ﻿import {AddFreezerItemForm} from "./addFreezerItemForm.tsx";
 import React, {useState} from "react";
-import {Unit, type FreezerItem} from "./models.ts";
+import {type FreezerItem} from "./models.ts";
 import {SearchFreezerItems} from "./searchFreezerItems.tsx";
+import FreezerItemRow from "./freezerItemRow.tsx";
 
 export const FreezerManager: React.FC = () => {
     const [freezerItems, setFreezerItems] = useState<FreezerItem[]>([]);
@@ -34,13 +35,7 @@ export const FreezerManager: React.FC = () => {
                 </thead>
                 <tbody>
                 {sortedItems.map(item => (
-                    <tr key={item.id}>
-                        <td>{item.name}</td>
-                        <td>{item.type}</td>
-                        <td>{item.amount} {Unit[item.unit]}</td>
-                        <td>{item.frozen.toLocaleDateString()}</td>
-                        <td>{item.expiration.toLocaleDateString()}</td>
-                    </tr>
+                    <FreezerItemRow item={item} key={item.id} />
                 ))}
                 </tbody>
             </table>
