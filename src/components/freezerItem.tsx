@@ -8,6 +8,7 @@ export interface FreezerItem {
     unit: Unit;
     frozen: Date;
     expiration: Date;
+    created: Date;
 }
 
 export interface FreezerItemForm {
@@ -92,7 +93,8 @@ const defaultValues = () => ({
     amount: 1,
     unit: Unit.gram,
     frozen: today,
-    expiration: defaultExpiration
+    expiration: defaultExpiration,
+    created: new Date()
 } as FreezerItem);
 
 function getDate(monthsFromNow: number): Date {
