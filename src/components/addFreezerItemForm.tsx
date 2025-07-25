@@ -91,7 +91,8 @@ const defaultValues = () => ({
     unit: Unit.gram,
     frozen: today,
     expiration: defaultExpiration,
-    created: new Date()
+    created: new Date(),
+    isDeleted: false,
 } as FreezerItem);
 
 function getDate(monthsFromNow: number): Date {

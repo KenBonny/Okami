@@ -14,6 +14,17 @@ export const FreezerManager: React.FC = () => {
         setFreezerItems(prev => [...prev, {...newItem, id: nextId}]);
     };
 
+    function handleDelete(id: number) {
+        const deleted = freezerItems.find(item => item.id === id);
+        if (!deleted || deleted.isDeleted) return;
+
+        setFreezerItems(prev => [...(prev.filter(item => item !== deleted)), {
+            ...deleted,
+            isDeleted: true,
+            deletedOn: new Date()
+        }]);
+    }
+
     const sortedItems = [...filteredItems].sort((a, b) =>
         a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
@@ -36,7 +47,7 @@ export const FreezerManager: React.FC = () => {
                 </thead>
                 <tbody>
                 {sortedItems.map(item => (
-                    <FreezerItemRow item={item} key={item.id} />
+                    <FreezerItemRow item={item} key={item.id} onDelete={handleDelete} />
                 ))}
                 </tbody>
             </table>

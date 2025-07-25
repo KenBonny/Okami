@@ -13,4 +13,6 @@ export interface FreezerItem {
     frozen: Date;
     expiration: Date;
     created: Date;
+    isDeleted: boolean;
+    deletedOn?: Date;
 }

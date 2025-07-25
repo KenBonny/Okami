@@ -5,9 +5,10 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
 export interface FreezerItemRowProps {
     item: FreezerItem;
+    onDelete: (id: number) => void;
 }
 
-export default function FreezerItemRow({item}: FreezerItemRowProps) {
+export default function FreezerItemRow({item, onDelete}: FreezerItemRowProps) {
     return (
         <tr>
             <td>{item.name}</td>
@@ -15,7 +16,7 @@ export default function FreezerItemRow({item}: FreezerItemRowProps) {
             <td>{item.amount} {Unit[item.unit]}</td>
             <td>{item.frozen.toLocaleDateString()}</td>
             <td>{item.expiration.toLocaleDateString()}</td>
-            <td><FontAwesomeIcon icon={faTrash} /></td>
+            <td><FontAwesomeIcon icon={faTrash} onClick={event => onDelete(item.id)} /></td>
         </tr>
     );
 }
