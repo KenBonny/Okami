@@ -16,7 +16,7 @@ export default function FreezerItemRow({item, onDelete}: FreezerItemRowProps) {
             <td>{item.amount} {Unit[item.unit]}</td>
             <td>{item.frozen.toLocaleDateString()}</td>
             <td>{item.expiration.toLocaleDateString()}</td>
-            <td><FontAwesomeIcon icon={faTrash} onClick={event => onDelete(item.id)} /></td>
+            <td><FontAwesomeIcon icon={faTrash} onClick={() => onDelete(item.id)} /></td>
         </tr>
     );
 }
