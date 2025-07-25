@@ -1,6 +1,6 @@
-﻿import {AddFreezerItemForm, type FreezerItem} from "./freezerItem.tsx";
-import {useState} from "react";
-import {Unit} from "./unit.ts";
+﻿import {AddFreezerItemForm} from "./addFreezerItemForm.tsx";
+import React, {useState} from "react";
+import {Unit, type FreezerItem} from "./models.ts";
 
 export const FreezerManager: React.FC = () => {
     const [freezerItems, setFreezerItems] = useState<FreezerItem[]>([]);

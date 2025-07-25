@@ -1,21 +1,11 @@
-﻿import {Unit} from "./unit.ts";
+﻿import {type FreezerItem, Unit} from "./models.ts";
 import React, {useRef, useState} from "react";
 
-export interface FreezerItem {
-    name: string;
-    type: string;
-    amount: number;
-    unit: Unit;
-    frozen: Date;
-    expiration: Date;
-    created: Date;
-}
-
-export interface FreezerItemForm {
+export interface AddFreezerItemFormProps {
     onAddItem: (item: FreezerItem) => void;
 }
 
-export const AddFreezerItemForm: React.FC<FreezerItemForm> = ({onAddItem}) => {
+export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
     const [item, setItem] = useState<FreezerItem>(defaultValues());
     const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -39,7 +29,13 @@ export const AddFreezerItemForm: React.FC<FreezerItemForm> = ({onAddItem}) => {
     return (
         <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>
-            <input type="text" id="name" name="name" value={item.name} onChange={handleChange} ref={nameInputRef} required />
+            <input type="text"
+                   id="name"
+                   name="name"
+                   value={item.name}
+                   onChange={handleChange}
+                   ref={nameInputRef}
+                   required />
 
             <label htmlFor="type">Product Type</label>
             <input type="text" id="type" name="type" value={item.type} onChange={handleChange} />
