@@ -1,5 +1,6 @@
 ﻿import type {FreezerItem} from "./models.ts";
 import {useEffect, useState} from "react";
+import {useDebounce} from "../effects/useDebounce.ts";
 
 export interface SearchFreezerItemsProps{
     items: FreezerItem[];
@@ -8,8 +9,9 @@ export interface SearchFreezerItemsProps{
 
 export function SearchFreezerItems({items, onSearch}: SearchFreezerItemsProps) {
     const [terms, setTerms] = useState<string>("");
+    const debouncedSearchTerms = useDebounce(terms, 500);
 
-    useEffect(() => searchItems(terms), [items])
+    useEffect(() => searchItems(debouncedSearchTerms), [debouncedSearchTerms, items])
 
     function handleNewSearchTerms(e: React.ChangeEvent<HTMLInputElement>) {
         setTerms(e.target.value.toLowerCase());
