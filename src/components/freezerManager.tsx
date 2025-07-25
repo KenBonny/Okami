@@ -31,6 +31,7 @@ export const FreezerManager: React.FC = () => {
                     <th>Amount</th>
                     <th>Frozen on</th>
                     <th>Expires on</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
