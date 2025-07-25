@@ -8,7 +8,9 @@ export const FreezerManager: React.FC = () => {
     const [filteredItems, setFilteredItems] = useState<FreezerItem[]>([]);
 
     const handleAddItem = (newItem: FreezerItem) => {
-        setFreezerItems(prev => [...prev, newItem]);
+        const ids = freezerItems.map(item => item.id);
+        const nextId = Math.max(...ids, 0) + 1;
+        setFreezerItems(prev => [...prev, {...newItem, id: nextId}]);
     };
 
     const sortedItems = [...filteredItems].sort((a, b) =>
@@ -31,15 +33,14 @@ export const FreezerManager: React.FC = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {sortedItems.map((item, index) => (
-                    <tr key={index}>
+                {sortedItems.map(item => (
+                    <tr key={item.id}>
                         <td>{item.name}</td>
                         <td>{item.type}</td>
                         <td>{item.amount} {Unit[item.unit]}</td>
                         <td>{item.frozen.toLocaleDateString()}</td>
                         <td>{item.expiration.toLocaleDateString()}</td>
                     </tr>
-
                 ))}
                 </tbody>
             </table>

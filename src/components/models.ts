@@ -5,6 +5,7 @@
 }
 
 export interface FreezerItem {
+    id: number;
     name: string;
     type: string;
     amount: number;

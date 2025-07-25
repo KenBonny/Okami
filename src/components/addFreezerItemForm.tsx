@@ -84,6 +84,7 @@ const defaultExpiration = getDate(12);
 const maxExpiration = getDate(24);
 const unitKeys = Object.keys(Unit).filter(key => isNaN(Number(key))).sort() as Array<keyof typeof Unit>;
 const defaultValues = () => ({
+    id: 0,
     name: "",
     type: "",
     amount: 1,
