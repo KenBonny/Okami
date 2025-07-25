@@ -1,5 +1,5 @@
 ﻿import {Unit} from "./unit.ts";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 
 export interface FreezerItem {
     name: string;
@@ -16,6 +16,7 @@ export interface FreezerItemForm {
 
 export const AddFreezerItemForm: React.FC<FreezerItemForm> = ({onAddItem}) => {
     const [item, setItem] = useState<FreezerItem>(defaultValues());
+    const nameInputRef = useRef<HTMLInputElement>(null);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const {name, value} = e.target;
@@ -31,12 +32,13 @@ export const AddFreezerItemForm: React.FC<FreezerItemForm> = ({onAddItem}) => {
         e.preventDefault();
         onAddItem(item);
         setItem(defaultValues());
+        nameInputRef.current?.focus();
     }
 
     return (
         <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>
-            <input type="text" id="name" name="name" value={item.name} onChange={handleChange} required />
+            <input type="text" id="name" name="name" value={item.name} onChange={handleChange} ref={nameInputRef} required />
 
             <label htmlFor="type">Product Type</label>
             <input type="text" id="type" name="type" value={item.type} onChange={handleChange} />
