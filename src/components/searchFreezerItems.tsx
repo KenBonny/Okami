@@ -36,7 +36,7 @@ export function SearchFreezerItems({items, onSearch}: SearchFreezerItemsProps) {
                    id="searchTerms"
                    name="searchTerms"
                    onChange={handleNewSearchTerms}
-                   placeholder="Search terms: steak..." />
+                   placeholder="Search by name or unit" />
 
             <label>
                 <input type="checkbox"
