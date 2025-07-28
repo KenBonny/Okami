@@ -32,13 +32,14 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
             <input type="text"
                    id="name"
                    name="name"
+                   placeholder="Name"
                    value={item.name}
                    onChange={handleChange}
                    ref={nameInputRef}
                    required />
 
             <label htmlFor="type">Product Type</label>
-            <input type="text" id="type" name="type" value={item.type} onChange={handleChange} />
+            <input type="text" id="type" name="type" placeholder="Type" value={item.type} onChange={handleChange} />
 
             <label htmlFor="amount">Amount</label>
             <input type="number"
