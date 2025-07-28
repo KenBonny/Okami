@@ -40,6 +40,21 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
             <label htmlFor="type">Product Type</label>
             <input type="text" id="type" name="type" value={item.type} onChange={handleChange} />
 
+            <label htmlFor="amount">Amount</label>
+            <input type="number"
+                   id="amount"
+                   name="amount"
+                   min="1"
+                   value={item.amount}
+                   onChange={handleChange}
+                   required />
+
+            <select id="unit" name="unit" onChange={handleChange} required>
+                {unitKeys.map(key => (
+                    <option value={Unit[key]} key={Unit[key]}>{key}</option>
+                ))}
+            </select>
+
             <label htmlFor="frozen">Date Frozen</label>
             <input type="date"
                    id="frozen"
@@ -58,21 +73,6 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
                    max={formatDate(maxExpiration)}
                    onChange={handleChange}
                    required />
-
-            <label htmlFor="amount">Amount</label>
-            <input type="number"
-                   id="amount"
-                   name="amount"
-                   min="1"
-                   value={item.amount}
-                   onChange={handleChange}
-                   required />
-
-            <select id="unit" name="unit" onChange={handleChange} required>
-                {unitKeys.map(key => (
-                    <option value={Unit[key]} key={Unit[key]}>{key}</option>
-                ))}
-            </select>
 
             <button type="submit">Add</button>
         </form>
