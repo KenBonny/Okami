@@ -2,12 +2,11 @@
 import React, {useState} from "react";
 import {type FreezerItem} from "./models.ts";
 import {SearchFreezerItems} from "./searchFreezerItems.tsx";
-import {DisplayFreezerItemRow, EditFreezerItemRow} from "./freezerItemRow.tsx";
+import FreezerItemRow from "./freezerItemRow.tsx";
 
 export const FreezerManager: React.FC = () => {
     const [freezerItems, setFreezerItems] = useState<FreezerItem[]>([]);
     const [filteredItems, setFilteredItems] = useState<FreezerItem[]>([]);
-    const [editing, setEditing] = useState<number | null>(null);
 
     const handleAddItem = (newItem: FreezerItem) => {
         const ids = freezerItems.map(item => item.id);
@@ -32,8 +31,7 @@ export const FreezerManager: React.FC = () => {
                 item.id === updatedItem.id ? updatedItem : item
             )
         );
-        setEditing(null);
-    };
+    }
 
 
     const sortedItems = [...filteredItems].sort((a, b) =>
@@ -58,9 +56,8 @@ export const FreezerManager: React.FC = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {sortedItems.map(item => item.id === editing ? (
-                    <EditFreezerItemRow item={item} onSave={handleSave} />) : (
-                    <DisplayFreezerItemRow item={item} key={item.id} onDelete={handleDelete} onEdit={setEditing} />))}
+                {sortedItems.map(item => (
+                    <FreezerItemRow item={item} key={item.id} onDelete={handleDelete} onSave={handleSave} />))}
                 </tbody>
             </table>
 
