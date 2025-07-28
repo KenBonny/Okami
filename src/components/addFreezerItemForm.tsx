@@ -11,11 +11,22 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const {name, value} = e.target;
+
+        const parseValue = () => {
+            switch (name) {
+                case 'unit':
+                case 'amount':
+                    return Number(value);
+                case 'frozen':
+                case 'expiration':
+                    return new Date(value);
+                default:
+                    return value;
+            }
+        };
         setItem(prev => ({
             ...prev,
-            [name]: name === 'amount' ? Number(value) :
-                name === 'frozen' || name === 'expiration' ? new Date(value) :
-                    name === 'unit' ? Number(value) : value
+            [name]: parseValue()
         }));
     }
 
