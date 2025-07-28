@@ -1,4 +1,4 @@
-﻿import type {FreezerItem} from "./models.ts";
+﻿import {type FreezerItem, Unit} from "./models.ts";
 import {useEffect, useState} from "react";
 import {useDebounce} from "../effects/useDebounce.ts";
 
@@ -12,24 +12,22 @@ export function SearchFreezerItems({items, onSearch}: SearchFreezerItemsProps) {
     const [includeDeleted, setIncludeDeleted] = useState(false);
     const debouncedSearchTerms = useDebounce(terms, 500);
 
-    useEffect(() => searchItems(terms, includeDeleted), [debouncedSearchTerms, items])
+    useEffect(() => search(terms, includeDeleted), [items, debouncedSearchTerms, includeDeleted])
 
     function handleNewSearchTerms(e: React.ChangeEvent<HTMLInputElement>) {
         const termsInput = e.target.value.toLowerCase();
         setTerms(termsInput);
-        searchItems(termsInput, includeDeleted);
+        search(termsInput, includeDeleted);
     }
 
     function handleIncludeDeleted(e: React.ChangeEvent<HTMLInputElement>) {
         const includeDeletedCheckBox = e.target.checked;
         setIncludeDeleted(includeDeletedCheckBox);
-        searchItems(terms, includeDeletedCheckBox);
+        search(terms, includeDeletedCheckBox);
     }
 
-    function searchItems(searchTerms: string, includeDeleted: boolean) {
-        const filteredItems = [...items].filter((item: FreezerItem) => item.name.toLowerCase().includes(searchTerms.toLowerCase()))
-            .filter(item => includeDeleted ? true : !item.isDeleted);
-        onSearch(filteredItems);
+    function search(searchTerms: string, includeDeleted: boolean) {
+        onSearch(filter(items, searchTerms, includeDeleted));
     }
 
     return (
@@ -49,4 +47,12 @@ export function SearchFreezerItems({items, onSearch}: SearchFreezerItemsProps) {
             </label>
         </form>
     );
+}
+
+export function filter(itemsToSearch: FreezerItem[], searchTerms: string, includeDeleted: boolean) : FreezerItem[] {
+    const lowerCaseTerms = searchTerms.toLowerCase();
+    return [...itemsToSearch]
+        .filter((item: FreezerItem) => item.name.toLowerCase().includes(lowerCaseTerms)
+            || Unit[item.unit].toString().toLowerCase() === lowerCaseTerms)
+        .filter(item => includeDeleted ? true : !item.isDeleted);
 }
