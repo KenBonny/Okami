@@ -50,7 +50,7 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
                    onChange={handleChange}
                    required />
 
-            <select id="unit" name="unit" onChange={handleChange} required>
+            <select id="unit" name="unit" value={item.unit} onChange={handleChange} required>
                 {unitKeys.map(key => (
                     <option value={Unit[key]} key={Unit[key]}>{key}</option>
                 ))}
