@@ -102,7 +102,7 @@ describe('useDebounce', () => {
 
     it('should work with different value types', () => {
         // Test with number
-        const {result: numberResult, rerender: numberRerender} = renderHook(
+        const {result: numberResult, rerender: numberRerender, unmount: numberUnmount} = renderHook(
             ({value, delay}) => useDebounce(value, delay),
             {initialProps: {value: 0, delay: 500}}
         );
@@ -112,9 +112,10 @@ describe('useDebounce', () => {
             jest.advanceTimersByTime(500);
         });
         expect(numberResult.current).toBe(42);
+        numberUnmount();
 
         // Test with object
-        const {result: objectResult, rerender: objectRerender} = renderHook(
+        const {result: objectResult, rerender: objectRerender, unmount: objectUnmount} = renderHook(
             ({value, delay}) => useDebounce(value, delay),
             {initialProps: {value: {test: 'initial'}, delay: 500}}
         );
@@ -124,5 +125,6 @@ describe('useDebounce', () => {
             jest.advanceTimersByTime(500);
         });
         expect(objectResult.current).toEqual({test: 'updated'});
+        objectUnmount();
     });
 });
