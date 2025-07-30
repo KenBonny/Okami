@@ -33,7 +33,6 @@ export const FreezerManager: React.FC = () => {
         );
     }
 
-
     const sortedItems = [...filteredItems].sort((a, b) =>
         a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
@@ -60,7 +59,6 @@ export const FreezerManager: React.FC = () => {
                     <FreezerItemRow item={item} key={item.id} onDelete={handleDelete} onSave={handleSave} />))}
                 </tbody>
             </table>
-
         </div>
     );
 

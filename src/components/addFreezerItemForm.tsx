@@ -1,5 +1,6 @@
 ﻿import {type FreezerItem, Unit} from "./models.ts";
 import React, {useRef, useState} from "react";
+import {config} from "../config.ts";
 
 export interface AddFreezerItemFormProps {
     onAddItem: (item: FreezerItem) => void;
@@ -92,8 +93,8 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
 }
 
 const today = new Date();
-const defaultExpiration = getDate(12);
-const maxExpiration = getDate(24);
+const defaultExpiration = getDate(config.defaultExpiration);
+const maxExpiration = getDate(config.maxExpiration);
 const unitKeys = Object.keys(Unit).filter(key => isNaN(Number(key))).sort() as Array<keyof typeof Unit>;
 const defaultValues = () => ({
     id: 0,
