@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import {type FreezerItem} from "./models.ts";
 import {SearchFreezerItems} from "./searchFreezerItems.tsx";
 import FreezerItemRow from "./freezerItemRow.tsx";
+import GoogleAuth from "./GoogleAuth.tsx";
 
 export const FreezerManager: React.FC = () => {
     const [freezerItems, setFreezerItems] = useState<FreezerItem[]>([]);
@@ -39,6 +40,7 @@ export const FreezerManager: React.FC = () => {
 
     return (
         <div>
+            <GoogleAuth />
             <AddFreezerItemForm onAddItem={handleAddItem} />
             <hr />
             <SearchFreezerItems items={freezerItems} onSearch={items => setFilteredItems(items)} />

@@ -21,6 +21,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.3",
     "@googleapis/drive": "^14.2.0",
+    "@react-oauth/google": "^0.12.2",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "astro": "^5.12.3",
