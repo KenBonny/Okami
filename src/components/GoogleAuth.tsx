@@ -1,25 +1,44 @@
 ﻿import {useState} from "react";
-import {type CredentialResponse, useGoogleOneTapLogin} from "@react-oauth/google";
+import {googleLogout, type TokenResponse, useGoogleLogin} from "@react-oauth/google";
+import type {User} from "./models.ts";
 
-export default function GoogleAuth() {
-    const [loggedIn, setLoggedIn] = useState(false);
+export interface GoogleAuthProps {
+    onSuccess?: (user: User) => void;
+}
 
-    useGoogleOneTapLogin({
-        onSuccess: handleSuccessfulLogin,
-        auto_select: true,
-        cancel_on_tap_outside: false
-        // use_fedcm_for_prompt: true //does not auto-login for some reason
-    });
+export default function GoogleAuth({ onSuccess }: GoogleAuthProps) {
+    const [user, setUser] = useState<User | null>(null);
 
-    async function handleSuccessfulLogin(credentialResponse: CredentialResponse) {
-        console.log("Credential Response: ", credentialResponse);
-        setLoggedIn(true);
+    const login = useGoogleLogin({
+        flow: "implicit",
+        onSuccess: handleSuccessfulLogin
+    })
 
+    async function handleSuccessfulLogin(tokenResponse: TokenResponse) {
+        const userResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+            headers: new Headers({
+                Authorization: `${tokenResponse.token_type} ${tokenResponse.access_token}`
+            })
+        });
+        const user = await userResponse.json();
 
+        setUser({
+            firstname: user.given_name,
+            lastname: user.family_name,
+            name: user.name,
+            image: user.picture,
+            token: tokenResponse,
+        });
+        onSuccess?.(user);
     }
 
-    return (loggedIn ?
-            <p>Logged in</p>
-            : <p>Please log in using the one-tap popup</p>
+    function logout() {
+        googleLogout();
+        setUser(null);
+    }
+
+    return (user ?
+            <a onClick={logout}>Hello, {user.name}</a>
+            : <button onClick={() => login()}>Sign in with Google</button>
     );
 }

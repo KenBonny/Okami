@@ -1,4 +1,6 @@
-﻿export enum Unit {
+﻿import type {TokenResponse} from "@react-oauth/google";
+
+export enum Unit {
     gram = 0,
     pieces = 1,
     portions = 2
@@ -15,6 +17,14 @@ export interface FreezerItem {
     created: Date;
     isDeleted: boolean;
     deletedOn?: Date;
+}
+
+export interface User{
+    firstname: string;
+    lastname: string;
+    name: string;
+    image: string | null;
+    token: TokenResponse;
 }
 
 // for more scopes: https://developers.google.com/identity/protocols/oauth2/scopes
