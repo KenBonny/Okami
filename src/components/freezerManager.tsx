@@ -1,6 +1,6 @@
 ﻿import {AddFreezerItemForm} from "./addFreezerItemForm.tsx";
-import React, {useState} from "react";
-import {type FreezerItem} from "./models.ts";
+import React, {useEffect, useState} from "react";
+import {type FreezerItem, type User} from "./models.ts";
 import {SearchFreezerItems} from "./searchFreezerItems.tsx";
 import FreezerItemRow from "./freezerItemRow.tsx";
 import GoogleAuth from "./GoogleAuth.tsx";
@@ -8,6 +8,13 @@ import GoogleAuth from "./GoogleAuth.tsx";
 export const FreezerManager: React.FC = () => {
     const [freezerItems, setFreezerItems] = useState<FreezerItem[]>([]);
     const [filteredItems, setFilteredItems] = useState<FreezerItem[]>([]);
+    const [user, setUser] = React.useState<User | null>(null);
+
+    useEffect(() => {
+        if (user === null) return;
+
+        console.log("save freezer items to Google drive")
+    }, [freezerItems]);
 
     const handleAddItem = (newItem: FreezerItem) => {
         const ids = freezerItems.map(item => item.id);
@@ -38,9 +45,18 @@ export const FreezerManager: React.FC = () => {
         a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
 
+    function loadFreezerItems(user: User) {
+        setUser(user);
+        console.log(`Loading Freezer items for: ${user.name}`);
+    }
+
+    function logout() {
+        setUser(null);
+    }
+
     return (
         <div>
-            <GoogleAuth />
+            <GoogleAuth onSuccess={loadFreezerItems}  onLogout={logout} />
             <AddFreezerItemForm onAddItem={handleAddItem} />
             <hr />
             <SearchFreezerItems items={freezerItems} onSearch={items => setFilteredItems(items)} />

@@ -4,9 +4,10 @@ import type {User} from "./models.ts";
 
 export interface GoogleAuthProps {
     onSuccess?: (user: User) => void;
+    onLogout?: () => void;
 }
 
-export default function GoogleAuth({ onSuccess }: GoogleAuthProps) {
+export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
     const [user, setUser] = useState<User | null>(null);
 
     const login = useGoogleLogin({
@@ -35,6 +36,7 @@ export default function GoogleAuth({ onSuccess }: GoogleAuthProps) {
     function logout() {
         googleLogout();
         setUser(null);
+        onLogout?.();
     }
 
     return (user ?
