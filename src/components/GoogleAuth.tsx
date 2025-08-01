@@ -21,15 +21,16 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
                 Authorization: `${tokenResponse.token_type} ${tokenResponse.access_token}`
             })
         });
-        const user = await userResponse.json();
+        const googleUser = await userResponse.json();
 
-        setUser({
-            firstname: user.given_name,
-            lastname: user.family_name,
-            name: user.name,
-            image: user.picture,
+        const user = {
+            firstname: googleUser.given_name,
+            lastname: googleUser.family_name,
+            name: googleUser.name,
+            image: googleUser.picture,
             token: tokenResponse,
-        });
+        };
+        setUser(user);
         onSuccess?.(user);
     }
 
