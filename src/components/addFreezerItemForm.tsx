@@ -7,6 +7,33 @@ export interface AddFreezerItemFormProps {
 }
 
 export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
+    const today = new Date();
+    const defaultExpiration = getDate(config.defaultExpiration);
+    const maxExpiration = getDate(config.maxExpiration);
+    const unitKeys = Object.keys(Unit).filter(key => isNaN(Number(key))).sort() as Array<keyof typeof Unit>;
+    const defaultValues = () => ({
+        id: 0,
+        name: "",
+        type: "",
+        amount: 1,
+        unit: Unit.gram,
+        frozen: today,
+        expiration: defaultExpiration,
+        created: new Date(),
+        isDeleted: false,
+    } as FreezerItem);
+
+    function getDate(monthsFromNow: number): Date {
+        const date = new Date();
+        date.setMonth(date.getMonth() + monthsFromNow);
+        return date;
+    }
+
+    // format: yyyy-mm-dd
+    function formatDate(date: Date) {
+        return date.toISOString().split('T')[0];
+    }
+
     const [item, setItem] = useState<FreezerItem>(defaultValues());
     const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -90,31 +117,4 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
             <button type="submit">Add</button>
         </form>
     );
-}
-
-const today = new Date();
-const defaultExpiration = getDate(config.defaultExpiration);
-const maxExpiration = getDate(config.maxExpiration);
-const unitKeys = Object.keys(Unit).filter(key => isNaN(Number(key))).sort() as Array<keyof typeof Unit>;
-const defaultValues = () => ({
-    id: 0,
-    name: "",
-    type: "",
-    amount: 1,
-    unit: Unit.gram,
-    frozen: today,
-    expiration: defaultExpiration,
-    created: new Date(),
-    isDeleted: false,
-} as FreezerItem);
-
-function getDate(monthsFromNow: number): Date {
-    const date = new Date();
-    date.setMonth(date.getMonth() + monthsFromNow);
-    return date;
-}
-
-// format: yyyy-mm-dd
-function formatDate(date: Date) {
-    return date.toISOString().split('T')[0];
 }
