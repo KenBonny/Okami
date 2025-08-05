@@ -4,6 +4,7 @@ import {type FreezerItem, type User} from "./models.ts";
 import {SearchFreezerItems} from "./searchFreezerItems.tsx";
 import FreezerItemRow from "./freezerItemRow.tsx";
 import GoogleAuth from "./GoogleAuth.tsx";
+import {writeFreezerItemsToGoogleDrive} from "../google/drive.ts";
 
 export const FreezerManager: React.FC = () => {
     const [freezerItems, setFreezerItems] = useState<FreezerItem[]>([]);
@@ -13,7 +14,10 @@ export const FreezerManager: React.FC = () => {
     useEffect(() => {
         if (user === null) return;
 
-        console.log("save freezer items to Google drive")
+        console.log("save freezer items to Google Drive");
+        writeFreezerItemsToGoogleDrive(user, freezerItems)
+            .then(_ => console.log("freezer items saved to Google Drive"))
+            .catch(console.error);
     }, [freezerItems]);
 
     const handleAddItem = (newItem: FreezerItem) => {

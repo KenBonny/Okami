@@ -1,6 +1,6 @@
 ﻿import {useState} from "react";
 import {googleLogout, type TokenResponse, useGoogleLogin} from "@react-oauth/google";
-import type {User} from "./models.ts";
+import {GoogleScopes, type User} from "./models.ts";
 
 export interface GoogleAuthProps {
     onSuccess?: (user: User) => void;
@@ -12,8 +12,9 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
 
     const login = useGoogleLogin({
         flow: "implicit",
-        onSuccess: handleSuccessfulLogin
-    })
+        onSuccess: handleSuccessfulLogin,
+        scope: `${GoogleScopes.driveFilesForApp}`
+    });
 
     async function handleSuccessfulLogin(tokenResponse: TokenResponse) {
         const userResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
