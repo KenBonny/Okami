@@ -4,7 +4,7 @@ import {type FreezerItem, type User} from "./models.ts";
 import {SearchFreezerItems} from "./searchFreezerItems.tsx";
 import FreezerItemRow from "./freezerItemRow.tsx";
 import GoogleAuth from "./GoogleAuth.tsx";
-import {writeFreezerItemsToGoogleDrive} from "../google/drive.ts";
+import {loadFreezerItemsFromGoogle, writeFreezerItemsToGoogleDrive} from "../google/drive.ts";
 
 export const FreezerManager: React.FC = () => {
     const [freezerItems, setFreezerItems] = useState<FreezerItem[]>([]);
@@ -49,9 +49,10 @@ export const FreezerManager: React.FC = () => {
         a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
 
-    function loadFreezerItems(user: User) {
+    async function loadFreezerItems(user: User) {
         setUser(user);
         console.log(`Loading Freezer items for: ${user.name}`);
+        setFreezerItems(await loadFreezerItemsFromGoogle(user));
     }
 
     function logout() {

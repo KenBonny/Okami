@@ -1,7 +1,10 @@
-﻿import type {FreezerItem, User} from "../components/models.ts";
+﻿import {type FreezerItem, type User, toUnit} from "../components/models.ts";
 
 export interface File {
     id: string;
+    name: string;
+    mimeType: string;
+    kind: string;
 }
 
 const fileName = "freezerItems.json";
@@ -9,7 +12,42 @@ const metadata = {
     name: fileName,
     mimeType: 'application/json',
 };
-const formatAuthHeader = (user: User) => `${user.token.token_type} ${user.token.access_token}`
+const formatAuthHeader = (user: User) => `${user.token.token_type} ${user.token.access_token}`;
+
+export async function loadFreezerItemsFromGoogle(user: User) : Promise<FreezerItem[]> {
+    const freezerItemFile = await freezerItemFileMetaData(user);
+    if (!freezerItemFile)
+        return [];
+
+    const response = await fetch(
+        `https://www.googleapis.com/drive/v3/files/${freezerItemFile.id}?alt=media`,
+        {
+            headers: {
+                'Authorization': formatAuthHeader(user)
+            }
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const items = await response.json();
+    return items.map((item: any) => ({
+        id: item.id as number,
+        name: item.name as string,
+        type: item.type as string,
+        amount: item.amount as number,
+        unit: toUnit(item.unit),
+        created: new Date(item.created),
+        deletedOn: new Date(item.deletedOn),
+        expiration: new Date(item.expiration),
+        frozen: new Date(item.frozen),
+        isDeleted: item.isDeleted as boolean,
+    } as FreezerItem));
+
+}
+
 
 export async function writeFreezerItemsToGoogleDrive(user: User, items: FreezerItem[]) : Promise<void> {
     try {
