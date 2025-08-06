@@ -1,4 +1,5 @@
 ﻿{
   "defaultExpiration": 12,
-  "maxExpiration": 24
+  "maxExpiration": 24,
+  "monthsToKeepDeletedItems": 1
 }

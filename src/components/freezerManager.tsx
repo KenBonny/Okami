@@ -1,13 +1,15 @@
 ﻿import {AddFreezerItemForm} from "./addFreezerItemForm.tsx";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useReducer, useState} from "react";
 import {type FreezerItem, type User} from "./models.ts";
 import {SearchFreezerItems} from "./searchFreezerItems.tsx";
 import FreezerItemRow from "./freezerItemRow.tsx";
 import GoogleAuth from "./GoogleAuth.tsx";
 import {loadFreezerItemsFromGoogle, writeFreezerItemsToGoogleDrive} from "../google/drive.ts";
+import {getDate} from "./utils.ts";
+import {config} from "../config.ts";
 
 export const FreezerManager: React.FC = () => {
-    const [freezerItems, setFreezerItems] = useState<FreezerItem[]>([]);
+    const [freezerItems, dispatchFreezer] = useReducer(reduceFreezerItems, []);
     const [filteredItems, setFilteredItems] = useState<FreezerItem[]>([]);
     const [user, setUser] = React.useState<User | null>(null);
 
@@ -21,28 +23,15 @@ export const FreezerManager: React.FC = () => {
     }, [freezerItems]);
 
     const handleAddItem = (newItem: FreezerItem) => {
-        const ids = freezerItems.map(item => item.id);
-        const nextId = Math.max(...ids, 0) + 1;
-        setFreezerItems(prev => [...prev, {...newItem, id: nextId}]);
+        dispatchFreezer(addFreezerItem(newItem));
     };
 
     function handleDelete(id: number) {
-        const deleted = freezerItems.find(item => item.id === id);
-        if (!deleted || deleted.isDeleted) return;
-
-        setFreezerItems(prev => [...(prev.filter(item => item !== deleted)), {
-            ...deleted,
-            isDeleted: true,
-            deletedOn: new Date()
-        }]);
+        dispatchFreezer(deleteFreezerItem(id, config.monthsToKeepDeletedItems));
     }
 
     function handleSave(updatedItem: FreezerItem) {
-        setFreezerItems(prev =>
-            prev.map(item =>
-                item.id === updatedItem.id ? updatedItem : item
-            )
-        );
+        dispatchFreezer(updateFreezerItem(updatedItem));
     }
 
     const sortedItems = [...filteredItems].sort((a, b) =>
@@ -52,7 +41,8 @@ export const FreezerManager: React.FC = () => {
     async function loadFreezerItems(user: User) {
         setUser(user);
         console.log(`Loading Freezer items for: ${user.name}`);
-        setFreezerItems(await loadFreezerItemsFromGoogle(user));
+        const newFreezerItems: FreezerItem[] = await loadFreezerItemsFromGoogle(user)
+        dispatchFreezer(replaceFreezerItems(newFreezerItems));
     }
 
     function logout() {
@@ -85,4 +75,60 @@ export const FreezerManager: React.FC = () => {
         </div>
     );
 
+}
+
+export enum ActionType {
+    add = "add",
+    delete = "delete",
+    update = "update",
+    replace = "replace"
+}
+
+function addFreezerItem(item: FreezerItem) {
+    return {type: ActionType.add, item} as const;
+}
+
+function deleteFreezerItem(id: number, monthsToKeepDeletedItems: number) {
+    return {type: ActionType.delete, id, monthsToKeepDeletedItems} as const;
+}
+
+function updateFreezerItem(item: FreezerItem) {
+    return {type: ActionType.update, item} as const;
+}
+
+function replaceFreezerItems(items: FreezerItem[]) {
+    return {type: ActionType.replace, items} as const;
+}
+
+export type FreezerAction = ReturnType<
+    typeof addFreezerItem
+    | typeof deleteFreezerItem
+    | typeof updateFreezerItem
+    | typeof replaceFreezerItems>;
+
+export function reduceFreezerItems(items: FreezerItem[], action: FreezerAction) : FreezerItem[] {
+    switch (action.type) {
+        case ActionType.add:
+            const ids = items.map(item => item.id);
+            const nextId = Math.max(...ids, 0) + 1;
+            return [...items, {...action.item, id: nextId}];
+
+        case ActionType.delete:
+            const deleted = items.find(i => i.id === action.id);
+            if (!deleted || deleted.isDeleted) return items;
+
+            return [...(items.filter(item => item !== deleted)), {
+                ...deleted,
+                isDeleted: true,
+                deletedOn: getDate(action.monthsToKeepDeletedItems)
+            }];
+
+        case ActionType.update:
+            return items.map(item =>
+                item.id === action.item.id ? action.item : item
+            );
+
+        case ActionType.replace:
+            return action.items;
+    }
 }

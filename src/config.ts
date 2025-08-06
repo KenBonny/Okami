@@ -13,6 +13,7 @@ const configs = {
 export interface Config {
     readonly defaultExpiration: number;
     readonly maxExpiration: number;
+    readonly monthsToKeepDeletedItems: number;
 }
 
 export const config : Config = {
