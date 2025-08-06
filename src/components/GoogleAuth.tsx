@@ -23,7 +23,7 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
         if (!userJson) return;
 
         const user = JSON.parse(userJson, parseUser) as User;
-        if (isExpired(user.tokenAcquired, user.token)) login();
+        if (isExpired(user)) login()
         else onValidUser(user)
     }, []);
 
@@ -71,9 +71,9 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
     );
 }
 
-function isExpired(acquired: Date, token: TokenResponse) : boolean {
+function isExpired(user: User) : boolean {
     const now = new Date().getTime();
-    const expiresAt = acquired.getTime() + (token.expires_in * 1000);
+    const expiresAt = user.tokenAcquired.getTime() + (user.token.expires_in * 1000);
     return expiresAt <= now;
 }
 
