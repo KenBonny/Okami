@@ -28,6 +28,7 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
     }, []);
 
     async function handleSuccessfulLogin(tokenResponse: TokenResponse) {
+        console.log(tokenResponse);
         const userResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
             headers: new Headers({
                 Authorization: `${tokenResponse.token_type} ${tokenResponse.access_token}`
