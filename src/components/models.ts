@@ -8,14 +8,12 @@ export enum Unit {
     portions = 2
 }
 
-export function toUnit(value: string | number): Unit | null {
+export function toUnit(value: string | number): Unit {
     if (typeof value === "number") {
         return Unit[Unit[value] as keyof typeof Unit];
-    } else if (typeof value === "string") {
+    } else {
         const enumKey = value as keyof typeof Unit;
         return Unit[enumKey];
-    } else {
-        return null;
     }
 }
 
@@ -32,7 +30,7 @@ export function defaultFreezerItem() {
         isDeleted: false,
         deletedOn: new Date(),
     });
-};
+}
 
 export type FreezerItem = ReturnType<typeof defaultFreezerItem>;
 
