@@ -50,9 +50,10 @@ export function SearchFreezerItems({items, onSearch}: SearchFreezerItemsProps) {
 }
 
 export function filter(itemsToSearch: FreezerItem[], searchTerms: string, includeDeleted: boolean) : FreezerItem[] {
-    const lowerCaseTerms = searchTerms.toLowerCase();
+    const lowerCaseTerms = searchTerms.toLowerCase().split(" ");
     return [...itemsToSearch]
-        .filter((item: FreezerItem) => item.name.toLowerCase().includes(lowerCaseTerms)
-            || Unit[item.unit].toString().toLowerCase() === lowerCaseTerms)
+        .filter((item: FreezerItem) => lowerCaseTerms.every(term => item.name.toLowerCase().includes(term)
+            || item.type.toLowerCase().includes(term)
+            || Unit[item.unit].toString().toLowerCase() === term))
         .filter(item => includeDeleted ? true : !item.isDeleted);
 }

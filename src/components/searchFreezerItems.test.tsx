@@ -2,11 +2,15 @@
 import {filter} from "./searchFreezerItems.tsx";
 
 describe('SearchFreezerItems filter', () => {
+    const chickenBreast = "Chicken Breast";
+    const beefSteak = "Beef Steak";
+    const fish = "Fish";
+    const sausages = "Sausages";
     // Test data
     const testItems: FreezerItem[] = [
         {
             id: 1,
-            name: "Chicken Breast",
+            name: chickenBreast,
             type: "Meat",
             amount: 500,
             unit: Unit.gram,
@@ -17,7 +21,7 @@ describe('SearchFreezerItems filter', () => {
         },
         {
             id: 2,
-            name: "Beef Steak",
+            name: beefSteak,
             type: "Meat",
             amount: 300,
             unit: Unit.gram,
@@ -28,10 +32,21 @@ describe('SearchFreezerItems filter', () => {
         },
         {
             id: 3,
-            name: "Fish",
+            name: fish,
             type: "Seafood",
             amount: 2,
             unit: Unit.pieces,
+            frozen: new Date(),
+            expiration: new Date(),
+            created: new Date(),
+            isDeleted: false
+        },
+        {
+            id: 4,
+            name: sausages,
+            type: "Meat",
+            amount: 300,
+            unit: Unit.gram,
             frozen: new Date(),
             expiration: new Date(),
             created: new Date(),
@@ -43,24 +58,24 @@ describe('SearchFreezerItems filter', () => {
     it('should filter items by name case insensitive', () => {
         const result = filter(testItems, "chicken", false);
         expect(result).toHaveLength(1);
-        expect(result[0].name).toBe("Chicken Breast");
+        expect(result[0].name).toBe(chickenBreast);
     });
 
     it('should filter items by unit', () => {
         const result = filter(testItems, "pieces", false);
         expect(result).toHaveLength(1);
-        expect(result[0].name).toBe("Fish");
+        expect(result[0].name).toBe(fish);
     });
 
     it('should exclude deleted items when includeDeleted is false', () => {
         const result = filter(testItems, "", false);
-        expect(result).toHaveLength(2);
+        expect(result).toHaveLength(3);
         expect(result.some(item => item.isDeleted)).toBeFalsy();
     });
 
     it('should include deleted items when includeDeleted is true', () => {
         const result = filter(testItems, "", true);
-        expect(result).toHaveLength(3);
+        expect(result).toHaveLength(4);
         expect(result.some(item => item.isDeleted)).toBeTruthy();
     });
 
@@ -69,9 +84,15 @@ describe('SearchFreezerItems filter', () => {
         expect(result).toHaveLength(0);
     });
 
+    it('should filter on the type', () => {
+        const result = filter(testItems, "seafood", false);
+        expect(result).toHaveLength(1);
+        expect(result[0].name).toBe(fish);
+    })
+
     it('should handle empty search terms', () => {
         const result = filter(testItems, "", false);
-        expect(result).toHaveLength(2); // Only non-deleted items
+        expect(result).toHaveLength(3); // Only non-deleted items
     });
 
     it('should handle case variations in search terms', () => {
@@ -89,4 +110,25 @@ describe('SearchFreezerItems filter', () => {
             expect(result.length).toBeGreaterThan(0);
         });
     });
+
+    it('should handle multiple search terms', () => {
+        const variations = [
+            {term: "chick gram", expected: [chickenBreast]},
+            {term: "breast gram", expected: [chickenBreast]},
+            {term: "fish pieces", expected: [fish]},
+            {term: "pieces", expected: [fish]},
+            {term: "beef gram", expected: []},
+            {term: "fish piec", expected: []},
+            {term: "SeaFood", expected: [fish]},
+            {term: "meat gram", expected: [chickenBreast, sausages]}
+        ]
+
+        variations.forEach(variation => {
+            const result = filter(testItems, variation.term, false);
+            expect(result).toHaveLength(variation.expected.length);
+            expect(variation.expected.every(expectedName =>
+                result.some(r => r.name === expectedName))).toBeTruthy();
+        });
+
+    })
 });
