@@ -44,10 +44,3 @@ export interface User {
     tokenAcquired: Date;
     token: TokenResponse;
 }
-
-// for more scopes: https://developers.google.com/identity/protocols/oauth2/scopes
-export class GoogleScopes {
-    static readonly driveFilesForApp : string = "https://www.googleapis.com/auth/drive.file";
-    static readonly userProfile: string = "profile"; // https://www.googleapis.com/auth/userinfo.profile
-    static readonly userEmail: string = "email"; // https://www.googleapis.com/auth/userinfo.email
-}

@@ -1,6 +1,6 @@
 ﻿import {useEffect, useState} from "react";
 import {googleLogout, type TokenResponse, useGoogleLogin} from "@react-oauth/google";
-import {GoogleScopes, type User} from "./models.ts";
+import {type User} from "./models.ts";
 
 export interface GoogleAuthProps {
     onSuccess?: (user: User) => void;
@@ -84,4 +84,11 @@ function parseUser(key: string, value: string) {
     }
 
     return value;
+}
+
+// for more scopes: https://developers.google.com/identity/protocols/oauth2/scopes
+export class GoogleScopes {
+    static readonly driveFilesForApp : string = "https://www.googleapis.com/auth/drive.file";
+    static readonly userProfile: string = "profile"; // https://www.googleapis.com/auth/userinfo.profile
+    static readonly userEmail: string = "email"; // https://www.googleapis.com/auth/userinfo.email
 }
