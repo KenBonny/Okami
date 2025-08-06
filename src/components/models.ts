@@ -35,6 +35,7 @@ export interface User{
     lastname: string;
     name: string;
     image: string | null;
+    tokenAcquired: Date;
     token: TokenResponse;
 }
 
