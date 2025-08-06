@@ -49,13 +49,16 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
 
     function onValidUser(user: User) {
         setUser(user);
-        onSuccess?.(user);
         const now = new Date();
         const tenSeconds = 10_000;
         const tenSecondsBeforeExpiration = (user.token.expires_in * 1000) - (now.getTime() - user.tokenAcquired.getTime()) - tenSeconds;
 
-        if (tenSecondsBeforeExpiration < 0) login();
-        else setTimeout(login, tenSecondsBeforeExpiration);
+        if (tenSecondsBeforeExpiration < 0)
+            login();
+        else {
+            onSuccess?.(user);
+            setTimeout(login, tenSecondsBeforeExpiration);
+        }
     }
 
     function logout() {
