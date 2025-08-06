@@ -81,7 +81,6 @@ async function updateFile(user: User, content: string, freezerItemFile: File){
         throw new Error(`HTTP error while updating file!`);
     }
 
-    console.log(`Updating file: ${updateResponse}`);
     return await updateResponse.json();
 }
 
@@ -102,7 +101,6 @@ async function createNewFile(user: User, content: string) : Promise<void> {
         throw new Error(`HTTP error while create!`);
     }
 
-    console.log(`Created file: ${createResponse}`);
     return await createResponse.json();
 }
 
