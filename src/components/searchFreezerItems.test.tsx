@@ -17,7 +17,8 @@ describe('SearchFreezerItems filter', () => {
             frozen: new Date(),
             expiration: new Date(),
             created: new Date(),
-            isDeleted: false
+            isDeleted: false,
+            deletedOn: new Date()
         },
         {
             id: 2,
@@ -28,7 +29,8 @@ describe('SearchFreezerItems filter', () => {
             frozen: new Date(),
             expiration: new Date(),
             created: new Date(),
-            isDeleted: true
+            isDeleted: true,
+            deletedOn: new Date()
         },
         {
             id: 3,
@@ -39,7 +41,8 @@ describe('SearchFreezerItems filter', () => {
             frozen: new Date(),
             expiration: new Date(),
             created: new Date(),
-            isDeleted: false
+            isDeleted: false,
+            deletedOn: new Date()
         },
         {
             id: 4,
@@ -50,7 +53,8 @@ describe('SearchFreezerItems filter', () => {
             frozen: new Date(),
             expiration: new Date(),
             created: new Date(),
-            isDeleted: false
+            isDeleted: false,
+            deletedOn: new Date()
         }
     ];
 
