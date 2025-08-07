@@ -20,6 +20,7 @@ import {
     sortItems,
     updateAllItems
 } from "./sortFreezerItemsReducer.ts";
+import FreezerItemRowHeader from "./FreezerItemRowHeader.tsx";
 
 export const FreezerManager: React.FC = () => {
     const [freezerItems, dispatchFreezer] = useReducer(reduceFreezerItems, []);
@@ -72,11 +73,21 @@ export const FreezerManager: React.FC = () => {
                 <thead>
                 <tr>
                     <th></th>
-                    <th onClick={() => handleSort(FreezerField.name)} data-field={FreezerField.name}>Name</th>
-                    <th onClick={() => handleSort(FreezerField.type)}>Type</th>
-                    <th onClick={() => handleSort(FreezerField.unit)}>Amount</th>
-                    <th onClick={() => handleSort(FreezerField.frozen)}>Frozen on</th>
-                    <th onClick={() => handleSort(FreezerField.expiration)}>Expires on</th>
+                    <FreezerItemRowHeader field={FreezerField.name} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
+                        Name
+                    </FreezerItemRowHeader>
+                    <FreezerItemRowHeader field={FreezerField.type} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
+                        Type
+                    </FreezerItemRowHeader>
+                    <FreezerItemRowHeader field={FreezerField.unit} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
+                        Amount
+                    </FreezerItemRowHeader>
+                    <FreezerItemRowHeader field={FreezerField.frozen} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
+                        Frozen on
+                    </FreezerItemRowHeader>
+                    <FreezerItemRowHeader field={FreezerField.expiration} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
+                        Expires on
+                    </FreezerItemRowHeader>
                     <th></th>
                 </tr>
                 </thead>
