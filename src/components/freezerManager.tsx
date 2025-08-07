@@ -47,6 +47,10 @@ export const FreezerManager: React.FC = () => {
         dispatchFreezer(updateFreezerItem(updatedItem));
     }
 
+    function handleSort(field: FreezerField) {
+        dispatchSorting(sortItems(field));
+    }
+
     async function loadFreezerItems(user: User) {
         setUser(user);
         console.log(`Loading Freezer items for: ${user.name}`);
@@ -68,11 +72,11 @@ export const FreezerManager: React.FC = () => {
                 <thead>
                 <tr>
                     <th></th>
-                    <th onClick={() => dispatchSorting(sortItems(FreezerField.name))}>Name</th>
-                    <th onClick={() => dispatchSorting(sortItems(FreezerField.type))}>Type</th>
-                    <th onClick={() => dispatchSorting(sortItems(FreezerField.unit))}>Amount</th>
-                    <th onClick={() => dispatchSorting(sortItems(FreezerField.frozen))}>Frozen on</th>
-                    <th onClick={() => dispatchSorting(sortItems(FreezerField.expiration))}>Expires on</th>
+                    <th onClick={() => handleSort(FreezerField.name)} data-field={FreezerField.name}>Name</th>
+                    <th onClick={() => handleSort(FreezerField.type)}>Type</th>
+                    <th onClick={() => handleSort(FreezerField.unit)}>Amount</th>
+                    <th onClick={() => handleSort(FreezerField.frozen)}>Frozen on</th>
+                    <th onClick={() => handleSort(FreezerField.expiration)}>Expires on</th>
                     <th></th>
                 </tr>
                 </thead>
