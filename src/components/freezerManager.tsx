@@ -43,7 +43,7 @@ export const FreezerManager: React.FC = () => {
         dispatchFreezer(deleteFreezerItem(id, config.monthsToKeepDeletedItems));
     }
 
-    function handleSave(updatedItem: FreezerItem) {
+    function handleUpdate(updatedItem: FreezerItem) {
         dispatchFreezer(updateFreezerItem(updatedItem));
     }
 
@@ -82,7 +82,7 @@ export const FreezerManager: React.FC = () => {
                 </thead>
                 <tbody>
                 {sortedItems.items.map(item => (
-                    <FreezerItemRow item={item} key={item.id} onDelete={handleDelete} onSave={handleSave} />))}
+                    <FreezerItemRow item={item} key={item.id} onDelete={handleDelete} onSave={handleUpdate} />))}
                 </tbody>
             </table>
         </div>
