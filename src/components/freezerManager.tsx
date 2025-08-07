@@ -31,7 +31,7 @@ export const FreezerManager: React.FC = () => {
         if (user === null) return;
 
         console.log("save freezer items to Google Drive");
-        writeFreezerItemsToGoogleDrive(user, freezerItems)
+        writeFreezerItemsToGoogleDrive(user, removeDeletedItems(freezerItems))
             .then(_ => console.log("freezer items saved to Google Drive"))
             .catch(console.error);
     }, [freezerItems]);
@@ -98,4 +98,9 @@ export const FreezerManager: React.FC = () => {
             </table>
         </div>
     );
+}
+
+export function removeDeletedItems(items: FreezerItem[]) : FreezerItem[] {
+    const now = new Date().getTime();
+    return items.filter(item => !item.isDeleted || item.deletedOn.getTime() > now);
 }
