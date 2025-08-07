@@ -1,4 +1,4 @@
-﻿import {ActionType, type FreezerAction, reduceFreezerItems} from './freezerManager'; // Adjust based on file structure
+﻿import {ActionType, type FreezerAction, reduceFreezerItems} from './freezerItemsReducer'; // Adjust based on file structure
 import { type FreezerItem, Unit } from './models';
 import {getDate} from "./utils.ts";
 

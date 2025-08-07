@@ -5,8 +5,14 @@ import {SearchFreezerItems} from "./searchFreezerItems.tsx";
 import FreezerItemRow from "./freezerItemRow.tsx";
 import GoogleAuth from "./GoogleAuth.tsx";
 import {loadFreezerItemsFromGoogle, writeFreezerItemsToGoogleDrive} from "../google/drive.ts";
-import {getDate} from "./utils.ts";
 import {config} from "../config.ts";
+import {
+    addFreezerItem,
+    deleteFreezerItem,
+    reduceFreezerItems,
+    replaceFreezerItems,
+    updateFreezerItem
+} from "./freezerItemsReducer.ts";
 
 export const FreezerManager: React.FC = () => {
     const [freezerItems, dispatchFreezer] = useReducer(reduceFreezerItems, []);
@@ -74,61 +80,4 @@ export const FreezerManager: React.FC = () => {
             </table>
         </div>
     );
-
-}
-
-export enum ActionType {
-    add = "add",
-    delete = "delete",
-    update = "update",
-    replace = "replace"
-}
-
-function addFreezerItem(item: FreezerItem) {
-    return {type: ActionType.add, item} as const;
-}
-
-function deleteFreezerItem(id: number, monthsToKeepDeletedItems: number) {
-    return {type: ActionType.delete, id, monthsToKeepDeletedItems} as const;
-}
-
-function updateFreezerItem(item: FreezerItem) {
-    return {type: ActionType.update, item} as const;
-}
-
-function replaceFreezerItems(items: FreezerItem[]) {
-    return {type: ActionType.replace, items} as const;
-}
-
-export type FreezerAction = ReturnType<
-    typeof addFreezerItem
-    | typeof deleteFreezerItem
-    | typeof updateFreezerItem
-    | typeof replaceFreezerItems>;
-
-export function reduceFreezerItems(items: FreezerItem[], action: FreezerAction) : FreezerItem[] {
-    switch (action.type) {
-        case ActionType.add:
-            const ids = items.map(item => item.id);
-            const nextId = Math.max(...ids, 0) + 1;
-            return [...items, {...action.item, id: nextId}];
-
-        case ActionType.delete:
-            const deleted = items.find(i => i.id === action.id);
-            if (!deleted || deleted.isDeleted) return items;
-
-            return [...(items.filter(item => item !== deleted)), {
-                ...deleted,
-                isDeleted: true,
-                deletedOn: getDate(action.monthsToKeepDeletedItems)
-            }];
-
-        case ActionType.update:
-            return items.map(item =>
-                item.id === action.item.id ? action.item : item
-            );
-
-        case ActionType.replace:
-            return action.items;
-    }
 }
