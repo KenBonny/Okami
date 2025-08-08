@@ -2,6 +2,10 @@
 import React, {useRef, useState} from "react";
 import {config} from "../config.ts";
 import {getDate} from "./utils.ts";
+import {Field, Fieldset, Label, Legend} from "./tailwind/fieldset.tsx";
+import {Input} from "./tailwind/input.tsx";
+import {Button} from "./tailwind/button.tsx";
+import {Select} from "./tailwind/select.tsx";
 
 export interface AddFreezerItemFormProps {
     onAddItem: (item: FreezerItem) => void;
@@ -50,54 +54,75 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <label htmlFor="name">Name</label>
-            <input type="text"
-                   id="name"
-                   name="name"
-                   placeholder="Name"
-                   value={item.name}
-                   onChange={handleChange}
-                   ref={nameInputRef}
-                   required />
+            <Fieldset>
+                <Legend>Add freezer item</Legend>
+                <div className="flex flex-col lg:flex-row space-x-4">
+                    <Field>
+                        <Label>Name</Label>
+                        <Input type="text"
+                               name="name"
+                               placeholder="Name"
+                               onChange={handleChange}
+                               value={item.name}
+                               ref={nameInputRef}
+                               required />
+                    </Field>
 
-            <label htmlFor="type">Product Type</label>
-            <input type="text" id="type" name="type" placeholder="Type" value={item.type} onChange={handleChange} />
+                    <Field>
+                        <Label>Product Type</Label>
+                        <Input type="text"
+                               id="type"
+                               name="type"
+                               placeholder="Type"
+                               value={item.type}
+                               onChange={handleChange} />
+                    </Field>
 
-            <label htmlFor="amount">Amount</label>
-            <input type="number"
-                   id="amount"
-                   name="amount"
-                   min="1"
-                   value={item.amount}
-                   onChange={handleChange}
-                   required />
+                    <Field>
+                        <Label>Amount</Label>
+                        <div className="grid grid-cols-5 mt-2.5 md:w-50">
+                            <Input type="number"
+                                   id="amount"
+                                   name="amount"
+                                   className="col-span-2"
+                                   min="1"
+                                   value={item.amount}
+                                   onChange={handleChange}
+                                   required />
+                            <Select id="unit" name="unit" className="col-span-3" value={item.unit} onChange={handleChange} required>
+                                {unitKeys.map(key => (
+                                    <option value={Unit[key]} key={Unit[key]}>{key}</option>
+                                ))}
+                            </Select>
+                        </div>
+                    </Field>
 
-            <select id="unit" name="unit" value={item.unit} onChange={handleChange} required>
-                {unitKeys.map(key => (
-                    <option value={Unit[key]} key={Unit[key]}>{key}</option>
-                ))}
-            </select>
+                    <Field>
+                        <Label htmlFor="frozen">Date Frozen</Label>
+                        <Input type="date"
+                               id="frozen"
+                               name="frozen"
+                               value={formatDate(item.frozen)}
+                               max={formatDate(today)}
+                               onChange={handleChange}
+                               required />
+                    </Field>
 
-            <label htmlFor="frozen">Date Frozen</label>
-            <input type="date"
-                   id="frozen"
-                   name="frozen"
-                   value={formatDate(item.frozen)}
-                   max={formatDate(today)}
-                   onChange={handleChange}
-                   required />
+                    <Field>
+                        <Label htmlFor="expiration">Date Frozen</Label>
+                        <Input type="date"
+                               id="expiration"
+                               name="expiration"
+                               value={formatDate(item.expiration)}
+                               min={formatDate(today)}
+                               max={formatDate(maxExpiration)}
+                               onChange={handleChange}
+                               required />
+                    </Field>
 
-            <label htmlFor="expiration">Date Frozen</label>
-            <input type="date"
-                   id="expiration"
-                   name="expiration"
-                   value={formatDate(item.expiration)}
-                   min={formatDate(today)}
-                   max={formatDate(maxExpiration)}
-                   onChange={handleChange}
-                   required />
-
-            <button type="submit">Add</button>
+                    <Button type="submit" className="self-center">Add</Button>
+                </div>
+            </Fieldset>
         </form>
     );
 }
