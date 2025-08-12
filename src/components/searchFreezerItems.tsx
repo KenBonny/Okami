@@ -1,6 +1,9 @@
 ﻿import {type FreezerItem, Unit} from "./models.ts";
 import {useEffect, useState} from "react";
 import {useDebounce} from "../effects/useDebounce.ts";
+import {Input} from "./tailwind/input.tsx";
+import {Field, Fieldset, Label} from "./tailwind/fieldset.tsx";
+import {Switch, SwitchField} from "./tailwind/switch.tsx";
 
 export interface SearchFreezerItemsProps{
     items: FreezerItem[];
@@ -20,10 +23,9 @@ export function SearchFreezerItems({items, onSearch}: SearchFreezerItemsProps) {
         search(termsInput, includeDeleted);
     }
 
-    function handleIncludeDeleted(e: React.ChangeEvent<HTMLInputElement>) {
-        const includeDeletedCheckBox = e.target.checked;
-        setIncludeDeleted(includeDeletedCheckBox);
-        search(terms, includeDeletedCheckBox);
+    function handleIncludeDeleted(included: boolean) {
+        setIncludeDeleted(included);
+        search(terms, included);
     }
 
     function search(searchTerms: string, includeDeleted: boolean) {
@@ -31,21 +33,19 @@ export function SearchFreezerItems({items, onSearch}: SearchFreezerItemsProps) {
     }
 
     return (
-        <form>
-            <input type="text"
-                   id="searchTerms"
-                   name="searchTerms"
-                   onChange={handleNewSearchTerms}
-                   placeholder="Search by name or unit" />
-
-            <label>
-                <input type="checkbox"
-                       id="includeDeleted"
-                       name="includeDeleted"
-                       onChange={handleIncludeDeleted} />
-                Include deleted
-            </label>
-        </form>
+        <Fieldset className="flex flex-nowrap flex-auto content-center">
+            <Field className="min-w-2xs max-w-md w-full mr-4">
+                <Input type="text"
+                       id="searchTerms"
+                       name="searchTerms"
+                       onChange={handleNewSearchTerms}
+                       placeholder="Search by name, type or unit" />
+            </Field>
+            <SwitchField className="self-center">
+                <Label>Include deleted</Label>
+                <Switch name="includeDeleted" color="amber" onChange={handleIncludeDeleted} />
+            </SwitchField>
+        </Fieldset>
     );
 }
 
