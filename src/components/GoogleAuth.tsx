@@ -1,6 +1,9 @@
 ﻿import {useEffect, useState} from "react";
 import {googleLogout, type TokenResponse, useGoogleLogin} from "@react-oauth/google";
 import {type User} from "./models.ts";
+import {Button} from "./tailwind/button.tsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faGoogle} from "@fortawesome/free-brands-svg-icons";
 
 export interface GoogleAuthProps {
     onSuccess?: (user: User) => void;
@@ -70,7 +73,10 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
 
     return (user ?
             <a onClick={logout}>Hello, {user.name}</a>
-            : <button onClick={() => login()}>Sign in with Google</button>
+            : <Button outline className="m-3">
+                <FontAwesomeIcon icon={faGoogle} className="self-center text-blue-500" />
+                Sign in with Google
+            </Button>
     );
 }
 
