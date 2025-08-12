@@ -10,10 +10,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
 export interface AddFreezerItemFormProps {
+    className?: string | undefined;
     onAddItem: (item: FreezerItem) => void;
 }
 
-export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
+export function AddFreezerItemForm({className, onAddItem}: AddFreezerItemFormProps) {
     const today = new Date();
     const maxExpiration = getDate(config.maxExpiration);
     const unitKeys = Object.keys(Unit).filter(key => isNaN(Number(key))).sort() as Array<keyof typeof Unit>;
@@ -55,7 +56,7 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={className}>
             <Fieldset>
                 <h3 className="text-amber-400 font-semibold">Add freezer item</h3>
                 <div className="flex flex-col lg:flex-row space-x-4">

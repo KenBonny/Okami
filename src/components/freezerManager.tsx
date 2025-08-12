@@ -65,10 +65,12 @@ export const FreezerManager: React.FC = () => {
 
     return (
         <div>
-            <GoogleAuth onSuccess={loadFreezerItems}  onLogout={logout} />
-            <AddFreezerItemForm onAddItem={handleAddItem} />
+            <GoogleAuth className="m-3" onSuccess={loadFreezerItems}  onLogout={logout} />
+            <AddFreezerItemForm className="m-3" onAddItem={handleAddItem} />
             <hr />
-            <SearchFreezerItems items={freezerItems} onSearch={(items) => dispatchSorting(updateAllItems(items))} />
+            <SearchFreezerItems className="m-3"
+                                items={freezerItems}
+                                onSearch={(items) => dispatchSorting(updateAllItems(items))} />
             <table>
                 <thead>
                 <tr>

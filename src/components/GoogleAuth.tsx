@@ -5,13 +5,15 @@ import {Button} from "./tailwind/button.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGoogle} from "@fortawesome/free-brands-svg-icons";
 import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+import clsx from "clsx";
 
 export interface GoogleAuthProps {
+    className?: string | undefined;
     onSuccess?: (user: User) => void;
     onLogout?: () => void;
 }
 
-export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
+export default function GoogleAuth({className, onSuccess, onLogout }: GoogleAuthProps) {
     const [user, setUser] = useState<User | null>(null);
     const localUserStorage = "user";
 
@@ -73,7 +75,7 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
     }
 
     return (user ?
-            <div className="flex flex-nowrap flex-auto content-center m-5">
+            <div className={clsx(className, "flex flex-nowrap flex-auto content-center")} >
                 <p className="self-center grow font-semibold">
                     Hello {user.name}
                 </p>
@@ -82,7 +84,7 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
                     <FontAwesomeIcon icon={faRightFromBracket} className="self-center text-amber-400 text-xl" />
                 </Button>
             </div>
-            : <Button outline onClick={() => login()} className="m-5">
+            : <Button outline onClick={() => login()} className={className}>
                 <FontAwesomeIcon icon={faGoogle} className="self-center text-blue-500 text-xl" />
                 Sign in with Google
             </Button>

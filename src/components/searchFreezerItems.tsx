@@ -4,13 +4,15 @@ import {useDebounce} from "../effects/useDebounce.ts";
 import {Input} from "./tailwind/input.tsx";
 import {Field, Fieldset, Label} from "./tailwind/fieldset.tsx";
 import {Switch, SwitchField} from "./tailwind/switch.tsx";
+import clsx from "clsx";
 
 export interface SearchFreezerItemsProps{
+    className?: string | undefined;
     items: FreezerItem[];
     onSearch: (items: FreezerItem[]) => void;
 }
 
-export function SearchFreezerItems({items, onSearch}: SearchFreezerItemsProps) {
+export function SearchFreezerItems({className, items, onSearch}: SearchFreezerItemsProps) {
     const [terms, setTerms] = useState<string>("");
     const [includeDeleted, setIncludeDeleted] = useState(false);
     const debouncedSearchTerms = useDebounce(terms, 500);
@@ -33,7 +35,7 @@ export function SearchFreezerItems({items, onSearch}: SearchFreezerItemsProps) {
     }
 
     return (
-        <Fieldset className="flex flex-nowrap flex-auto content-center">
+        <Fieldset className={clsx(className, "flex flex-nowrap flex-auto content-center")} >
             <Field className="min-w-2xs max-w-md w-full mr-4">
                 <Input type="text"
                        id="searchTerms"
