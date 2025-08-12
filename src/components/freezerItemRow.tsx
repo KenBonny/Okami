@@ -2,6 +2,8 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFilePen, faFloppyDisk, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {TableCell, TableRow} from "./tailwind/table.tsx";
+import {Input} from "./tailwind/input.tsx";
 
 export interface FreezerItemRowProps {
     item: FreezerItem;
@@ -24,41 +26,50 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
     }
 
     return editing ? (
-        <tr>
-            <td>
-                <FontAwesomeIcon icon={faFloppyDisk} onClick={save} />
-            </td>
-            <td><input type="text"
+        <TableRow key={item.id}>
+            <TableCell className="text-amber-400 px-4">
+                <FontAwesomeIcon icon={faFloppyDisk} className="ml-4"  onClick={save} />
+            </TableCell>
+            <TableCell>
+                <Input type="text"
                        id="name"
                        name="name"
                        placeholder="Name"
+                       className="min-w-32 max-w-64"
                        value={editedItem.name}
                        onChange={handleChange}
-                       required /></td>
-            <td>{editedItem.type}</td>
-            <td><input type="number"
+                       required />
+            </TableCell>
+            <TableCell>{editedItem.type}</TableCell>
+            <TableCell className="flex flex-nowrap items-center space-x-2">
+                <Input type="number"
                        id="amount"
                        name="amount"
+                       placeholder="Amount"
+                       className="basis-2/3"
                        min="1"
                        value={editedItem.amount}
                        onChange={handleChange}
                        required />
-                {Unit[editedItem.unit]}</td>
-            <td>{editedItem.frozen.toLocaleDateString()}</td>
-            <td>{editedItem.expiration.toLocaleDateString()}</td>
-            <td></td>
-        </tr>) : (
-        <tr>
-            <td><FontAwesomeIcon icon={faFilePen} onClick={() => setEditing(true)} /></td>
-            <td>{item.name}</td>
-            <td>{item.type}</td>
-            <td>{item.amount} {Unit[item.unit]}</td>
-            <td>{item.frozen.toLocaleDateString()}</td>
-            <td>{item.expiration.toLocaleDateString()}</td>
-            <td>
+                <p className="basis-1/3">{Unit[editedItem.unit]}</p>
+            </TableCell>
+            <TableCell>{editedItem.frozen.toLocaleDateString()}</TableCell>
+            <TableCell>{editedItem.expiration.toLocaleDateString()}</TableCell>
+            <TableCell></TableCell>
+        </TableRow>) : (
+        <TableRow key={item.id}>
+            <TableCell className="text-amber-400">
+                <FontAwesomeIcon icon={faFilePen} className="ml-4" onClick={() => setEditing(true)} />
+            </TableCell>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.type}</TableCell>
+            <TableCell>{item.amount} {Unit[item.unit]}</TableCell>
+            <TableCell>{item.frozen.toLocaleDateString()}</TableCell>
+            <TableCell>{item.expiration.toLocaleDateString()}</TableCell>
+            <TableCell className="text-zinc-400">
                 {!item.isDeleted &&
                     <FontAwesomeIcon icon={faTrash} onClick={() => onDelete(item.id)} />}
-            </td>
-        </tr>
+            </TableCell>
+        </TableRow>
     );
 }

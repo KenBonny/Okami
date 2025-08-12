@@ -3,8 +3,11 @@ import type {ReactElement} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDownShortWide, faArrowUpWideShort, faUpDown} from "@fortawesome/free-solid-svg-icons";
 import type {IconDefinition} from "@fortawesome/fontawesome-svg-core";
+import {TableHeader} from "./tailwind/table.tsx";
+import clsx from "clsx";
 
 export interface FreezerItemRowHeaderProperties {
+    className?: string | undefined;
     field: FreezerField;
     sortField: FreezerField;
     sortDirection: SortDirection;
@@ -12,16 +15,18 @@ export interface FreezerItemRowHeaderProperties {
     onClick: (field: FreezerField) => void;
 }
 
-export default function FreezerItemRowHeader({field, sortField, sortDirection, children, onClick}: FreezerItemRowHeaderProperties) {
-    const icon: IconDefinition = field !== sortField
+export default function FreezerItemRowHeader({className, field, sortField, sortDirection, children, onClick}: FreezerItemRowHeaderProperties) {
+    const isSortingField = field === sortField;
+    const icon: IconDefinition = !isSortingField
         ? faUpDown
         : sortDirection === SortDirection.ascending
             ? faArrowDownShortWide
             : faArrowUpWideShort;
+    const color = isSortingField ? "text-amber-400" : "text-zinc-300"
 
     return (
-        <th onClick={() => onClick(field)}>
-            {children} <FontAwesomeIcon icon={icon} />
-        </th>
+        <TableHeader className={clsx(className, "text-black")}  onClick={() => onClick(field)}>
+            {children} <FontAwesomeIcon icon={icon} className={color} />
+        </TableHeader>
     );
 }

@@ -21,6 +21,7 @@ import {
     updateAllItems
 } from "./sortFreezerItemsReducer.ts";
 import FreezerItemRowHeader from "./FreezerItemRowHeader.tsx";
+import {Table, TableBody, TableHead, TableHeader, TableRow} from "./tailwind/table.tsx";
 
 export const FreezerManager: React.FC = () => {
     const [freezerItems, dispatchFreezer] = useReducer(reduceFreezerItems, []);
@@ -71,33 +72,53 @@ export const FreezerManager: React.FC = () => {
             <SearchFreezerItems className="m-3"
                                 items={freezerItems}
                                 onSearch={(items) => dispatchSorting(updateAllItems(items))} />
-            <table>
-                <thead>
-                <tr>
-                    <th></th>
-                    <FreezerItemRowHeader field={FreezerField.name} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
-                        Name
-                    </FreezerItemRowHeader>
-                    <FreezerItemRowHeader field={FreezerField.type} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
-                        Type
-                    </FreezerItemRowHeader>
-                    <FreezerItemRowHeader field={FreezerField.unit} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
-                        Amount
-                    </FreezerItemRowHeader>
-                    <FreezerItemRowHeader field={FreezerField.frozen} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
-                        Frozen on
-                    </FreezerItemRowHeader>
-                    <FreezerItemRowHeader field={FreezerField.expiration} sortField={sortedItems.field} sortDirection={sortedItems.direction} onClick={handleSort}>
-                        Expires on
-                    </FreezerItemRowHeader>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {sortedItems.items.map(item => (
-                    <FreezerItemRow item={item} key={item.id} onDelete={handleDelete} onSave={handleUpdate} />))}
-                </tbody>
-            </table>
+            <Table className="p-3">
+                <TableHead>
+                    <TableRow>
+                        <TableHeader className="w-12"></TableHeader>
+                        <FreezerItemRowHeader className="w-80"
+                                              field={FreezerField.name}
+                                              sortField={sortedItems.field}
+                                              sortDirection={sortedItems.direction}
+                                              onClick={handleSort}>
+                            Name
+                        </FreezerItemRowHeader>
+                        <FreezerItemRowHeader className="w-64"
+                                              field={FreezerField.type}
+                                              sortField={sortedItems.field}
+                                              sortDirection={sortedItems.direction}
+                                              onClick={handleSort}>
+                            Type
+                        </FreezerItemRowHeader>
+                        <FreezerItemRowHeader className="w-42"
+                                              field={FreezerField.unit}
+                                              sortField={sortedItems.field}
+                                              sortDirection={sortedItems.direction}
+                                              onClick={handleSort}>
+                            Amount
+                        </FreezerItemRowHeader>
+                        <FreezerItemRowHeader className="w-32"
+                                              field={FreezerField.frozen}
+                                              sortField={sortedItems.field}
+                                              sortDirection={sortedItems.direction}
+                                              onClick={handleSort}>
+                            Frozen on
+                        </FreezerItemRowHeader>
+                        <FreezerItemRowHeader className="w-32"
+                                              field={FreezerField.expiration}
+                                              sortField={sortedItems.field}
+                                              sortDirection={sortedItems.direction}
+                                              onClick={handleSort}>
+                            Expires on
+                        </FreezerItemRowHeader>
+                        <TableHeader></TableHeader>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {sortedItems.items.map(item => (
+                        <FreezerItemRow item={item} key={item.id} onDelete={handleDelete} onSave={handleUpdate} />))}
+                </TableBody>
+            </Table>
         </div>
     );
 }
