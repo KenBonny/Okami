@@ -4,6 +4,7 @@ import {type User} from "./models.ts";
 import {Button} from "./tailwind/button.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGoogle} from "@fortawesome/free-brands-svg-icons";
+import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 
 export interface GoogleAuthProps {
     onSuccess?: (user: User) => void;
@@ -72,9 +73,17 @@ export default function GoogleAuth({ onSuccess, onLogout }: GoogleAuthProps) {
     }
 
     return (user ?
-            <a onClick={logout}>Hello, {user.name}</a>
-            : <Button outline className="m-3">
-                <FontAwesomeIcon icon={faGoogle} className="self-center text-blue-500" />
+            <div className="flex flex-nowrap flex-auto content-center m-5">
+                <p className="self-center grow font-semibold">
+                    Hello {user.name}
+                </p>
+                <Button plain onClick={logout}>
+                    Logout
+                    <FontAwesomeIcon icon={faRightFromBracket} className="self-center text-amber-400 text-xl" />
+                </Button>
+            </div>
+            : <Button outline onClick={() => login()} className="m-5">
+                <FontAwesomeIcon icon={faGoogle} className="self-center text-blue-500 text-xl" />
                 Sign in with Google
             </Button>
     );
