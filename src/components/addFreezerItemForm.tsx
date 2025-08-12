@@ -57,7 +57,7 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
     return (
         <form onSubmit={handleSubmit}>
             <Fieldset>
-                <Legend>Add freezer item</Legend>
+                <h3 className="text-amber-400 font-semibold">Add freezer item</h3>
                 <div className="flex flex-col lg:flex-row space-x-4">
                     <Field>
                         <Label>Name</Label>
