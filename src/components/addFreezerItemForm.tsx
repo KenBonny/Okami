@@ -6,6 +6,8 @@ import {Field, Fieldset, Label, Legend} from "./tailwind/fieldset.tsx";
 import {Input} from "./tailwind/input.tsx";
 import {Button} from "./tailwind/button.tsx";
 import {Select} from "./tailwind/select.tsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
 export interface AddFreezerItemFormProps {
     onAddItem: (item: FreezerItem) => void;
@@ -120,7 +122,10 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
                                required />
                     </Field>
 
-                    <Button type="submit" className="self-center w-full lg:w-32 mt-6 lg:mt-0 lg:self-end">Add</Button>
+                    <Button type="submit" color="amber" className="self-center w-full lg:w-32 mt-6 lg:mt-0 lg:self-end">
+                        <FontAwesomeIcon icon={faPlus} className="self-center" />
+                        Add
+                    </Button>
                 </div>
             </Fieldset>
         </form>
