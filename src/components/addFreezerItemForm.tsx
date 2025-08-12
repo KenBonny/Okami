@@ -2,7 +2,7 @@
 import React, {useRef, useState} from "react";
 import {config} from "../config.ts";
 import {getDate} from "./utils.ts";
-import {Field, Fieldset, Label, Legend} from "./tailwind/fieldset.tsx";
+import {Field, Fieldset, Label} from "./tailwind/fieldset.tsx";
 import {Input} from "./tailwind/input.tsx";
 import {Button} from "./tailwind/button.tsx";
 import {Select} from "./tailwind/select.tsx";
