@@ -75,19 +75,21 @@ export default function GoogleAuth({className, onSuccess, onLogout }: GoogleAuth
     }
 
     return (user ?
-            <div className={clsx(className, "flex flex-nowrap flex-auto content-center")} >
-                <p className="self-center grow font-semibold">
-                    Hello {user.name}
+            <div className={clsx(className, "flex flex-nowrap flex-auto lg:space-x-4")} >
+                <p className="grow md:grow-0">
+                    Hello <span className="font-semibold">{user.name}</span>
                 </p>
                 <Button plain onClick={logout}>
                     Logout
                     <FontAwesomeIcon icon={faRightFromBracket} className="self-center text-amber-400 text-xl" />
                 </Button>
             </div>
-            : <Button outline onClick={() => login()} className={className}>
-                <FontAwesomeIcon icon={faGoogle} className="self-center text-blue-500 text-xl" />
-                Sign in with Google
-            </Button>
+            : <div className={clsx(className, "flex flex-nowrap flex-auto")}>
+                <Button outline onClick={() => login()}>
+                    <FontAwesomeIcon icon={faGoogle} className="self-center text-blue-500 text-xl" />
+                    Sign in with Google
+                </Button>
+            </div>
     );
 }
 
