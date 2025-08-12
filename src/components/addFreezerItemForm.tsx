@@ -60,7 +60,7 @@ export function AddFreezerItemForm({className, onAddItem}: AddFreezerItemFormPro
             <Fieldset>
                 <h3 className="text-amber-400 font-semibold">Add freezer item</h3>
                 <div className="flex flex-col lg:flex-row space-x-4">
-                    <Field>
+                    <Field className="w-full mt-2 md:mt-0 md:basis-80">
                         <Label htmlFor="name">Name</Label>
                         <Input type="text"
                                id="name"
@@ -72,7 +72,7 @@ export function AddFreezerItemForm({className, onAddItem}: AddFreezerItemFormPro
                                required />
                     </Field>
 
-                    <Field>
+                    <Field className="w-full mt-2 md:mt-0 md:basis-64">
                         <Label htmlFor="type">Product Type</Label>
                         <Input type="text"
                                id="type"
@@ -82,18 +82,18 @@ export function AddFreezerItemForm({className, onAddItem}: AddFreezerItemFormPro
                                onChange={handleChange} />
                     </Field>
 
-                    <Field className="self-start lg:self-end">
+                    <Field className="self-start lg:self-end w-full md:w-48 mt-2 md:mt-0">
                         <Label htmlFor="amount">Amount</Label>
                         <div className="flex flex-nowrap mt-2.5">
                             <Input type="number"
                                    id="amount"
                                    name="amount"
-                                   className="flex-2"
+                                   className="basis-2/3 md:basis-xs"
                                    min="1"
                                    value={item.amount}
                                    onChange={handleChange}
                                    required />
-                            <Select id="unit" name="unit" className="flex-3" value={item.unit} onChange={handleChange} required>
+                            <Select id="unit" name="unit" className="basis-1/3 md:basis-sm" value={item.unit} onChange={handleChange} required>
                                 {unitKeys.map(key => (
                                     <option value={Unit[key]} key={Unit[key]}>{key}</option>
                                 ))}
@@ -101,28 +101,30 @@ export function AddFreezerItemForm({className, onAddItem}: AddFreezerItemFormPro
                         </div>
                     </Field>
 
-                    <Field>
-                        <Label htmlFor="frozen">Date Frozen</Label>
-                        <Input type="date"
-                               id="frozen"
-                               name="frozen"
-                               value={formatDate(item.frozen)}
-                               max={formatDate(today)}
-                               onChange={handleChange}
-                               required />
-                    </Field>
+                    <div className="flex flex-row w-full space-x-4 md:max-w-68 mt-2 md:mt-0">
+                        <Field className="basis-1/2">
+                            <Label htmlFor="frozen">Frozen</Label>
+                            <Input type="date"
+                                   id="frozen"
+                                   name="frozen"
+                                   value={formatDate(item.frozen)}
+                                   max={formatDate(today)}
+                                   onChange={handleChange}
+                                   required />
+                        </Field>
 
-                    <Field>
-                        <Label htmlFor="expiration">Date Frozen</Label>
-                        <Input type="date"
-                               id="expiration"
-                               name="expiration"
-                               value={formatDate(item.expiration)}
-                               min={formatDate(today)}
-                               max={formatDate(maxExpiration)}
-                               onChange={handleChange}
-                               required />
-                    </Field>
+                        <Field className="basis-1/2">
+                            <Label htmlFor="expiration">Expiration</Label>
+                            <Input type="date"
+                                   id="expiration"
+                                   name="expiration"
+                                   value={formatDate(item.expiration)}
+                                   min={formatDate(today)}
+                                   max={formatDate(maxExpiration)}
+                                   onChange={handleChange}
+                                   required />
+                        </Field>
+                    </div>
 
                     <Button type="submit" color="amber" className="self-center w-full lg:w-32 mt-6 lg:mt-0 lg:self-end">
                         <FontAwesomeIcon icon={faPlus} className="self-center" />
