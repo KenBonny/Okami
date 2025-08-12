@@ -60,8 +60,9 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
                 <h3 className="text-amber-400 font-semibold">Add freezer item</h3>
                 <div className="flex flex-col lg:flex-row space-x-4">
                     <Field>
-                        <Label>Name</Label>
+                        <Label htmlFor="name">Name</Label>
                         <Input type="text"
+                               id="name"
                                name="name"
                                placeholder="Name"
                                onChange={handleChange}
@@ -71,7 +72,7 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
                     </Field>
 
                     <Field>
-                        <Label>Product Type</Label>
+                        <Label htmlFor="type">Product Type</Label>
                         <Input type="text"
                                id="type"
                                name="type"
@@ -81,7 +82,7 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
                     </Field>
 
                     <Field>
-                        <Label>Amount</Label>
+                        <Label htmlFor="amount">Amount</Label>
                         <div className="grid grid-cols-5 mt-2.5 md:w-50">
                             <Input type="number"
                                    id="amount"
