@@ -65,7 +65,7 @@ export const FreezerManager: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className="md:mx-24 lg:mx-64">
             <div className="flex flex-col-reverse lg:flex-row m-3">
                 <AddFreezerItemForm className="" onAddItem={handleAddItem} />
                 <GoogleAuth className="items-baseline-last lg:place-content-end" onSuccess={loadFreezerItems}  onLogout={logout} />
