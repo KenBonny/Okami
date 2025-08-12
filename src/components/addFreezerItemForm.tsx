@@ -81,18 +81,18 @@ export function AddFreezerItemForm({onAddItem}: AddFreezerItemFormProps) {
                                onChange={handleChange} />
                     </Field>
 
-                    <Field>
+                    <Field className="self-start lg:self-end">
                         <Label htmlFor="amount">Amount</Label>
-                        <div className="grid grid-cols-5 mt-2.5 md:w-50">
+                        <div className="flex flex-nowrap mt-2.5">
                             <Input type="number"
                                    id="amount"
                                    name="amount"
-                                   className="col-span-2"
+                                   className="flex-2"
                                    min="1"
                                    value={item.amount}
                                    onChange={handleChange}
                                    required />
-                            <Select id="unit" name="unit" className="col-span-3" value={item.unit} onChange={handleChange} required>
+                            <Select id="unit" name="unit" className="flex-3" value={item.unit} onChange={handleChange} required>
                                 {unitKeys.map(key => (
                                     <option value={Unit[key]} key={Unit[key]}>{key}</option>
                                 ))}
