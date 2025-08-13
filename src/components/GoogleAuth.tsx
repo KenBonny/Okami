@@ -56,14 +56,16 @@ export default function GoogleAuth({className, onSuccess, onLogout }: GoogleAuth
     function onValidUser(user: User) {
         setUser(user);
         const now = new Date();
-        const tenSeconds = 10_000;
-        const tenSecondsBeforeExpiration = (user.token.expires_in * 1000) - (now.getTime() - user.tokenAcquired.getTime()) - tenSeconds;
+        const tenSeconds = 10_000;const tokenLifetime = user.token.expires_in * 1000; // token lifetime in ms
+        const elapsedTime = now.getTime() - user.tokenAcquired.getTime();
+        const timeRemaining = tokenLifetime - elapsedTime;
 
-        if (tenSecondsBeforeExpiration < 0)
+
+        if (timeRemaining <= tenSeconds)
             login();
         else {
             onSuccess?.(user);
-            setTimeout(login, tenSecondsBeforeExpiration);
+            setTimeout(login, timeRemaining - tenSeconds);
         }
     }
 
