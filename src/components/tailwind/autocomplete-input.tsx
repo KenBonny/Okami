@@ -1,4 +1,4 @@
-﻿import {useEffect, useState} from "react";
+﻿import {useEffect, useRef, useState} from "react";
 import {useDebounce} from "../../effects/useDebounce.ts";
 import clsx from "clsx";
 import {Input} from "./input.tsx";
@@ -20,20 +20,21 @@ export default function AutoCompleteInput({
                                           }: AutoCompleteInputProps) {
     const [suggestions, setSuggestions] = useState<string[]>(items); // Filtered suggestions
     const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false); // To control dropdown visibility
-    const debouncedValue = useDebounce(value, 300); // Debounced input to optimize filtering
     const debouncedValue = useDebounce(value ?? "", 300); // Debounced input to optimize filtering
+    const textInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
+        const hasTextInputFocus = textInputRef.current === document.activeElement;
         // Filter suggestions based on the input value
         if (debouncedValue.trim() === "") {
             setSuggestions(items);
-            setDropdownVisible(items.length > 0)
+            setDropdownVisible(hasTextInputFocus && items.length > 0)
         } else {
             const filteredSuggestions = items.filter((item) =>
                 item.toLowerCase().startsWith(debouncedValue.toLowerCase())
             );
             setSuggestions(filteredSuggestions);
-            setDropdownVisible(filteredSuggestions.length > 0);
+            setDropdownVisible(hasTextInputFocus && filteredSuggestions.length > 0);
         }
     }, [debouncedValue, items]);
 
