@@ -10,7 +10,7 @@ describe('SearchFreezerItems filter', () => {
     const testItems: FreezerItem[] = [
         {
             id: 1,
-            name: chickenBreast,
+            description: chickenBreast,
             type: "Meat",
             amount: 500,
             unit: Unit.gram,
@@ -22,7 +22,7 @@ describe('SearchFreezerItems filter', () => {
         },
         {
             id: 2,
-            name: beefSteak,
+            description: beefSteak,
             type: "Meat",
             amount: 300,
             unit: Unit.gram,
@@ -34,7 +34,7 @@ describe('SearchFreezerItems filter', () => {
         },
         {
             id: 3,
-            name: fish,
+            description: fish,
             type: "Seafood",
             amount: 2,
             unit: Unit.pieces,
@@ -46,7 +46,7 @@ describe('SearchFreezerItems filter', () => {
         },
         {
             id: 4,
-            name: sausages,
+            description: sausages,
             type: "Meat",
             amount: 300,
             unit: Unit.gram,
@@ -62,13 +62,13 @@ describe('SearchFreezerItems filter', () => {
     it('should filter items by name case insensitive', () => {
         const result = filter(testItems, "chicken", false);
         expect(result).toHaveLength(1);
-        expect(result[0].name).toBe(chickenBreast);
+        expect(result[0].description).toBe(chickenBreast);
     });
 
     it('should filter items by unit', () => {
         const result = filter(testItems, "pieces", false);
         expect(result).toHaveLength(1);
-        expect(result[0].name).toBe(fish);
+        expect(result[0].description).toBe(fish);
     });
 
     it('should exclude deleted items when includeDeleted is false', () => {
@@ -91,7 +91,7 @@ describe('SearchFreezerItems filter', () => {
     it('should filter on the type', () => {
         const result = filter(testItems, "seafood", false);
         expect(result).toHaveLength(1);
-        expect(result[0].name).toBe(fish);
+        expect(result[0].description).toBe(fish);
     })
 
     it('should handle empty search terms', () => {
@@ -131,7 +131,7 @@ describe('SearchFreezerItems filter', () => {
             const result = filter(testItems, variation.term, false);
             expect(result).toHaveLength(variation.expected.length);
             expect(variation.expected.every(expectedName =>
-                result.some(r => r.name === expectedName))).toBeTruthy();
+                result.some(r => r.description === expectedName))).toBeTruthy();
         });
 
     })

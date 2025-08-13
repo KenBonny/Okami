@@ -7,7 +7,7 @@ describe('reduce Freezer Items tests', () => {
     const initialItems: FreezerItem[] = [
         {
             id: 1,
-            name: 'Chicken',
+            description: 'Chicken',
             type: 'Meat',
             amount: 500,
             unit: Unit.gram,
@@ -19,7 +19,7 @@ describe('reduce Freezer Items tests', () => {
         },
         {
             id: 2,
-            name: 'Fish',
+            description: 'Fish',
             type: 'Seafood',
             amount: 2,
             unit: Unit.pieces,
@@ -34,7 +34,7 @@ describe('reduce Freezer Items tests', () => {
     it('should add a new item', () => {
         const newItem: FreezerItem = {
             id: 0, // ID will be assigned by the reducer
-            name: 'Beef',
+            description: 'Beef',
             type: 'Meat',
             amount: 300,
             unit: Unit.gram,
@@ -53,7 +53,7 @@ describe('reduce Freezer Items tests', () => {
         const result = reduceFreezerItems(initialItems, action);
 
         expect(result).toHaveLength(3); // New item added
-        const addedItem = result.find((item) => item.name === 'Beef');
+        const addedItem = result.find((item) => item.description === 'Beef');
         expect(addedItem).toBeDefined();
         expect(addedItem!.id).toBe(3); // ID will be the next highest
     });
@@ -89,7 +89,7 @@ describe('reduce Freezer Items tests', () => {
     it('should update an existing item', () => {
         const updatedItem: FreezerItem = {
             id: 1,
-            name: 'Updated Chicken', // Updated name
+            description: 'Updated Chicken', // Updated name
             type: 'Meat',
             amount: 550, // Updated amount
             unit: Unit.gram,
@@ -116,7 +116,7 @@ describe('reduce Freezer Items tests', () => {
         const newItems: FreezerItem[] = [
             {
                 id: 3,
-                name: 'New Item',
+                description: 'New Item',
                 type: 'Other',
                 amount: 1,
                 unit: Unit.portions,

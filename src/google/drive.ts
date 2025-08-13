@@ -35,7 +35,7 @@ export async function loadFreezerItemsFromGoogle(user: User) : Promise<FreezerIt
     const items = await response.json();
     return items.map((item: any) => ({
         id: item.id as number,
-        name: item.name as string,
+        description: item.description as string,
         type: item.type as string,
         amount: item.amount as number,
         unit: toUnit(item.unit),

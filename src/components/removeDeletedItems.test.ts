@@ -11,7 +11,7 @@ describe('remove deleted items', () => {
     const testItems: FreezerItem[] = [
         {
             id: 1,
-            name: chickenBreast,
+            description: chickenBreast,
             type: "Meat",
             amount: 500,
             unit: Unit.gram,
@@ -23,7 +23,7 @@ describe('remove deleted items', () => {
         },
         {
             id: 2,
-            name: beefSteak,
+            description: beefSteak,
             type: "Meat",
             amount: 300,
             unit: Unit.gram,
@@ -35,7 +35,7 @@ describe('remove deleted items', () => {
         },
         {
             id: 3,
-            name: fish,
+            description: fish,
             type: "Seafood",
             amount: 2,
             unit: Unit.pieces,
@@ -47,7 +47,7 @@ describe('remove deleted items', () => {
         },
         {
             id: 4,
-            name: sausages,
+            description: sausages,
             type: "Meat",
             amount: 300,
             unit: Unit.gram,

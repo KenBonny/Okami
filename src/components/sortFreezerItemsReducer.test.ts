@@ -15,7 +15,7 @@ describe('sort Freezer Items Reducer', () => {
     const testItems: FreezerItem[] = [
         {
             id: 1,
-            name: fish,
+            description: fish,
             type: 'Seafood',
             amount: 300,
             unit: Unit.pieces,
@@ -27,7 +27,7 @@ describe('sort Freezer Items Reducer', () => {
         },
         {
             id: 2,
-            name: beef,
+            description: beef,
             type: 'Meat',
             amount: 400,
             unit: Unit.gram,
@@ -39,7 +39,7 @@ describe('sort Freezer Items Reducer', () => {
         },
         {
             id: 3,
-            name: chicken,
+            description: chicken,
             type: 'Meat',
             amount: 300,
             unit: Unit.gram,
@@ -52,12 +52,12 @@ describe('sort Freezer Items Reducer', () => {
     ];
 
     function expectOrder(items: FreezerItem[], expected: string[]) {
-        expect(items.map((item: FreezerItem) => item.name)).toEqual(expected); // Alphabetical order
+        expect(items.map((item: FreezerItem) => item.description)).toEqual(expected); // Alphabetical order
     }
 
     const initialState: SortedFreezerItems = {
         items: testItems,
-        field: FreezerField.name,
+        field: FreezerField.description,
         direction: SortDirection.ascending,
     }
 
@@ -92,13 +92,13 @@ describe('sort Freezer Items Reducer', () => {
         const initialSortedState: SortedFreezerItems = {
             ...initialState,
             direction: SortDirection.ascending,
-            field: FreezerField.name,
+            field: FreezerField.description,
         };
-        const action: SortType = { type: ActionTypes.sort, field: FreezerField.name };
+        const action: SortType = { type: ActionTypes.sort, field: FreezerField.description };
         const result = sortFreezerItemsReducer(initialSortedState, action);
 
         expectOrder(result.items, [fish, chicken, beef]);
-        expect(result.field).toBe(FreezerField.name);
+        expect(result.field).toBe(FreezerField.description);
         expect(result.direction).toBe(SortDirection.descending);
     });
 

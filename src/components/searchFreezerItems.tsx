@@ -41,7 +41,7 @@ export function SearchFreezerItems({className, items, onSearch}: SearchFreezerIt
                        id="searchTerms"
                        name="searchTerms"
                        onChange={handleNewSearchTerms}
-                       placeholder="Search by name, type or unit" />
+                       placeholder="Search by description, type or unit" />
             </Field>
             <SwitchField className="self-center justify-self-end">
                 <Label>Include deleted</Label>
@@ -54,7 +54,7 @@ export function SearchFreezerItems({className, items, onSearch}: SearchFreezerIt
 export function filter(itemsToSearch: FreezerItem[], searchTerms: string, includeDeleted: boolean) : FreezerItem[] {
     const lowerCaseTerms = searchTerms.toLowerCase().split(" ");
     return [...itemsToSearch]
-        .filter((item: FreezerItem) => lowerCaseTerms.every(term => item.name.toLowerCase().includes(term)
+        .filter((item: FreezerItem) => lowerCaseTerms.every(term => item.description.toLowerCase().includes(term)
             || item.type.toLowerCase().includes(term)
             || Unit[item.unit].toString().toLowerCase() === term))
         .filter(item => includeDeleted ? true : !item.isDeleted);

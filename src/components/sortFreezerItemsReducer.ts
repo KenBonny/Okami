@@ -1,7 +1,7 @@
 ﻿import type {FreezerItem} from "./models.ts";
 
 export enum FreezerField {
-    name = "name",
+    description = "description",
     type = "type",
     unit = "unit",
     frozen = "frozen",
@@ -36,7 +36,7 @@ export interface SortedFreezerItems {
 
 export const initialSortFreezerItemsState : SortedFreezerItems = {
     items: [],
-    field: FreezerField.name,
+    field: FreezerField.description,
     direction: SortDirection.ascending,
 }
 
@@ -60,9 +60,9 @@ export function sortFreezerItemsReducer(sortData: SortedFreezerItems, action: So
 
     let sortedItems: FreezerItem[] = [];
     switch (field) {
-        case FreezerField.name:
+        case FreezerField.description:
             sortedItems = items.sort(
-                sort(direction, (left: FreezerItem, right: FreezerItem) => left.name.localeCompare(right.name)));
+                sort(direction, (left: FreezerItem, right: FreezerItem) => left.description.localeCompare(right.description)));
             break;
         case FreezerField.type:
             sortedItems = items.sort(

@@ -27,7 +27,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
         setTypes(uniqueTypes(items));
     }, [items]);
 
-    const nameInputRef = useRef<HTMLInputElement>(null);
+    const descriptionRef = useRef<HTMLInputElement>(null);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const {name, value} = e.target;
@@ -61,7 +61,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
         e.preventDefault();
         onAddItem(item);
         setItem(defaultFreezerItem());
-        nameInputRef.current?.focus();
+        descriptionRef.current?.focus();
     }
 
     return (
@@ -70,14 +70,14 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                 <h3 className="text-amber-400 font-semibold">Add freezer item</h3>
                 <div className="flex flex-col lg:flex-row space-x-4">
                     <Field className="w-full mt-2 md:mt-0 md:basis-80">
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="description">Description</Label>
                         <Input type="text"
-                               id="name"
-                               name="name"
-                               placeholder="Name"
+                               id="description"
+                               name="description"
+                               placeholder="Description"
                                onChange={handleChange}
-                               value={item.name}
-                               ref={nameInputRef}
+                               value={item.description}
+                               ref={descriptionRef}
                                required />
                     </Field>
 

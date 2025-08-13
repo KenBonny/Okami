@@ -32,11 +32,11 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
             </TableCell>
             <TableCell>
                 <Input type="text"
-                       id="name"
-                       name="name"
-                       placeholder="Name"
+                       id="description"
+                       name="description"
+                       placeholder="Description"
                        className="min-w-32 max-w-64"
-                       value={editedItem.name}
+                       value={editedItem.description}
                        onChange={handleChange}
                        required />
             </TableCell>
@@ -61,7 +61,7 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
             <TableCell className="text-amber-400">
                 <FontAwesomeIcon icon={faFilePen} className="ml-4" onClick={() => setEditing(true)} />
             </TableCell>
-            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.description}</TableCell>
             <TableCell>{item.type}</TableCell>
             <TableCell>{item.amount} {Unit[item.unit]}</TableCell>
             <TableCell>{item.frozen.toLocaleDateString()}</TableCell>

@@ -20,7 +20,7 @@ export function toUnit(value: string | number): Unit {
 export function defaultFreezerItem() {
     return ({
         id: 0,
-        name: "",
+        description: "",
         type: "",
         amount: 1,
         unit: Unit.gram,

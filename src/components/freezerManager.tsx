@@ -79,11 +79,11 @@ export const FreezerManager: React.FC = () => {
                     <TableRow>
                         <TableHeader className="w-12"></TableHeader>
                         <FreezerItemRowHeader className="w-80"
-                                              field={FreezerField.name}
+                                              field={FreezerField.description}
                                               sortField={sortedItems.field}
                                               sortDirection={sortedItems.direction}
                                               onClick={handleSort}>
-                            Name
+                            Description
                         </FreezerItemRowHeader>
                         <FreezerItemRowHeader className="w-64"
                                               field={FreezerField.type}
