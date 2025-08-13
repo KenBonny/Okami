@@ -1,5 +1,5 @@
 ﻿import {defaultFreezerItem, type FreezerItem, Unit} from "./models.ts";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {config} from "../config.ts";
 import {getDate} from "./utils.ts";
 import {Field, Fieldset, Label} from "./tailwind/fieldset.tsx";
@@ -8,23 +8,25 @@ import {Button} from "./tailwind/button.tsx";
 import {Select} from "./tailwind/select.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import AutoCompleteInput from "./tailwind/autocomplete-input.tsx";
 
 export interface AddFreezerItemFormProps {
     className?: string | undefined;
+    items: FreezerItem[];
     onAddItem: (item: FreezerItem) => void;
 }
 
-export function AddFreezerItemForm({className, onAddItem}: AddFreezerItemFormProps) {
+export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItemFormProps) {
     const today = new Date();
     const maxExpiration = getDate(config.maxExpiration);
     const unitKeys = Object.keys(Unit).filter(key => isNaN(Number(key))).sort() as Array<keyof typeof Unit>;
-
-    // format: yyyy-mm-dd
-    function formatDate(date: Date) {
-        return date.toISOString().split('T')[0];
-    }
-
+    const [types, setTypes] = useState<string[]>(uniqueTypes(items));
     const [item, setItem] = useState<FreezerItem>(defaultFreezerItem());
+
+    useEffect(() => {
+        setTypes(uniqueTypes(items));
+    }, [items]);
+
     const nameInputRef = useRef<HTMLInputElement>(null);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -45,6 +47,13 @@ export function AddFreezerItemForm({className, onAddItem}: AddFreezerItemFormPro
         setItem(prev => ({
             ...prev,
             [name]: parseValue()
+        }));
+    }
+
+    function handleTypeChange(chosenType: string) {
+        setItem(prev => ({
+            ...prev,
+            type: chosenType,
         }));
     }
 
@@ -72,14 +81,12 @@ export function AddFreezerItemForm({className, onAddItem}: AddFreezerItemFormPro
                                required />
                     </Field>
 
-                    <Field className="w-full mt-2 md:mt-0 md:basis-64">
-                        <Label htmlFor="type">Product Type</Label>
-                        <Input type="text"
-                               id="type"
-                               name="type"
-                               placeholder="Type"
-                               value={item.type}
-                               onChange={handleChange} />
+                    <Field className="self-start lg:self-end w-full md:w-48 mt-2 md:mt-0 md:basis-64">
+                        <Label>Item Type</Label>
+                        <AutoCompleteInput items={types}
+                                           placeholder="Item Type"
+                                           className="mt-2.5"
+                                           onChange={handleTypeChange} />
                     </Field>
 
                     <Field className="self-start lg:self-end w-full md:w-48 mt-2 md:mt-0">
@@ -134,4 +141,14 @@ export function AddFreezerItemForm({className, onAddItem}: AddFreezerItemFormPro
             </Fieldset>
         </form>
     );
+}
+
+function uniqueTypes(items: FreezerItem[]) : string[] {
+    const types = [...items.map((item) => item.type)].filter(type => type !== "");
+    return Array.from(new Set(types)).sort((left, right) => left.localeCompare(right));
+}
+
+// format: yyyy-mm-dd
+function formatDate(date: Date) {
+    return date.toISOString().split('T')[0];
 }
