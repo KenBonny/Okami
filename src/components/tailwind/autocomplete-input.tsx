@@ -62,12 +62,12 @@ export default function AutoCompleteInput({
             {/* Suggestions dropdown */}
             {isDropdownVisible && (
                 <ul
-                    className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-md mt-1 max-h-48 overflow-auto"
+                    className="absolute z-10 w-full bg-white border border-amber-400 rounded-md shadow-md mt-1 max-h-48 overflow-auto"
                 >
                     {suggestions.map((suggestion, index) => (
                         <li
                             key={index}
-                            className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                            className="px-3 py-2 hover:bg-amber-100 cursor-pointer"
                             onClick={() => handleSuggestionClick(suggestion)}
                         >
                             {suggestion}
