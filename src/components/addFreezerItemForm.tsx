@@ -90,7 +90,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                            onChange={handleTypeChange} />
                     </Field>
 
-                    <Field className="self-start lg:self-end w-full md:w-48 mt-2 md:mt-0">
+                    <Field className="self-start lg:self-end w-full md:w-auto md:min-w-24 mt-2 md:mt-0">
                         <Label htmlFor="amount">Amount</Label>
                         <div className="flex flex-nowrap mt-2.5">
                             <Input type="number"
