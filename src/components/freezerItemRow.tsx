@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFilePen, faFloppyDisk, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {TableCell, TableRow} from "./tailwind/table.tsx";
 import {Input} from "./tailwind/input.tsx";
+import {config, type WarningConfig} from "../config.ts";
 
 export interface FreezerItemRowProps {
     item: FreezerItem;
@@ -14,6 +15,8 @@ export interface FreezerItemRowProps {
 export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowProps) {
     const [editing, setEditing] = React.useState(false);
     const [editedItem, setEditedItem] = React.useState<FreezerItem>({...item});
+    const warningCss = determineWarning(item.expiration, new Date(), config.warnings).toString();
+    console.log(`Warning for ${item.description}: ${warningCss}`);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const {name, value} = e.target;
@@ -26,7 +29,7 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
     }
 
     return editing ? (
-        <TableRow key={item.id}>
+        <TableRow key={item.id} className={warningCss}>
             <TableCell className="text-amber-400 px-4">
                 <FontAwesomeIcon icon={faFloppyDisk} className="ml-4"  onClick={save} />
             </TableCell>
@@ -57,7 +60,7 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
             <TableCell>{editedItem.expiration.toLocaleDateString()}</TableCell>
             <TableCell></TableCell>
         </TableRow>) : (
-        <TableRow key={item.id}>
+        <TableRow key={item.id} className={warningCss}>
             <TableCell className="text-amber-400">
                 <FontAwesomeIcon icon={faFilePen} className="ml-4" onClick={() => setEditing(true)} />
             </TableCell>
@@ -72,4 +75,26 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
             </TableCell>
         </TableRow>
     );
+}
+
+export class WarningText{
+    static readonly ok = "";
+    static readonly first = "bg-yellow-300";
+    static readonly second = "bg-orange-400 text-white";
+    static readonly expired = "bg-red-700 text-white";
+}
+
+type WarningStatus = typeof WarningText[keyof typeof WarningText];
+
+export function determineWarning(expiration: Date, today: Date, config: WarningConfig) : WarningStatus {
+    if (today >= expiration) return WarningText.expired
+
+    const secondWarning = new Date(expiration);
+    secondWarning.setMonth(secondWarning.getMonth() - config.monthsBeforeSecond);
+    if (today >= secondWarning) return WarningText.second
+
+    const firstWarning = new Date(expiration);
+    firstWarning.setMonth(firstWarning.getMonth() - config.monthsBeforeFirst);
+    if (today >= firstWarning) return WarningText.first
+    return WarningText.ok;
 }

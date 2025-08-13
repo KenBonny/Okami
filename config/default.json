@@ -1,5 +1,9 @@
 ﻿{
   "defaultExpiration": 12,
   "maxExpiration": 24,
-  "monthsToKeepDeletedItems": 1
+  "monthsToKeepDeletedItems": 1,
+  "warnings": {
+    "monthsBeforeFirst": 3,
+    "monthsBeforeSecond": 1
+  }
 }

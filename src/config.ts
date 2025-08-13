@@ -10,10 +10,16 @@ const configs = {
     production: prodConfig as Config
 };
 
+export interface WarningConfig {
+    readonly monthsBeforeFirst: number;
+    readonly monthsBeforeSecond: number;
+}
+
 export interface Config {
     readonly defaultExpiration: number;
     readonly maxExpiration: number;
     readonly monthsToKeepDeletedItems: number;
+    readonly warnings: WarningConfig;
 }
 
 export const config : Config = {
