@@ -5,22 +5,23 @@ import {Input} from "./input.tsx";
 
 export interface AutoCompleteInputProps {
     items: string[];
+    value?: string;
     onChange: (value: string) => void;
     className?: string;
     placeholder?: string;
-
 }
 
 export default function AutoCompleteInput({
                                               items,
+                                              value,
                                               onChange,
                                               className,
                                               placeholder = "Type to select an option..."
                                           }: AutoCompleteInputProps) {
-    const [value, setValue] = useState<string>(""); // Current input value
     const [suggestions, setSuggestions] = useState<string[]>(items); // Filtered suggestions
     const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false); // To control dropdown visibility
     const debouncedValue = useDebounce(value, 300); // Debounced input to optimize filtering
+    const debouncedValue = useDebounce(value ?? "", 300); // Debounced input to optimize filtering
 
     useEffect(() => {
         // Filter suggestions based on the input value
@@ -37,24 +38,22 @@ export default function AutoCompleteInput({
     }, [debouncedValue, items]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
         onChange(e.target.value); // Notify parent about the input value
     };
 
     const handleSuggestionClick = (suggestion: string) => {
-        setValue(suggestion); // Set the selected suggestion as the input value
         onChange(suggestion); // Notify parent about the selected suggestion
         setDropdownVisible(false); // Close the dropdown
     };
 
     return (
         <div className={clsx("relative", className)}>
-            {/* Input field */}
             <Input
                 type="text"
                 value={value}
-                onChange={handleInputChange}
                 placeholder={placeholder}
+                ref={textInputRef}
+                onChange={handleInputChange}
                 onFocus={() => setDropdownVisible(suggestions.length > 0)} // Show suggestions when focused
                 onBlur={() => setTimeout(() => setDropdownVisible(false), 200)} // Hide dropdown with delay to handle click
             />

@@ -86,6 +86,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                         <AutoCompleteInput items={types}
                                            placeholder="Item Type"
                                            className="mt-2.5"
+                                           value={item.type}
                                            onChange={handleTypeChange} />
                     </Field>
 
