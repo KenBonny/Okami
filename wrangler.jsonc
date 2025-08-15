@@ -1,0 +1,9 @@
+﻿{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "okami-freezer",
+  "compatibility_date": "2025-08-15",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

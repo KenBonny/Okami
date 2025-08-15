@@ -1,0 +1,8 @@
+﻿## ignore cloudflare assets
+_worker.js
+_routes.json
+
+## ignore project specific folders
+**/node_modules
+**/.DS_Store
+**/.git
