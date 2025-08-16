@@ -16,7 +16,6 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
     const [editing, setEditing] = React.useState(false);
     const [editedItem, setEditedItem] = React.useState<FreezerItem>({...item});
     const warningCss = determineWarning(item.expiration, new Date(), config.warnings).toString();
-    console.log(`Warning for ${item.description}: ${warningCss}`);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const {name, value} = e.target;
