@@ -78,9 +78,9 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
 
 export class WarningText{
     static readonly ok = "";
-    static readonly first = "bg-yellow-300";
-    static readonly second = "bg-orange-400 text-white";
-    static readonly expired = "bg-red-700 text-white";
+    static readonly first = "first-warning";
+    static readonly second = "second-warning";
+    static readonly expired = "expired";
 }
 
 type WarningStatus = typeof WarningText[keyof typeof WarningText];

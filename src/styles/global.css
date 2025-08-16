@@ -19,3 +19,15 @@ blockquote p {
 blockquote a {
     @apply text-blue-600 hover:underline;
 }
+
+.first-warning {
+    @apply bg-yellow-300;
+}
+
+.second-warning {
+    @apply bg-orange-400 text-white;
+}
+
+.expired {
+    @apply bg-red-700 text-white;
+}
