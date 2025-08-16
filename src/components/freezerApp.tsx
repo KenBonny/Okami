@@ -1,15 +1,15 @@
 ﻿import {GoogleOAuthProvider} from "@react-oauth/google";
 import {FreezerManager} from "./freezerManager.tsx";
 import React from "react";
-import { PUBLIC_GOOGLE_CLIENT_ID } from "astro:env/client";
+import {config} from "../config.ts";
 
 
 export default function FreezerApp() {
 
-    console.log("Client ID:", PUBLIC_GOOGLE_CLIENT_ID);
+    console.log("Client ID:", config.googleClientId);
 
     return (
-        <GoogleOAuthProvider clientId={PUBLIC_GOOGLE_CLIENT_ID}>
+        <GoogleOAuthProvider clientId={config.googleClientId}>
             <FreezerManager />
         </GoogleOAuthProvider>
     )
