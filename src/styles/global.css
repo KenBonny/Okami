@@ -12,8 +12,8 @@ blockquote {
     @apply border-neutral-500 bg-neutral-300 rounded-lg shadow-md px-6 py-4 mx-3 my-4;
 }
 
-blockquote p {
-    @apply py-3
+p {
+    @apply py-2;
 }
 
 blockquote a {

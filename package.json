@@ -16,6 +16,7 @@
     "testEnvironment": "jsdom"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.4",
     "@astrojs/react": "^4.3.0",
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-brands-svg-icons": "^7.0.0",
