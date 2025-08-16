@@ -7,3 +7,15 @@ h1 {
 h2 {
     @apply text-2xl font-semibold underline text-amber-400 pt-5 pb-8 md:text-4xl;
 }
+
+blockquote {
+    @apply border-neutral-500 bg-neutral-300 rounded-lg shadow-md px-6 py-4 mx-3 my-4;
+}
+
+blockquote p {
+    @apply py-3
+}
+
+blockquote a {
+    @apply text-blue-600 hover:underline;
+}
