@@ -6,7 +6,11 @@
     "directory": "./dist",
     "not_found_handling": "404-page"
   },
-  "vars": {
-    "PUBLIC_GOOGLE_CLIENT_ID": "244448910012-e8chune6a7lk6ng1c6j58h0btq8b1jbb.apps.googleusercontent.com"
+  "env": {
+    "production": {
+      "vars": {
+        "PUBLIC_GOOGLE_CLIENT_ID": "244448910012-e8chune6a7lk6ng1c6j58h0btq8b1jbb.apps.googleusercontent.com"
+      }
+    }
   }
 }
