@@ -1,4 +1,8 @@
-﻿# About [Okami](/)
+﻿---
+layout: ../layouts/defaultLayout.astro
+---
+
+## About
 
 > Okami (淤加美神, Okami-no-kami) in the Kojiki, or in the Nihon Shoki: Kuraokami (闇龗) or Okami (龗), is a legendary Japanese dragon and Shinto deity of rain and snow.
 > 

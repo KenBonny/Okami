@@ -1,29 +1,8 @@
 ---
 import FreezerApp from "../components/freezerApp";
-import "../styles/global.css"
+import DefaultLayout from "../layouts/defaultLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Okami</title>
-	</head>
-	<body>
-        <section class="m-auto flex max-w-screen-2xl grow flex-col justify-center lg:flex-row">
-            <div class="flex h-full flex-col items-center md:min-w-[589px]">
-                <img src="/okami-removebg.png" height="250" width="250" class="pt-6 lg:mb-0 lg:h-auto lg:w-[250px] lg:pt-12" alt="A cute stylized orange and yellow dragon representing Okami" />
-            </div>
-            <div class="flex flex-1 flex-col items-center gap-12 py-12 text-center md:gap-8 lg:items-start lg:py-16 lg:pb-0 lg:text-start xl:pt-24 2xl:gap-12 px-3 sm:px-8 lg:px-16 xl:px-32">
-                <div class="flex max-w-lg flex-col gap-6 text-center">
-                    <h1 class="text-4xl font-semibold text-amber-400 md:text-6xl">Okami</h1>
-                    <a href="/about" class="underline"><h2 class="text-lg font-normal leading-7 text-slate-500">The dragon that knows your freezer!</h2></a>
-                </div>
-            </div>
-        </section>
-		<hr/>
-		<FreezerApp client:load />
-	</body>
-</html>
+<DefaultLayout>
+    <FreezerApp client:load />
+</DefaultLayout>

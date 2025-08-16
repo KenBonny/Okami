@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+h1 {
+    @apply text-4xl font-semibold text-amber-400 md:text-6xl;
+}
+
+h2 {
+    @apply text-2xl font-semibold underline text-amber-400 pt-5 pb-8 md:text-4xl;
+}
