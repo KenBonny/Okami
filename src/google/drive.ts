@@ -7,7 +7,7 @@ export interface File {
     kind: string;
 }
 
-const fileName = "freezerItems.json";
+const fileName = "okami-freezer-items.json";
 const metadata = {
     name: fileName,
     mimeType: 'application/json',
