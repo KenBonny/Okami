@@ -20,7 +20,8 @@ p {
     @apply py-2;
 }
 
-blockquote a {
+blockquote a,
+p a {
     @apply text-blue-600 hover:underline;
 }
 
