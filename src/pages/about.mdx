@@ -8,25 +8,40 @@
     >
     > Source: [Wikipedia](https://en.wikipedia.org/wiki/Kuraokami)
 
-    This app helps you remember what is in your freezer, when you put it in and when it will
-    expire. <span class="first-warning">3 months before expiry</span>, items will colour light orange/yellow, <span
-    class="second-warning">a month before expiry</span> the items will colour dark orange and <span class="expired">after expiry</span> they
-    will colour red. This is to help you identify items that need to be consumed before they expire or to remove expired
-    items.
+    My wife and I have a huge freezer. It's impossible to know what is exactly in there, how much of it is left, when it
+    was frozen and most importantly, when it will expire. That is why I created this little site.
 
-    ## Frozen and expiration dates
+    Here, I can list all the items in my freezer, tag them with a category, provide an amount and choose a frozen and
+    expiration date. The default frozen date is today and can only be a date in the past. The default expiration date is
+    one year from now. The maximum expiration date is two years from now and cannot be a date in the past. Rows
+    approaching expiration will be highlighted:
+    - <span class="first-warning">Three months before expiry</span>
+    - <span class="second-warning">A month before expiry</span>
+    - <span class="expired">On and after expiry</span>
 
-    When adding an item to your list, the frozen date will automatically be set to today and cannot be a date in the
-    future. The default expiration date will be set 12 months from today, cannot be in the past and can be maximum 2
-    years into the future.
+    When deleting items, they will not be automatically be deleted immediately. They will be kept for another month
+    before actually being removed. It is possible to still see them by enabling the "_include deleted_" checkbox to the
+    right of the search field.
 
-    ## Backup
+    ## Signing in
 
-    If you sign in with your Google account, the app will write the contents of your fridge to a folder on your Google
-    Drive. It will also load it from there when you open the page.
+    For privacy reasons, I don't want to keep any data in a database. I do want the items that are stored here to be persisted and accessible from different devices. That is why it is possible to log into your Google account and store the items from your freezer in your [Google Drive](https://drive.google.com/drive/home). I do not require access to your entire Google Drive, this app just needs access to the files that it creates. That way, I cannot gain any access to your private documents, but you are in charge of your data. I save a file `okami-freezer-items.json` in the base directory. Please don't move or delete this file as it contains all your data from this site.
 
-    ## Deleted items
+    It is possible to use application specific storage. That would've put the data in a hidden folder on your Google Drive but that would not put you in charge of your data. Now, you can share this `okami-freezer-items.json` file with whomever you choose (say a partner or roommate) so you both can see and keep the freezer items up-to-date.
 
-    When you delete items, they will be hidden and only deleted after 1 month. You can show them with by checking the
-    checkbox "_include deleted items_" in the search window.
+    ### Sign in again every hour
+
+    Now for a slightly annoying topic: why do you need to sign in every hour. This is due to a technical limitation on my end. Most apps you use on the internet will have a frontend (namely the site you are looking at) and a backend (think of this as the back office of a company) where data gets processed. For example: Gmail's frontend shows you emails and lets you type your email; the backend makes sure that when you click send, the mail is delivered to it's recipients. This site does not have a backend.
+
+    why is this important? To ensure long lasting logins, I need to store some sensitive data in a secure place. A frontend is not a secure place in terms of computer security, that is where a backend would come in handy. Think of it as storing the badge you use to enter your workplace in the lobby of your workplace. This means that I cannot store the sensitive information needed to securely sign you in for extended periods of time without a backend.
+
+    For the geeks among us: I'm using Googles OAuth implementation with the implicit flow. That means I get an access token back from the login popup/window. With this access token I can access the Google APIs, but the access token is limited in time for about an hour. If I want to use another flow, I would get a JWT or credential token, depending on the flow with refresh tokens. To use those, I'd need to exchange the credential or refresh tokens for access tokens. Exchanging them would mean setting up a backend to receive a callback from Google on a secure endpoint, which would require a backend. Storing the credential or refresh tokens securely would require a backend. As I do not want to go through the hassle of setting this all up and maintaining it, you'll have to live with the short-lived access tokens. If anybody has ideas on how to do this better, be my guest and open an [issue on GitHub](https://github.com/KenBonny/Okami/issues) or even better, submit a pull request.
+
+    ## Bugs
+
+    This brings me to the unfortunate topic of bugs. I've taken a lot of precautions to build software as bug-free as possible. As I'm still human and very much fallible, I am prone to mistakes. If you find any bugs, inconsistenties or would like to request new features, please open an [issue on GitHub](https://github.com/KenBonny/Okami/issues) or even better, submit a pull request.
+
+    As this is a hobby project, be patient as I'm maintaining this in my free time, free of charge.
+
+    Worst case scenario, I'll refund you all the money you've paid me. 😉
 </DefaultLayout>
