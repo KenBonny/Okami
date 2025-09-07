@@ -1,10 +1,7 @@
-﻿import {useEffect, useRef, useState} from "react";
-import {useDebounce} from "../../effects/useDebounce.ts";
+﻿import {useState} from "react";
 import clsx from "clsx";
 import {Input, InputGroup} from "./input.tsx";
 import {autocomplete, useCombobox} from "@szhsin/react-autocomplete";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCaretDown, faCaretUp, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 
 export interface AutoCompleteInputProps {
     items: string[];
@@ -56,7 +53,6 @@ export default function AutoCompleteInput({
                        placeholder={placeholder}
                        className={ "basis-11/12" }
                        {...getInputProps()} />
-                {!isInputEmpty && <FontAwesomeIcon icon={faCircleXmark} className="basis-1/12" {...getClearProps()} />}
             </InputGroup>
 
             {/* Suggestions dropdown */}

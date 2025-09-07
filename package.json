@@ -18,12 +18,9 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.4",
     "@astrojs/react": "^4.3.0",
-    "@fortawesome/fontawesome-svg-core": "^7.0.0",
-    "@fortawesome/free-brands-svg-icons": "^7.0.0",
-    "@fortawesome/free-solid-svg-icons": "^7.0.0",
-    "@fortawesome/react-fontawesome": "^0.2.3",
     "@googleapis/drive": "^14.2.0",
     "@headlessui/react": "^2.2.7",
+    "@heroicons/react": "^2.2.0",
     "@react-oauth/google": "^0.12.2",
     "@szhsin/react-autocomplete": "^1.2.0",
     "@tailwindcss/vite": "^4.1.11",

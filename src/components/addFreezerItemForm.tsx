@@ -6,12 +6,11 @@ import {Field, Fieldset, Label} from "./tailwind/fieldset.tsx";
 import {Input} from "./tailwind/input.tsx";
 import {Button} from "./tailwind/button.tsx";
 import {Select} from "./tailwind/select.tsx";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import AutoCompleteInput from "./tailwind/autocomplete-input.tsx";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import {PlusIcon} from "@heroicons/react/16/solid";
 
 export interface AddFreezerItemFormProps {
     className?: string | undefined;
@@ -149,7 +148,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                     </div>
 
                     <Button type="submit" color="amber" className="self-center w-full lg:w-32 mt-6 lg:mt-0 lg:self-end">
-                        <FontAwesomeIcon icon={faPlus} className="self-center"/>
+                        <PlusIcon />
                         Add
                     </Button>
                 </div>

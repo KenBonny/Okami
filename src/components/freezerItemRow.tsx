@@ -1,10 +1,9 @@
 ﻿import {type FreezerItem, Unit} from "./models.ts";
 import React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFilePen, faFloppyDisk, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {TableCell, TableRow} from "./tailwind/table.tsx";
 import {Input} from "./tailwind/input.tsx";
 import {config, type WarningConfig} from "../config.ts";
+import {CheckCircleIcon, PencilSquareIcon, TrashIcon} from "@heroicons/react/24/solid";
 
 export interface FreezerItemRowProps {
     item: FreezerItem;
@@ -29,8 +28,8 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
 
     return editing ? (
         <TableRow key={item.id} className={warningCss}>
-            <TableCell className="text-amber-400 px-4">
-                <FontAwesomeIcon icon={faFloppyDisk} className="ml-4"  onClick={save} />
+            <TableCell>
+                <CheckCircleIcon className="m-2 text-green-700 cursor-pointer"  onClick={save} />
             </TableCell>
             <TableCell>
                 <Input type="text"
@@ -60,17 +59,17 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
             <TableCell></TableCell>
         </TableRow>) : (
         <TableRow key={item.id} className={warningCss}>
-            <TableCell className="text-amber-400">
-                <FontAwesomeIcon icon={faFilePen} className="ml-4" onClick={() => setEditing(true)} />
+            <TableCell className="">
+                <PencilSquareIcon className="m-2 text-amber-400 cursor-pointer" onClick={() => setEditing(true)} />
             </TableCell>
             <TableCell>{item.description}</TableCell>
             <TableCell>{item.type}</TableCell>
             <TableCell>{item.amount} {Unit[item.unit]}</TableCell>
             <TableCell>{item.frozen.toLocaleDateString()}</TableCell>
             <TableCell>{item.expiration.toLocaleDateString()}</TableCell>
-            <TableCell className="text-zinc-400">
+            <TableCell>
                 {!item.isDeleted &&
-                    <FontAwesomeIcon icon={faTrash} onClick={() => onDelete(item.id)} />}
+                    <TrashIcon className="m-2 text-red-500 cursor-pointer" onClick={() => onDelete(item.id)} />}
             </TableCell>
         </TableRow>
     );
