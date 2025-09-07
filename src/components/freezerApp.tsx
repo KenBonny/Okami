@@ -5,9 +5,6 @@ import {config} from "../config.ts";
 
 
 export default function FreezerApp() {
-
-    console.log("Client ID:", config.googleClientId);
-
     return (
         <GoogleOAuthProvider clientId={config.googleClientId}>
             <FreezerManager />
