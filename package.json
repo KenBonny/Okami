@@ -25,6 +25,7 @@
     "@googleapis/drive": "^14.2.0",
     "@headlessui/react": "^2.2.7",
     "@react-oauth/google": "^0.12.2",
+    "@szhsin/react-autocomplete": "^1.2.0",
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
