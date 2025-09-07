@@ -120,7 +120,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                     </Field>
 
                     <div className="flex flex-row w-full space-x-4 lg:max-w-68 mt-2 lg:mt-0">
-                        <Field className="basis-1/2">
+                        <Field className="basis-1/2 space-x-2">
                             <Label htmlFor="frozen">Frozen</Label>
                             <DatePicker id="frozen"
                                         name="frozen"
@@ -133,7 +133,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                         customInput={<Input type="text" />} />
                         </Field>
 
-                        <Field className="basis-1/2">
+                        <Field className="basis-1/2 space-x-2">
                             <Label htmlFor="expiration">Expiration</Label>
                             <DatePicker id="expiration"
                                         name="expiration"

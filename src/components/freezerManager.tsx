@@ -77,7 +77,7 @@ export const FreezerManager: React.FC = () => {
             <Table className="p-3">
                 <TableHead>
                     <TableRow>
-                        <TableHeader className="w-12"></TableHeader>
+                        <TableHeader className="w-12" />
                         <FreezerItemRowHeader className="w-80"
                                               field={FreezerField.description}
                                               sortField={sortedItems.field}
@@ -113,7 +113,7 @@ export const FreezerManager: React.FC = () => {
                                               onClick={handleSort}>
                             Expires on
                         </FreezerItemRowHeader>
-                        <TableHeader></TableHeader>
+                        <TableHeader className="w-12" />
                     </TableRow>
                 </TableHead>
                 <TableBody>
