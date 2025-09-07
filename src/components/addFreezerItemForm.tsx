@@ -78,7 +78,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                onChange={handleChange}
                                value={item.description}
                                ref={descriptionRef}
-                               required />
+                               required/>
                     </Field>
 
                     <Field className="self-start lg:self-end w-full md:w-48 mt-2 md:mt-0 md:basis-64">
@@ -87,7 +87,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                            placeholder="Item Type"
                                            className="mt-2.5"
                                            value={item.type}
-                                           onChange={handleTypeChange} />
+                                           onChange={handleTypeChange}/>
                     </Field>
 
                     <Field className="self-start lg:self-end w-full md:w-auto md:min-w-24 mt-2 md:mt-0">
@@ -100,8 +100,13 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                    min="1"
                                    value={item.amount}
                                    onChange={handleChange}
-                                   required />
-                            <Select id="unit" name="unit" className="basis-1/3 md:basis-sm" value={item.unit} onChange={handleChange} required>
+                                   required/>
+                            <Select id="unit"
+                                    name="unit"
+                                    className="basis-1/3 md:basis-sm"
+                                    value={item.unit}
+                                    onChange={handleChange}
+                                    required>
                                 {unitKeys.map(key => (
                                     <option value={Unit[key]} key={Unit[key]}>{key}</option>
                                 ))}
@@ -118,7 +123,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                    value={formatDate(item.frozen)}
                                    max={formatDate(today)}
                                    onChange={handleChange}
-                                   required />
+                                   required/>
                         </Field>
 
                         <Field className="basis-1/2">
@@ -130,12 +135,12 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                    min={formatDate(today)}
                                    max={formatDate(maxExpiration)}
                                    onChange={handleChange}
-                                   required />
+                                   required/>
                         </Field>
                     </div>
 
                     <Button type="submit" color="amber" className="self-center w-full lg:w-32 mt-6 lg:mt-0 lg:self-end">
-                        <FontAwesomeIcon icon={faPlus} className="self-center" />
+                        <FontAwesomeIcon icon={faPlus} className="self-center"/>
                         Add
                     </Button>
                 </div>
@@ -144,7 +149,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
     );
 }
 
-function uniqueTypes(items: FreezerItem[]) : string[] {
+function uniqueTypes(items: FreezerItem[]): string[] {
     const types = [...items.map((item) => item.type)].filter(type => type !== "");
     return Array.from(new Set(types)).sort((left, right) => left.localeCompare(right));
 }
