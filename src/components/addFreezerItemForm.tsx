@@ -74,7 +74,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
             <Fieldset>
                 <h3 className="text-amber-400 font-semibold">Add freezer item</h3>
                 <div className="flex flex-col lg:flex-row space-x-4">
-                    <Field className="w-full mt-2 md:mt-0 md:basis-80">
+                    <Field className="w-full mt-2 lg:mt-0 lg:basis-80">
                         <Label htmlFor="description">Description</Label>
                         <Input type="text"
                                id="description"
@@ -86,7 +86,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                required/>
                     </Field>
 
-                    <Field className="self-start lg:self-end w-full md:w-48 mt-2 md:mt-0 md:basis-64">
+                    <Field className="self-start lg:self-end w-full lg:w-48 mt-2 lg:mt-0 lg:basis-64">
                         <Label>Item Type</Label>
                         <AutoCompleteInput items={types}
                                            placeholder="Item Type"
@@ -95,20 +95,20 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                            onChange={handleTypeChange}/>
                     </Field>
 
-                    <Field className="self-start lg:self-end w-full md:w-auto md:min-w-24 mt-2 md:mt-0">
+                    <Field className="self-start lg:self-end w-full lg:w-auto lg:min-w-24 mt-2 lg:mt-0">
                         <Label htmlFor="amount">Amount</Label>
                         <div className="flex flex-nowrap mt-2.5">
                             <Input type="number"
                                    id="amount"
                                    name="amount"
-                                   className="basis-2/3 md:basis-xs"
+                                   className="basis-2/3 lg:basis-xs"
                                    min="1"
                                    value={item.amount}
                                    onChange={handleChange}
                                    required/>
                             <Select id="unit"
                                     name="unit"
-                                    className="basis-1/3 md:basis-sm"
+                                    className="basis-1/3 lg:basis-sm"
                                     value={item.unit}
                                     onChange={handleChange}
                                     required>
@@ -119,7 +119,7 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                         </div>
                     </Field>
 
-                    <div className="flex flex-row w-full space-x-4 md:max-w-68 mt-2 md:mt-0">
+                    <div className="flex flex-row w-full space-x-4 lg:max-w-68 mt-2 lg:mt-0">
                         <Field className="basis-1/2">
                             <Label htmlFor="frozen">Frozen</Label>
                             <DatePicker id="frozen"
