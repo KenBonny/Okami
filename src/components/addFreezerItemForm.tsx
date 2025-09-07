@@ -9,6 +9,9 @@ import {Select} from "./tailwind/select.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import AutoCompleteInput from "./tailwind/autocomplete-input.tsx";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 export interface AddFreezerItemFormProps {
     className?: string | undefined;
@@ -37,16 +40,18 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                 case 'unit':
                 case 'amount':
                     return Number(value);
-                case 'frozen':
-                case 'expiration':
-                    return new Date(value);
                 default:
                     return value;
             }
         };
+        setItemValue(name, parseValue());
+    }
+
+    function setItemValue(name: string, value: string | number | Date | null) {
+        if (value === null) return;
         setItem(prev => ({
             ...prev,
-            [name]: parseValue()
+            [name]: value
         }));
     }
 
@@ -117,25 +122,29 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                     <div className="flex flex-row w-full space-x-4 md:max-w-68 mt-2 md:mt-0">
                         <Field className="basis-1/2">
                             <Label htmlFor="frozen">Frozen</Label>
-                            <Input type="date"
-                                   id="frozen"
-                                   name="frozen"
-                                   value={formatDate(item.frozen)}
-                                   max={formatDate(today)}
-                                   onChange={handleChange}
-                                   required/>
+                            <DatePicker id="frozen"
+                                        name="frozen"
+                                        dateFormat="dd/MM/yyyy"
+                                        className="w-32 mt-2.5"
+                                        required
+                                        selected={item.frozen}
+                                        maxDate={today}
+                                        onChange={date => setItemValue("frozen", date)}
+                                        customInput={<Input type="text" />} />
                         </Field>
 
                         <Field className="basis-1/2">
                             <Label htmlFor="expiration">Expiration</Label>
-                            <Input type="date"
-                                   id="expiration"
-                                   name="expiration"
-                                   value={formatDate(item.expiration)}
-                                   min={formatDate(today)}
-                                   max={formatDate(maxExpiration)}
-                                   onChange={handleChange}
-                                   required/>
+                            <DatePicker id="expiration"
+                                        name="expiration"
+                                        dateFormat="dd/MM/yyyy"
+                                        className="w-32 mt-2.5"
+                                        required
+                                        selected={item.expiration}
+                                        minDate={today}
+                                        maxDate={maxExpiration}
+                                        onChange={date => setItemValue("expiration", date)}
+                                        customInput={<Input type="text" />} />
                         </Field>
                     </div>
 
@@ -152,9 +161,4 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
 function uniqueTypes(items: FreezerItem[]): string[] {
     const types = [...items.map((item) => item.type)].filter(type => type !== "");
     return Array.from(new Set(types)).sort((left, right) => left.localeCompare(right));
-}
-
-// format: yyyy-mm-dd
-function formatDate(date: Date) {
-    return date.toISOString().split('T')[0];
 }
