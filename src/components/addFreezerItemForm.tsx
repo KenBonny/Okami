@@ -20,7 +20,6 @@ export interface AddFreezerItemFormProps {
 
 export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItemFormProps) {
     const today = new Date();
-    const maxExpiration = getDate(config.maxExpiration);
     const unitKeys = Object.keys(Unit).filter(key => isNaN(Number(key))).sort() as Array<keyof typeof Unit>;
     const [types, setTypes] = useState<string[]>(uniqueTypes(items));
     const [item, setItem] = useState<FreezerItem>(defaultFreezerItem());
@@ -141,7 +140,6 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                                         required
                                         selected={item.expiration}
                                         minDate={today}
-                                        maxDate={maxExpiration}
                                         onChange={date => setItemValue("expiration", date)}
                                         customInput={<Input type="text" />} />
                         </Field>

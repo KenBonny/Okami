@@ -18,7 +18,6 @@ export interface WarningConfig {
 export interface Config {
     readonly googleClientId: string;
     readonly defaultExpiration: number;
-    readonly maxExpiration: number;
     readonly monthsToKeepDeletedItems: number;
     readonly warnings: WarningConfig;
 }
