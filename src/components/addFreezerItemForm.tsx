@@ -1,7 +1,5 @@
 ﻿import {defaultFreezerItem, type FreezerItem, Unit} from "./models.ts";
 import React, {useEffect, useRef, useState} from "react";
-import {config} from "../config.ts";
-import {getDate} from "./utils.ts";
 import {Field, Fieldset, Label} from "./tailwind/fieldset.tsx";
 import {Input} from "./tailwind/input.tsx";
 import {Button} from "./tailwind/button.tsx";
