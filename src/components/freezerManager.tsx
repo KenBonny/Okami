@@ -70,7 +70,7 @@ export const FreezerManager: React.FC = () => {
                 <AddFreezerItemForm items={freezerItems} onAddItem={handleAddItem} />
                 <GoogleAuth className="items-baseline-last lg:place-content-end" onSuccess={loadFreezerItems}  onLogout={logout} />
             </div>
-            <hr />
+            <hr className="border-gray-900/10" />
             <SearchFreezerItems className="m-3"
                                 items={freezerItems}
                                 onSearch={(items) => dispatchSorting(updateAllItems(items))} />
