@@ -4,12 +4,19 @@ h1 {
     @apply text-4xl font-semibold text-amber-400 md:text-6xl;
 }
 
+h1 a {
+}
+
 h2 {
     @apply text-2xl font-semibold text-amber-400 underline decoration-zinc-400 pt-5 pb-8 md:text-4xl;
 }
 
 h3 {
     @apply text-xl font-semibold text-zinc-400 underline decoration-amber-400 pt-3 pb-6 md:text-2xl;
+}
+
+a {
+    @apply text-slate-500 underline decoration-amber-400 hover:no-underline;
 }
 
 blockquote {
@@ -21,8 +28,8 @@ p {
 }
 
 blockquote a,
-p a {
-    @apply text-blue-600 hover:underline;
+blockquote p a {
+    @apply text-slate-800;
 }
 
 .first-warning {
