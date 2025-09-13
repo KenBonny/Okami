@@ -36,6 +36,7 @@ export type FreezerItem = {
     id: number;
     description: string;
     type: string;
+    notes?: string;
     amount: number;
     unit: Unit;
     frozen: Date;
