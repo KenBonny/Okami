@@ -37,6 +37,7 @@ export async function loadFreezerItemsFromGoogle(user: User) : Promise<FreezerIt
         id: item.id as number,
         description: item.description as string,
         type: item.type as string,
+        notes: item.notes as string,
         amount: item.amount as number,
         unit: toUnit(item.unit),
         created: new Date(item.created),

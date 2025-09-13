@@ -40,6 +40,14 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
                        value={editedItem.description}
                        onChange={handleChange}
                        required />
+
+                <Input type="text"
+                       id="notes"
+                       name="notes"
+                       placeholder="Notes"
+                       className="min-w-32 max-w-64"
+                       value={editedItem.notes}
+                       onChange={handleChange} />
             </TableCell>
             <TableCell>{editedItem.type}</TableCell>
             <TableCell className="flex flex-nowrap items-center space-x-2">
@@ -62,7 +70,11 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
             <TableCell className="">
                 <PencilSquareIcon className="m-2 text-amber-400 cursor-pointer" onClick={() => setEditing(true)} />
             </TableCell>
-            <TableCell>{item.description}</TableCell>
+            <TableCell>
+                {item.description}
+                {item.notes && <br/>}
+                <span className="italic text-sm text-zinc-400">{item.notes}</span>
+            </TableCell>
             <TableCell>{item.type}</TableCell>
             <TableCell>{item.amount} {Unit[item.unit]}</TableCell>
             <TableCell>{item.frozen.toLocaleDateString()}</TableCell>
