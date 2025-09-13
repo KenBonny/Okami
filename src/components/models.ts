@@ -32,7 +32,19 @@ export function defaultFreezerItem() {
     });
 }
 
-export type FreezerItem = ReturnType<typeof defaultFreezerItem>;
+export type FreezerItem = {
+    id: number;
+    description: string;
+    type: string;
+    amount: number;
+    unit: Unit;
+    frozen: Date;
+    expiration: Date;
+    created: Date;
+    isDeleted: boolean;
+    deletedOn: Date;
+};
+
 
 export interface User {
     firstname: string;
