@@ -1,5 +1,5 @@
 ﻿import {type FreezerItem, Unit} from "./models.ts";
-import {removeDeletedItems} from "./freezerManager.tsx";
+import {removeDeletedItems} from "./removeDeletedItems.ts";
 import {getDate} from "./utils.ts";
 
 describe('remove deleted items', () => {
