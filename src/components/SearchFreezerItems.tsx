@@ -36,8 +36,8 @@ export function SearchFreezerItems({className, items, onSearch}: SearchFreezerIt
     }
 
     return (
-        <Fieldset className={clsx(className, "flex flex-nowrap flex-auto content-center md:space-x-4 md:justify-between")} >
-            <Field className="min-w-2xs max-w-2xl w-full mr-4">
+        <Fieldset className={clsx(className, "flex flex-col gap-3 md:flex-row md:items-center md:gap-4")}>
+            <Field className="w-full md:flex-1">
                 <InputGroup>
                     <MagnifyingGlassIcon />
                     <Input type="text"
@@ -47,7 +47,7 @@ export function SearchFreezerItems({className, items, onSearch}: SearchFreezerIt
                            placeholder="Search by description, type or unit" />
                 </InputGroup>
             </Field>
-            <SwitchField className="self-center justify-self-end">
+            <SwitchField className="shrink-0">
                 <Label>Include deleted</Label>
                 <Switch name="includeDeleted" color="amber" onChange={handleIncludeDeleted} />
             </SwitchField>
