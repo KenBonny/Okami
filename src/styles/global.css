@@ -32,14 +32,16 @@ blockquote p a {
     @apply text-slate-800;
 }
 
-.first-warning {
-    @apply bg-yellow-300;
-}
+@layer utilities {
+    .first-warning {
+        @apply bg-yellow-300;
+    }
 
-.second-warning {
-    @apply bg-orange-400 text-white;
-}
+    .second-warning {
+        @apply bg-orange-400 text-white;
+    }
 
-.expired {
-    @apply bg-red-700 text-white;
+    .expired {
+        @apply bg-red-700 text-white;
+    }
 }
