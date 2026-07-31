@@ -1,4 +1,4 @@
-import {type FreezerItem} from "./models.ts";
+import {type FreezerItem} from "./Models.ts";
 
 export function removeDeletedItems(items: FreezerItem[]): FreezerItem[] {
     const now = new Date().getTime();

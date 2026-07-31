@@ -1,4 +1,4 @@
-﻿import {type FreezerField, SortDirection} from "./sortFreezerItemsReducer.ts";
+﻿import {type FreezerField, SortDirection} from "./SortFreezerItemsReducer.ts";
 import type {ReactElement} from "react";
 import {TableHeader} from "./tailwind/table.tsx";
 import clsx from "clsx";

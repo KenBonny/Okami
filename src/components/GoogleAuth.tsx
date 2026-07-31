@@ -1,6 +1,6 @@
 ﻿import {useEffect, useState} from "react";
 import {googleLogout, type TokenResponse, useGoogleLogin} from "@react-oauth/google";
-import {type User} from "./models.ts";
+import {type User} from "./Models.ts";
 import {Button} from "./tailwind/button.tsx";
 import clsx from "clsx";
 import {ArrowRightEndOnRectangleIcon} from "@heroicons/react/16/solid";

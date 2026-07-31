@@ -1,6 +1,6 @@
-﻿import {ActionType, type FreezerAction, reduceFreezerItems} from './freezerItemsReducer'; // Adjust based on file structure
-import { type FreezerItem, Unit } from './models';
-import {getDate} from "./utils.ts";
+﻿import {ActionType, type FreezerAction, reduceFreezerItems} from './FreezerItemsReducer'; // Adjust based on file structure
+import { type FreezerItem, Unit } from './Models';
+import {getDate} from "./Utils.ts";
 
 describe('reduce Freezer Items tests', () => {
     // Setup mock test data

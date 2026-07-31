@@ -1,5 +1,5 @@
 ﻿import type {TokenResponse} from "@react-oauth/google";
-import {getDate} from "./utils.ts";
+import {getDate} from "./Utils.ts";
 import {config} from "../config.ts";
 
 export enum Unit {

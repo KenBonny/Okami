@@ -1,6 +1,6 @@
-﻿import {type FreezerItem, Unit} from "./models.ts";
-import {removeDeletedItems} from "./removeDeletedItems.ts";
-import {getDate} from "./utils.ts";
+﻿import {type FreezerItem, Unit} from "./Models.ts";
+import {removeDeletedItems} from "./RemoveDeletedItems.ts";
+import {getDate} from "./Utils.ts";
 
 describe('remove deleted items', () => {
     const chickenBreast = "Chicken Breast";

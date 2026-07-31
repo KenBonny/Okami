@@ -1,4 +1,4 @@
-﻿import {determineWarning, WarningText} from "./determineWarning.ts";
+﻿import {determineWarning, WarningText} from "./DetermineWarning.ts";
 import {type WarningConfig} from "../config.ts";
 
 describe("determineWarning", () => {

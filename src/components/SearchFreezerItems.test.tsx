@@ -1,5 +1,5 @@
-﻿import {type FreezerItem, Unit} from './models';
-import {filter} from "./searchFreezerItems.tsx";
+﻿import {type FreezerItem, Unit} from './Models';
+import {filter} from "./SearchFreezerItems.tsx";
 
 describe('SearchFreezerItems filter', () => {
     const chickenBreast = "Chicken Breast";

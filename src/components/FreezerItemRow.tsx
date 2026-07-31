@@ -1,10 +1,10 @@
-﻿import {type FreezerItem, Unit} from "./models.ts";
+﻿import {type FreezerItem, Unit} from "./Models.ts";
 import React from "react";
 import {TableCell, TableRow} from "./tailwind/table.tsx";
 import {Input} from "./tailwind/input.tsx";
 import {config} from "../config.ts";
 import {CheckCircleIcon, PencilSquareIcon, TrashIcon} from "@heroicons/react/24/solid";
-import {determineWarning, WarningText} from "./determineWarning.ts";
+import {determineWarning} from "./DetermineWarning.ts";
 
 export interface FreezerItemRowProps {
     item: FreezerItem;
