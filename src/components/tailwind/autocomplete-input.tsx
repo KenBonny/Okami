@@ -1,4 +1,4 @@
-﻿import {useState} from "react";
+﻿import {useEffect, useState} from "react";
 import clsx from "clsx";
 import {Input, InputGroup} from "./input.tsx";
 import {autocomplete, useCombobox} from "@szhsin/react-autocomplete";
@@ -21,6 +21,10 @@ export default function AutoCompleteInput({
     const [text, setText] = useState<string>(value);
     const [selected, setSelected] = useState<string>();
 
+    useEffect(() => {
+        setText(value);
+    }, [value]);
+
     const availableItems = text ? items.filter(i => i.toLowerCase().includes(text.toLowerCase())) : items;
 
     const {
@@ -33,7 +37,7 @@ export default function AutoCompleteInput({
         focusIndex,
         isInputEmpty
     } = useCombobox({
-        items,
+        items: availableItems,
         value: text,
         onChange: value => {
             const valueOrEmpty = value ?? "";
