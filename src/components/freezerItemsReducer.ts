@@ -30,23 +30,23 @@ export type FreezerAction = ReturnType<
     | typeof updateFreezerItem
     | typeof replaceFreezerItems>;
 
-export function reduceFreezerItems(items: FreezerItem[], action: FreezerAction) : FreezerItem[] {
+export function reduceFreezerItems(items: FreezerItem[], action: FreezerAction): FreezerItem[] {
     switch (action.type) {
-        case ActionType.add:
+        case ActionType.add: {
             const ids = items.map(item => item.id);
             const nextId = Math.max(...ids, 0) + 1;
             return [...items, {...action.item, id: nextId}];
-
-        case ActionType.delete:
+        }
+        case ActionType.delete: {
             const deleted = items.find(i => i.id === action.id);
             if (!deleted || deleted.isDeleted) return items;
 
-            return [...(items.filter(item => item !== deleted)), {
+            return [...items.filter(item => item !== deleted), {
                 ...deleted,
                 isDeleted: true,
                 deletedOn: getDate(action.monthsToKeepDeletedItems)
             }];
-
+        }
         case ActionType.update:
             return items.map(item =>
                 item.id === action.item.id ? action.item : item
