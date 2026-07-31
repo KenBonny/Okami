@@ -41,5 +41,11 @@
     "jest-environment-jsdom": "^30.0.5",
     "ts-jest": "^29.4.0",
     "wrangler": "^4.30.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.8": true,
+    "esbuild@0.25.4": true,
+    "unrs-resolver@1.11.1": true,
+    "workerd@1.20250813.0": true
   }
 }
