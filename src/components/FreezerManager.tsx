@@ -1,11 +1,11 @@
-﻿import {AddFreezerItemForm} from "./addFreezerItemForm.tsx";
+﻿import {AddFreezerItemForm} from "./AddFreezerItemForm.tsx";
 import React, {useEffect, useReducer} from "react";
-import {type FreezerItem, type User} from "./models.ts";
-import {SearchFreezerItems} from "./searchFreezerItems.tsx";
-import FreezerItemRow from "./freezerItemRow.tsx";
+import {type FreezerItem, type User} from "./Models.ts";
+import {SearchFreezerItems} from "./SearchFreezerItems.tsx";
+import FreezerItemRow from "./FreezerItemRow.tsx";
 import GoogleAuth from "./GoogleAuth.tsx";
 import {loadFreezerItemsFromGoogle, writeFreezerItemsToGoogleDrive} from "../google/drive.ts";
-import {removeDeletedItems} from "./removeDeletedItems.ts";
+import {removeDeletedItems} from "./RemoveDeletedItems.ts";
 import {config} from "../config.ts";
 import {
     addFreezerItem,
@@ -13,14 +13,14 @@ import {
     reduceFreezerItems,
     replaceFreezerItems,
     updateFreezerItem
-} from "./freezerItemsReducer.ts";
+} from "./FreezerItemsReducer.ts";
 import {
     FreezerField,
     initialSortFreezerItemsState,
     sortFreezerItemsReducer,
     sortItems,
     updateAllItems
-} from "./sortFreezerItemsReducer.ts";
+} from "./SortFreezerItemsReducer.ts";
 import FreezerItemRowHeader from "./FreezerItemRowHeader.tsx";
 import {Table, TableBody, TableHead, TableHeader, TableRow} from "./tailwind/table.tsx";
 

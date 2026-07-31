@@ -1,5 +1,5 @@
 ﻿import {GoogleOAuthProvider} from "@react-oauth/google";
-import {FreezerManager} from "./freezerManager.tsx";
+import {FreezerManager} from "./FreezerManager.tsx";
 import React from "react";
 import {config} from "../config.ts";
 

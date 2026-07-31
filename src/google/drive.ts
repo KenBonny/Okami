@@ -1,4 +1,4 @@
-﻿import {type FreezerItem, type User, toUnit} from "../components/models.ts";
+﻿import {type FreezerItem, type User, toUnit} from "../components/Models.ts";
 
 export interface File {
     id: string;

@@ -1,4 +1,4 @@
-﻿import {defaultFreezerItem, type FreezerItem, Unit} from "./models.ts";
+﻿import {defaultFreezerItem, type FreezerItem, Unit} from "./Models.ts";
 import React, {useEffect, useRef, useState} from "react";
 import {Field, Fieldset, Label} from "./tailwind/fieldset.tsx";
 import {Input} from "./tailwind/input.tsx";

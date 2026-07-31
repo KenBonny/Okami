@@ -1,4 +1,4 @@
-﻿import {type FreezerItem, Unit} from "./models.ts";
+﻿import {type FreezerItem, Unit} from "./Models.ts";
 import {useEffect, useState} from "react";
 import {useDebounce} from "../effects/useDebounce.ts";
 import {Input, InputGroup} from "./tailwind/input.tsx";

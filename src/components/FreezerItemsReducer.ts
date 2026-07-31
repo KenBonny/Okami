@@ -1,5 +1,5 @@
-﻿import type {FreezerItem} from "./models.ts";
-import {getDate} from "./utils.ts";
+﻿import type {FreezerItem} from "./Models.ts";
+import {getDate} from "./Utils.ts";
 
 export enum ActionType {
     add = "add",

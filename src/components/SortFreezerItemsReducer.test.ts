@@ -5,8 +5,8 @@
     type SortedFreezerItems,
     sortFreezerItemsReducer,
     type SortType
-} from './sortFreezerItemsReducer';
-import {type FreezerItem, Unit} from './models';
+} from './SortFreezerItemsReducer';
+import {type FreezerItem, Unit} from './Models';
 
 describe('sort Freezer Items Reducer', () => {
     const fish = "Fish";
