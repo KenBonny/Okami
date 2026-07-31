@@ -66,15 +66,16 @@ export async function writeFreezerItemsToGoogleDrive(user: User, items: FreezerI
 }
 
 async function updateFile(user: User, content: string, freezerItemFile: File){
+    const boundary = crypto.randomUUID();
     const updateResponse = await fetch(
         `https://www.googleapis.com/upload/drive/v3/files/${freezerItemFile.id}?uploadType=multipart`,
         {
             method: 'PATCH',
             headers: {
                 'Authorization': formatAuthHeader(user),
-                'Content-Type': 'multipart/related; boundary=boundary',
+                'Content-Type': `multipart/related; boundary=${boundary}`,
             },
-            body: createMultipartBody(metadata, content)
+            body: createMultipartBody(metadata, content, boundary)
         }
     );
 
@@ -86,15 +87,16 @@ async function updateFile(user: User, content: string, freezerItemFile: File){
 }
 
 async function createNewFile(user: User, content: string) : Promise<void> {
+    const boundary = crypto.randomUUID();
     const createResponse = await fetch(
         'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',
         {
             method: 'POST',
             headers: {
                 'Authorization': formatAuthHeader(user),
-                'Content-Type': 'multipart/related; boundary=boundary',
+                'Content-Type': `multipart/related; boundary=${boundary}`,
             },
-            body: createMultipartBody(metadata, content)
+            body: createMultipartBody(metadata, content, boundary)
         }
     );
 
@@ -124,9 +126,9 @@ async function freezerItemFileMetaData(user: User) : Promise<File | null> {
     return files.length > 0 ? files[0] : null
 }
 
-function createMultipartBody(metadata: any, content: string) {
-    const delimiter = '--boundary';
-    const closeDelimiter = '--boundary--';
+function createMultipartBody(metadata: any, content: string, boundary: string) {
+    const delimiter = `--${boundary}`;
+    const closeDelimiter = `--${boundary}--`;
     const newline = '\r\n';
 
     return [
