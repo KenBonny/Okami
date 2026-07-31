@@ -2,8 +2,9 @@
 import React from "react";
 import {TableCell, TableRow} from "./tailwind/table.tsx";
 import {Input} from "./tailwind/input.tsx";
-import {config, type WarningConfig} from "../config.ts";
+import {config} from "../config.ts";
 import {CheckCircleIcon, PencilSquareIcon, TrashIcon} from "@heroicons/react/24/solid";
+import {determineWarning, WarningText} from "./determineWarning.ts";
 
 export interface FreezerItemRowProps {
     item: FreezerItem;
@@ -87,24 +88,3 @@ export default function FreezerItemRow({item, onSave, onDelete}: FreezerItemRowP
     );
 }
 
-export class WarningText{
-    static readonly ok = "";
-    static readonly first = "first-warning";
-    static readonly second = "second-warning";
-    static readonly expired = "expired";
-}
-
-type WarningStatus = typeof WarningText[keyof typeof WarningText];
-
-export function determineWarning(expiration: Date, today: Date, config: WarningConfig) : WarningStatus {
-    if (today >= expiration) return WarningText.expired
-
-    const secondWarning = new Date(expiration);
-    secondWarning.setMonth(secondWarning.getMonth() - config.monthsBeforeSecond);
-    if (today >= secondWarning) return WarningText.second
-
-    const firstWarning = new Date(expiration);
-    firstWarning.setMonth(firstWarning.getMonth() - config.monthsBeforeFirst);
-    if (today >= firstWarning) return WarningText.first
-    return WarningText.ok;
-}

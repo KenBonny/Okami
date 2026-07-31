@@ -1,5 +1,5 @@
-﻿import {determineWarning, WarningText} from "./freezerItemRow.tsx";
-import {type WarningConfig} from "../config.ts"; // Adjust the import path
+﻿import {determineWarning, WarningText} from "./determineWarning.ts";
+import {type WarningConfig} from "../config.ts";
 
 describe("determineWarning", () => {
     const warnings : WarningConfig = {

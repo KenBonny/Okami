@@ -5,6 +5,7 @@ import {SearchFreezerItems} from "./searchFreezerItems.tsx";
 import FreezerItemRow from "./freezerItemRow.tsx";
 import GoogleAuth from "./GoogleAuth.tsx";
 import {loadFreezerItemsFromGoogle, writeFreezerItemsToGoogleDrive} from "../google/drive.ts";
+import {removeDeletedItems} from "./removeDeletedItems.ts";
 import {config} from "../config.ts";
 import {
     addFreezerItem,
@@ -125,7 +126,3 @@ export const FreezerManager: React.FC = () => {
     );
 }
 
-export function removeDeletedItems(items: FreezerItem[]) : FreezerItem[] {
-    const now = new Date().getTime();
-    return items.filter(item => !item.isDeleted || item.deletedOn.getTime() > now);
-}
