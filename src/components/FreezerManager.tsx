@@ -38,9 +38,9 @@ export const FreezerManager: React.FC = () => {
             .catch(console.error);
     }, [freezerItems]);
 
-    const handleAddItem = (newItem: FreezerItem) => {
+    function handleAddItem(newItem: FreezerItem) {
         dispatchFreezer(addFreezerItem(newItem));
-    };
+    }
 
     function handleDelete(id: number) {
         dispatchFreezer(deleteFreezerItem(id, config.monthsToKeepDeletedItems));
