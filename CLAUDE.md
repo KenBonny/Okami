@@ -17,7 +17,7 @@ To run a single test file: `npx jest src/path/to/file.test.ts`
 
 ## Tech Stack
 
-- **Astro 5** (file-based routing, static output) + **React 19** (islands via `client:load`)
+- **Astro 5** (file-based routing, static output) + **React 19** — being phased out; new work should avoid it (see Preferences)
 - **Tailwind CSS v4** (via `@tailwindcss/vite`)
 - **TypeScript** (strict mode)
 - Deployed to **Cloudflare Pages** via `wrangler`
@@ -54,3 +54,9 @@ Astro file-based only — `/`, `/about` (MDX), `/404`. No client-side router.
 ## Testing
 
 Jest + `ts-jest` + `jsdom` + `@testing-library/react`. Test files sit alongside the source they test. Currently covers reducers, utility functions (warning thresholds, deleted-item retention), the search component, and the debounce hook.
+
+## Preferences
+
+- Target stack: Astro + vanilla TypeScript, no frameworks. React is being phased out — do not add new React code; when touching existing React components, prefer migrating to vanilla TS over extending React.
+- Confirm before implementing. Default to brainstorming/discussion; don't assume a request to write code.
+- Terse communication: no apologies, no preambles ("great question", "let me explain"), no narrating tool calls, no summaries of changes just made, no unsolicited code explanations.
