@@ -15,8 +15,8 @@
 
 ## 3. Store and reducer wiring
 
-- [ ] 3.1 Implement a minimal `createStore(reducer, initialState)` pub-sub helper (`getState`/`dispatch`/`subscribe`); add a unit test covering subscribe, dispatch, and unsubscribe behavior.
-- [ ] 3.2 Wrap `FreezerItemsReducer` and `SortFreezerItemsReducer` in stores created via `createStore`; verify the existing reducer unit tests still pass unmodified (reducers themselves are not changed).
+- [x] 3.1 Implement a minimal `createStore(reducer, initialState)` pub-sub helper (`getState`/`dispatch`/`subscribe`); add a unit test covering subscribe, dispatch, and unsubscribe behavior. Implemented in `src/store.ts`; `src/store.test.ts` covers initial state, dispatch/notify, unsubscribe, and multiple independent subscribers.
+- [x] 3.2 Wrap `FreezerItemsReducer` and `SortFreezerItemsReducer` in stores created via `createStore`; verify the existing reducer unit tests still pass unmodified (reducers themselves are not changed). Added `src/components/stores.ts` exporting `freezerItemsStore`/`sortedFreezerItemsStore`; not yet wired into `FreezerManager.tsx` (still React/`useReducer` until phase 7's rewrite) — `npm test` confirms all existing reducer tests pass unmodified (50 tests, 8 suites).
 
 ## 4. Search + debounce
 
