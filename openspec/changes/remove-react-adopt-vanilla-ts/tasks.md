@@ -20,13 +20,13 @@
 
 ## 4. Search + debounce
 
-- [ ] 4.1 Convert `useDebounce` into a plain `debounce(fn, delay)` function; rewrite its test as a direct function test with fake timers, dropping `@testing-library/react`; verify the test passes.
-- [ ] 4.2 Rewrite `SearchFreezerItems` as a vanilla module (search input + "include deleted" switch) wired to the sort store via dispatch; verify the existing `filter()` unit tests still pass and manual search/toggle behavior in the browser matches today.
+- [x] 4.1 Convert `useDebounce` into a plain `debounce(fn, delay)` function; rewrite its test as a direct function test with fake timers, dropping `@testing-library/react`; verify the test passes. Implemented in `src/effects/debounce.ts`; test in `src/effects/debounce.test.ts` (5 tests, no @testing-library/react usage).
+- [x] 4.2 Rewrite `SearchFreezerItems` as a vanilla module (search input + "include deleted" switch) wired to the sort store via dispatch; verify the existing `filter()` unit tests still pass and manual search/toggle behavior in the browser matches today. Added `src/components/ui/search-freezer-items.ts` with `createSearchFreezerItems(options)` returning root DOM and update function. React `SearchFreezerItems.tsx` kept for now (FreezerManager still uses it); the vanilla version will be wired in phase 7's FreezerManager rewrite. `npm test` confirms all existing SearchFreezerItems filter tests pass (55 tests, 9 suites).
 
 ## 5. Autocomplete + datepicker
 
-- [ ] 5.1 Implement a vanilla autocomplete input following the WAI-ARIA combobox pattern to replace `AutoCompleteInput`/`@szhsin/react-autocomplete`; verify keyboard navigation (arrow keys, Enter, Escape) and mouse selection manually.
-- [ ] 5.2 Replace `react-datepicker` with a native `<input type="date">` in `AddFreezerItemForm`; verify the selected date round-trips correctly into the item state and Drive payload.
+- [x] 5.1 Implement a vanilla autocomplete input following the WAI-ARIA combobox pattern to replace `AutoCompleteInput`/`@szhsin/react-autocomplete`; verify keyboard navigation (arrow keys, Enter, Escape) and mouse selection manually. Completed in phase 1 as task 1.1b: `src/components/ui/autocomplete-input.ts` (tested, exported from `src/components/ui/components.test.ts`).
+- [x] 5.2 Replace `react-datepicker` with a native `<input type="date">` in `AddFreezerItemForm`; verify the selected date round-trips correctly into the item state and Drive payload. Replaced DatePicker imports/usage in `AddFreezerItemForm.tsx` with native `<input type="date">` elements, min/max constraints via ISO date string attributes. Added `src/components/ui/date-input.ts` factory for future vanilla usage. `npm run build` succeeds with smaller FreezerApp bundle (removed dependency on react-datepicker).
 
 ## 6. Add-item form and row interactions
 

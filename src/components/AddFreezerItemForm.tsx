@@ -4,8 +4,6 @@ import {Field, Fieldset, Label} from "./tailwind/fieldset.tsx";
 import {Input} from "./tailwind/input.tsx";
 import {Button} from "./tailwind/button.tsx";
 import AutoCompleteInput from "./tailwind/autocomplete-input.tsx";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import {ChevronDownIcon, PlusIcon} from "@heroicons/react/16/solid";
 import clsx from "clsx";
 
@@ -28,6 +26,13 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
 
     const descriptionRef = useRef<HTMLInputElement>(null);
 
+    function dateToISO(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    }
+
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const {name, value} = e.target;
 
@@ -36,6 +41,9 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                 case 'unit':
                 case 'amount':
                     return Number(value);
+                case 'frozen':
+                case 'expiration':
+                    return value ? new Date(value) : new Date();
                 default:
                     return value;
             }
@@ -159,28 +167,36 @@ export function AddFreezerItemForm({className, items, onAddItem}: AddFreezerItem
                     <div className="flex flex-row w-full gap-4 lg:max-w-72 lg:shrink-0">
                         <Field className="basis-1/2">
                             <Label htmlFor="frozen">Frozen</Label>
-                            <DatePicker id="frozen"
-                                        name="frozen"
-                                        dateFormat="dd/MM/yyyy"
-                                        className="w-full mt-2.5"
-                                        required
-                                        selected={item.frozen}
-                                        maxDate={today}
-                                        onChange={date => setItemValue("frozen", date)}
-                                        customInput={<Input type="text" />} />
+                            <input type="date"
+                                   id="frozen"
+                                   name="frozen"
+                                   className="block w-full border-0 bg-transparent
+                                              px-3.5 py-2.5 sm:px-3 sm:py-1.5
+                                              text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6
+                                              focus:outline-none focus:ring-0
+                                              rounded-lg ring-1 ring-inset ring-zinc-950/10 shadow-sm
+                                              focus:ring-2 focus:ring-inset focus:ring-amber-400 mt-2.5"
+                                   required
+                                   value={dateToISO(item.frozen)}
+                                   max={dateToISO(today)}
+                                   onChange={handleChange} />
                         </Field>
 
                         <Field className="basis-1/2">
                             <Label htmlFor="expiration">Expiration</Label>
-                            <DatePicker id="expiration"
-                                        name="expiration"
-                                        dateFormat="dd/MM/yyyy"
-                                        className="w-full mt-2.5"
-                                        required
-                                        selected={item.expiration}
-                                        minDate={today}
-                                        onChange={date => setItemValue("expiration", date)}
-                                        customInput={<Input type="text" />} />
+                            <input type="date"
+                                   id="expiration"
+                                   name="expiration"
+                                   className="block w-full border-0 bg-transparent
+                                              px-3.5 py-2.5 sm:px-3 sm:py-1.5
+                                              text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6
+                                              focus:outline-none focus:ring-0
+                                              rounded-lg ring-1 ring-inset ring-zinc-950/10 shadow-sm
+                                              focus:ring-2 focus:ring-inset focus:ring-amber-400 mt-2.5"
+                                   required
+                                   value={dateToISO(item.expiration)}
+                                   min={dateToISO(today)}
+                                   onChange={handleChange} />
                         </Field>
                     </div>
 
