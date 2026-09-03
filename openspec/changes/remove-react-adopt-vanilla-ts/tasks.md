@@ -1,7 +1,9 @@
 ## 1. Style-only design system components
 
-- [ ] 1.1 Rewrite the style-only `src/components/tailwind/*` wrappers (Button, Input, Textarea, Checkbox, Radio, Badge, Avatar, Text, Heading, Link, Divider, Fieldset, Description List) as plain TS functions returning styled `HTMLElement`s with the same Tailwind classes; verify each renders the same markup/classes as the current React version via a unit test.
-- [ ] 1.2 Update any existing tests referencing these components to import the vanilla versions; verify `npm test` passes.
+- [x] 1.1 Delete the 18 unused `src/components/tailwind/*` wrappers (Alert, AuthLayout, Avatar, Badge, Checkbox, Combobox, DescriptionList, Dialog, Divider, Dropdown, Heading, Link, Listbox, Navbar, Pagination, Radio, Select, SidebarLayout, Sidebar, StackedLayout, Text, Textarea) — confirmed unused via grep across `src`.
+- [x] 1.1b Rewrite the remaining used wrappers (Button, Input, Fieldset — only `Field`/`Fieldset`/`Label`, Switch, Table, AutoCompleteInput) as plain TS functions in a new `src/components/ui/` directory (kept alongside, not replacing, the still-referenced `src/components/tailwind/*.tsx` React versions until their last consumer is migrated in a later phase, so the app keeps building throughout), translating `data-hover`/`data-active`/`data-focus`/`data-disabled`/`data-invalid` to native `:hover`/`:active`/`:focus-visible`/`:disabled`/`:invalid`.
+- [x] 1.2 Add unit tests for the new `src/components/ui/*` factories covering rendered structure/classes and interactive behavior (button click/disabled, switch change, autocomplete filter/keyboard nav); `npm test` passes.
+- [ ] 1.3 Once each of `src/components/tailwind/{button,input,fieldset,switch,table,autocomplete-input}.tsx` has no remaining consumer (after phases 3-6 migrate `SearchFreezerItems`, `FreezerItemRow`, `FreezerItemRowHeader`, `AddFreezerItemForm`, `GoogleAuth`, `FreezerManager`), delete that file.
 
 ## 2. Google auth migration
 
@@ -30,8 +32,6 @@
 
 - [ ] 6.1 Rewrite `AddFreezerItemForm` as a vanilla module dispatching to the freezer items store; verify adding an item updates the table and triggers autosave to Drive.
 - [ ] 6.2 Rewrite `FreezerItemRow` (inline edit) and `FreezerItemRowHeader` (sortable header) as vanilla modules; verify edit, delete, and sort interactions manually and confirm existing reducer tests still pass.
-- [ ] 6.3 Replace `Dialog` usages with native `<dialog>` (`showModal`/`close`); verify open/close and focus behavior manually.
-- [ ] 6.4 Replace remaining behavioral wrappers (Listbox/Select, Dropdown, Pagination, Sidebar/Navbar toggles) with native-element equivalents per design.md's table; verify each interactive control manually against current behavior.
 
 ## 7. Root orchestration and mount
 

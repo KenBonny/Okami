@@ -31,15 +31,17 @@ Load `accounts.google.com/gsi/client` via a `<script>` tag, call `google.account
 
 **4. Headless UI replacement: prefer native elements; hand-roll only what native HTML can't do.**
 
+Only 6 of the 24 `src/components/tailwind/*` files are actually imported elsewhere in `src` (confirmed via grep); the other 18 (Alert, AuthLayout, Avatar, Badge, Checkbox, Combobox, DescriptionList, Dialog, Divider, Dropdown, Heading, Link, Listbox, Navbar, Pagination, Radio, Select, SidebarLayout, Sidebar, StackedLayout, Text, Textarea) are unused Catalyst UI-kit boilerplate and are deleted outright rather than translated — no `.astro` page or component references them.
+
+The 6 vanilla replacements live in a new `src/components/ui/` directory rather than overwriting `src/components/tailwind/*.tsx` in place — the React versions there are still imported by not-yet-migrated components (`SearchFreezerItems`, `FreezerItemRow`, `FreezerItemRowHeader`, `AddFreezerItemForm`, `GoogleAuth`, `FreezerManager`), so replacing their export shape (React components → DOM-factory functions) immediately would break the build ahead of the phases that actually migrate those consumers. Each `tailwind/*.tsx` file is deleted once the consumer-migration phase that removes its last import lands.
+
 | Widget | Replacement | Rationale |
 |---|---|---|
-| Button, Input, Textarea, Checkbox, Radio, Badge, Avatar, Text, Heading, Link, Divider, Fieldset, Description List | Plain function returning a styled element, same Tailwind classes | Style-only wrappers today; no behavior to reimplement |
-| Dialog | Native `<dialog>` (`showModal()`/`close()`, `::backdrop`) | Built-in focus trap and Esc-to-close, no JS behavior to hand-roll |
+| Button, Input, Fieldset (`Field`/`Fieldset`/`Label` only) | Plain function returning a styled element, same Tailwind classes, `data-*` states mapped to native `:hover`/`:active`/`:focus-visible`/`:disabled`/`:invalid` | Style-only wrappers today; no behavior to reimplement |
 | Switch | Native `<input type="checkbox">` styled as a toggle | No JS needed beyond CSS |
-| Select/Listbox | Native `<select>` where options are plain values | Native keyboard nav and accessibility for free |
+| Table | Plain functions returning styled `<table>`/`<tr>`/`<td>` elements | Style-only wrapper; the `href`-link `TableCell` variant is unused in the app and is dropped, not translated |
 | Autocomplete (`AutoCompleteInput`, currently `@szhsin/react-autocomplete`) | Hand-rolled `<input>` + popover `<ul>` following the WAI-ARIA combobox pattern | No native element covers type-ahead + suggestion list; smallest custom surface in this design |
 | Datepicker (`react-datepicker`) | Native `<input type="date">` | Removes a dependency entirely; trade-off accepted, see Risks |
-| Dropdown, Pagination, Sidebar/Navbar toggles | Native `<details>`/`<button aria-expanded>` + CSS | Disclosure-style behavior native HTML already provides |
 
 General rule for this table: ask "does a native element already do this?" before writing custom JS. Headless UI's value in the React version was filling native gaps for React specifically — most of those gaps don't exist when using the underlying HTML element directly.
 
@@ -55,7 +57,7 @@ Dialog/dropdown enter-exit transitions move to CSS transitions and `<dialog>`'s 
 - Native `<input type="date">` has less visual polish than `react-datepicker`'s calendar UI → Mitigation: accept the regression for now; revisit with a small custom calendar only if it proves a real problem in use.
 - Hand-written DOM update code is more verbose than JSX and risks stale-DOM bugs (forgetting to re-render after a dispatch) → Mitigation: all mutation goes through the store's `dispatch`; render functions are the only code allowed to touch the DOM for a given region, subscribed once at setup.
 - GIS script loads asynchronously; a login click before it's ready would fail silently → Mitigation: disable/gate the login control until the script's load callback fires, mirroring how `GoogleOAuthProvider` already gates this today.
-- Large surface area (24 wrapper components + 5 feature components) increases the chance of a long-lived broken intermediate state → Mitigation: sequence the migration bottom-up (see tasks.md) so the app stays buildable after each phase.
+- Large surface area (6 wrapper components in scope + 5 feature components) increases the chance of a long-lived broken intermediate state → Mitigation: sequence the migration bottom-up (see tasks.md) so the app stays buildable after each phase.
 
 ## Migration Plan
 
