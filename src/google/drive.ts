@@ -108,16 +108,24 @@ async function createNewFile(user: User, content: string) : Promise<void> {
 }
 
 async function freezerItemFileMetaData(user: User) : Promise<File | null> {
+    const authHeader = formatAuthHeader(user);
+    console.log("[Drive] Making request with auth header:", authHeader.substring(0, 20) + "...");
+    console.log("[Drive] Token type:", user.token.token_type);
+    console.log("[Drive] Token scope:", user.token.scope);
+
     const response = await fetch(
         `https://www.googleapis.com/drive/v3/files?q=name="${fileName}"`,
         {
             headers: {
-                'Authorization': formatAuthHeader(user),
+                'Authorization': authHeader,
             }
         }
     );
 
+    console.log("[Drive] Response status:", response.status);
     if (!response.ok) {
+        const errorBody = await response.text();
+        console.log("[Drive] Error response body:", errorBody);
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 

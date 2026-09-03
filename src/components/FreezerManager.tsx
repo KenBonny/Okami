@@ -56,10 +56,15 @@ export const FreezerManager: React.FC = () => {
     }
 
     async function loadFreezerItems(user: User) {
+        console.log(`[FreezerManager] loadFreezerItems called for: ${user.name}`);
         setUser(user);
-        console.log(`Loading Freezer items for: ${user.name}`);
-        const newFreezerItems: FreezerItem[] = await loadFreezerItemsFromGoogle(user);
-        dispatchFreezer(replaceFreezerItems(newFreezerItems));
+        try {
+            console.log(`[FreezerManager] Fetching items from Google Drive...`);
+            const newFreezerItems: FreezerItem[] = await loadFreezerItemsFromGoogle(user);
+            dispatchFreezer(replaceFreezerItems(newFreezerItems));
+        } catch (error) {
+            console.error(`[FreezerManager] Error loading items from Drive:`, error);
+        }
     }
 
     function logout() {

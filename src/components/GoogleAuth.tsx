@@ -44,11 +44,16 @@ export default function GoogleAuth({className, onSuccess, onLogout }: GoogleAuth
     }, [gisReady]);
 
     async function handleSuccessfulLogin(tokenResponse: TokenResponse) {
+        console.log("handleSuccessfulLogin called with token:", tokenResponse);
         const userResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
             headers: new Headers({
                 Authorization: `${tokenResponse.token_type} ${tokenResponse.access_token}`
             })
         });
+        if (!userResponse.ok) {
+            console.error("Failed to fetch userinfo:", userResponse.status, userResponse.statusText);
+            return;
+        }
         const googleUser = await userResponse.json();
 
         const user = {
@@ -64,16 +69,19 @@ export default function GoogleAuth({className, onSuccess, onLogout }: GoogleAuth
     }
 
     function onValidUser(user: User) {
+        console.log("onValidUser called with user:", user.name);
         setUser(user);
         const now = new Date();
-        const tenSeconds = 10_000;const tokenLifetime = user.token.expires_in * 1000; // token lifetime in ms
+        const tenSeconds = 10_000;
+        const tokenLifetime = user.token.expires_in * 1000; // token lifetime in ms
         const elapsedTime = now.getTime() - user.tokenAcquired.getTime();
         const timeRemaining = tokenLifetime - elapsedTime;
 
+        console.log("Token lifetime:", tokenLifetime, "Elapsed:", elapsedTime, "Remaining:", timeRemaining);
 
-        if (timeRemaining <= tenSeconds)
+        if (timeRemaining <= tenSeconds) {
             login();
-        else {
+        } else {
             onSuccess?.(user);
             setTimeout(login, timeRemaining - tenSeconds);
         }
