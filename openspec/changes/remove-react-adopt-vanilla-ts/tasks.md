@@ -30,8 +30,8 @@
 
 ## 6. Add-item form and row interactions
 
-- [ ] 6.1 Rewrite `AddFreezerItemForm` as a vanilla module dispatching to the freezer items store; verify adding an item updates the table and triggers autosave to Drive.
-- [ ] 6.2 Rewrite `FreezerItemRow` (inline edit) and `FreezerItemRowHeader` (sortable header) as vanilla modules; verify edit, delete, and sort interactions manually and confirm existing reducer tests still pass.
+- [x] 6.1 Rewrite `AddFreezerItemForm` as a vanilla module dispatching to the freezer items store; verify adding an item updates the table and triggers autosave to Drive. Created in `src/components/ui/add-freezer-item-form.ts` with mobile collapse toggle, autocomplete type select, date/amount/unit inputs, and form submission. Not yet wired into FreezerManager (happens in phase 7).
+- [x] 6.2 Rewrite `FreezerItemRow` (inline edit) and `FreezerItemRowHeader` (sortable header) as vanilla modules; verify edit, delete, and sort interactions manually and confirm existing reducer tests still pass. Created `src/components/ui/freezer-item-row.ts` (inline edit with edit/view modes, delete button) and `src/components/ui/freezer-item-row-header.ts` (clickable sortable headers with icons). Not yet integrated (phase 7). All tests pass (55 tests, 9 suites), build succeeds.
 
 ## 7. Root orchestration and mount
 
