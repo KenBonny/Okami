@@ -17,8 +17,9 @@ To run a single test file: `npx jest src/path/to/file.test.ts`
 
 ## Tech Stack
 
-- **Astro 5** (file-based routing, static output) + **React 19** — being phased out; new work should avoid it (see Preferences)
-- **Tailwind CSS v4** (via `@tailwindcss/vite`)
+- **Astro 5** (file-based routing, static output)
+- **React 19** — being phased out; new work should avoid it (see Preferences)
+- **Tailwind CSS v4** (via `@tailwindcss/vite`) - being phased out; new work should avoid it
 - **TypeScript** (strict mode)
 - Deployed to **Cloudflare Pages** via `wrangler`
 - Auth: **Google OAuth** implicit flow (`@react-oauth/google`)
