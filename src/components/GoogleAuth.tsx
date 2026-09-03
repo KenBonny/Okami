@@ -1,5 +1,6 @@
-﻿import {useEffect, useState} from "react";
-import {googleLogout, type TokenResponse, useGoogleLogin} from "@react-oauth/google";
+﻿import {useEffect, useRef, useState} from "react";
+import {createTokenClient, onGisReady, revokeToken, type TokenResponse} from "../google/auth.ts";
+import {config} from "../config.ts";
 import {type User} from "./Models.ts";
 import {Button} from "./tailwind/button.tsx";
 import clsx from "clsx";
@@ -13,23 +14,34 @@ export interface GoogleAuthProps {
 
 export default function GoogleAuth({className, onSuccess, onLogout }: GoogleAuthProps) {
     const [user, setUser] = useState<User | null>(null);
+    const [gisReady, setGisReady] = useState(false);
+    const tokenClient = useRef<ReturnType<typeof createTokenClient> | null>(null);
     const localUserStorage = "user";
 
-    const login = useGoogleLogin({
-        flow: "implicit",
-        onSuccess: handleSuccessfulLogin,
-        scope: `${GoogleScopes.driveFilesForApp}`
-    });
+    function login() {
+        tokenClient.current?.requestAccessToken();
+    }
 
-    // try to log in when loading the page
+    // load the Google Identity Services script and set up the token client once
     useEffect(() => {
+        onGisReady(() => {
+            const scope = `openid ${GoogleScopes.userProfile} ${GoogleScopes.userEmail} ${GoogleScopes.driveFilesForApp}`;
+            tokenClient.current = createTokenClient(config.googleClientId, scope, handleSuccessfulLogin);
+            setGisReady(true);
+        });
+    }, []);
+
+    // try to log in when loading the page, once the token client is ready
+    useEffect(() => {
+        if (!gisReady) return;
+
         const userJson = localStorage.getItem(localUserStorage);
         if (!userJson) return;
 
         const user = JSON.parse(userJson, parseUser) as User;
         if (isExpired(user)) login()
         else onValidUser(user)
-    }, []);
+    }, [gisReady]);
 
     async function handleSuccessfulLogin(tokenResponse: TokenResponse) {
         const userResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
@@ -68,7 +80,7 @@ export default function GoogleAuth({className, onSuccess, onLogout }: GoogleAuth
     }
 
     function logout() {
-        googleLogout();
+        if (user) revokeToken(user.token.access_token);
         localStorage.removeItem(localUserStorage);
         setUser(null);
         onLogout?.();
@@ -85,7 +97,7 @@ export default function GoogleAuth({className, onSuccess, onLogout }: GoogleAuth
                 </Button>
             </div>
             : <div className={clsx(className, "flex flex-nowrap flex-auto")}>
-                <Button outline onClick={() => login()}>
+                <Button outline disabled={!gisReady} onClick={() => login()}>
                     {googleLogo}
                     Sign in with Google
                 </Button>

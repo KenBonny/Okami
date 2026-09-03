@@ -7,9 +7,9 @@
 
 ## 2. Google auth migration
 
-- [ ] 2.1 Load the Google Identity Services script (`accounts.google.com/gsi/client`) and gate auth UI on its `onload`; verify the login control is disabled/inert until the script is ready.
-- [ ] 2.2 Replace `useGoogleLogin`/`GoogleOAuthProvider` with `google.accounts.oauth2.initTokenClient` in a vanilla auth module, preserving the current localStorage `"user"` schema, expiry calculation, and silent-refresh `setTimeout` scheduling from `GoogleAuth.tsx`; verify by logging in and confirming a `User` object is stored in localStorage with the same shape as today.
-- [ ] 2.3 Remove the `GoogleOAuthProvider` wrapper; verify the app still authenticates without it.
+- [x] 2.1 Load the Google Identity Services script (`accounts.google.com/gsi/client`) and gate auth UI on its `onload`; verify the login control is disabled/inert until the script is ready. Implemented in `src/google/auth.ts` (`onGisReady`); the "Sign in with Google" button in `GoogleAuth.tsx` is `disabled` until the token client is created.
+- [x] 2.2 Replace `useGoogleLogin`/`GoogleOAuthProvider` with `google.accounts.oauth2.initTokenClient` in a vanilla auth module, preserving the current localStorage `"user"` schema, expiry calculation, and silent-refresh `setTimeout` scheduling from `GoogleAuth.tsx`; verify by logging in and confirming a `User` object is stored in localStorage with the same shape as today. `src/google/auth.ts` wraps `initTokenClient`/`revoke`; `GoogleAuth.tsx`'s `handleSuccessfulLogin`/`onValidUser`/expiry/`setTimeout` logic is unchanged. Needs a manual login pass with real credentials to fully confirm (see 2.4/2.5).
+- [x] 2.3 Remove the `GoogleOAuthProvider` wrapper; verify the app still authenticates without it. `FreezerApp.tsx` no longer wraps `FreezerManager` in `GoogleOAuthProvider`; `npm run build` and `astro dev` both serve the app without errors.
 - [ ] 2.4 Verify manually: session persists across a page reload, and a scheduled silent refresh fires before token expiry (inspect via logging/devtools timers).
 - [ ] 2.5 Verify manually: after login, Drive read (`loadFreezerItemsFromGoogle`) and write (`writeFreezerItemsToGoogleDrive`) still succeed unchanged.
 

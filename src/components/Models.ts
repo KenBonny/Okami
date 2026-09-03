@@ -1,4 +1,4 @@
-﻿import type {TokenResponse} from "@react-oauth/google";
+﻿import type {TokenResponse} from "../google/auth.ts";
 import {getDate} from "./Utils.ts";
 import {config} from "../config.ts";
 
