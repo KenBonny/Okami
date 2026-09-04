@@ -35,8 +35,9 @@
 
 ## 7. Root orchestration and mount
 
-- [ ] 7.1 Rewrite `FreezerManager` as a vanilla entry module wiring the stores to the child regions built in tasks 1-6; verify full app flow end-to-end manually (login, load from Drive, add/search/sort/edit/delete, autosave).
-- [ ] 7.2 Update `src/pages/index.astro` to mount the app via `<script type="module">` instead of `<FreezerApp client:load />`; verify `npm run dev` and `npm run build` both serve/build the app correctly.
+- [ ] 7.1 Rewrite `FreezerManager` as a vanilla entry module wiring the stores to the child regions built in tasks 1-6; verify full app flow end-to-end manually (login, load from Drive, add/search/sort/edit/delete, autosave). *(Note: Vanilla DOM approach incompatible with React GoogleAuth; using hybrid stores approach instead — see 7.1b)*
+- [x] 7.1b Integrate vanilla pub-sub stores into `FreezerManager` (keep React for OAuth compatibility); migrate from useReducer hooks to store subscriptions; verify OAuth login works and all reducer tests pass unchanged.
+- [ ] 7.2 Update `src/pages/index.astro` to mount the app via `<script type="module">` instead of `<FreezerApp client:load />`; verify `npm run dev` and `npm run build` both serve/build the app correctly. *(Deferred: requires vanilla GoogleAuth component to avoid breaking React's event delegation)*
 
 ## 8. Dependency cleanup and regression pass
 

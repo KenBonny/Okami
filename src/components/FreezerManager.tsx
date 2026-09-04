@@ -1,5 +1,5 @@
 import {AddFreezerItemForm} from "./AddFreezerItemForm.tsx";
-import React, {useEffect, useReducer} from "react";
+import React, {useEffect, useState} from "react";
 import {type FreezerItem, type User} from "./Models.ts";
 import {SearchFreezerItems} from "./SearchFreezerItems.tsx";
 import FreezerItemRow from "./FreezerItemRow.tsx";
@@ -10,25 +10,37 @@ import {config} from "../config.ts";
 import {
     addFreezerItem,
     deleteFreezerItem,
-    reduceFreezerItems,
     replaceFreezerItems,
     updateFreezerItem
 } from "./FreezerItemsReducer.ts";
 import {
     FreezerField,
-    initialSortFreezerItemsState,
-    sortFreezerItemsReducer,
     sortItems,
     updateAllItems
 } from "./SortFreezerItemsReducer.ts";
 import FreezerItemRowHeader from "./FreezerItemRowHeader.tsx";
 import {Table, TableBody, TableHead, TableHeader, TableRow} from "./tailwind/table.tsx";
 import okamiImage from "../assets/okami.png";
+import {freezerItemsStore, sortedFreezerItemsStore} from "./stores.ts";
 
 export const FreezerManager: React.FC = () => {
-    const [freezerItems, dispatchFreezer] = useReducer(reduceFreezerItems, []);
-    const [sortedItems, dispatchSorting] = useReducer(sortFreezerItemsReducer, initialSortFreezerItemsState);
-    const [user, setUser] = React.useState<User | null>(null);
+    const [freezerItems, setFreezerItems] = useState(freezerItemsStore.getState());
+    const [sortedItems, setSortedItems] = useState(sortedFreezerItemsStore.getState());
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        console.log("[FreezerManager] Setting up freezerItems subscription, current state:", freezerItemsStore.getState());
+        const unsubscribe = freezerItemsStore.subscribe((items) => {
+            console.log("[FreezerManager] freezerItems updated:", items.length, "items");
+            setFreezerItems(items);
+        });
+        return unsubscribe;
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe = sortedFreezerItemsStore.subscribe(setSortedItems);
+        return unsubscribe;
+    }, []);
 
     useEffect(() => {
         if (user === null) return;
@@ -37,22 +49,22 @@ export const FreezerManager: React.FC = () => {
         writeFreezerItemsToGoogleDrive(user, removeDeletedItems(freezerItems))
             .then(_ => console.log("freezer items saved to Google Drive"))
             .catch(console.error);
-    }, [freezerItems]);
+    }, [freezerItems, user]);
 
     function handleAddItem(newItem: FreezerItem) {
-        dispatchFreezer(addFreezerItem(newItem));
+        freezerItemsStore.dispatch(addFreezerItem(newItem));
     }
 
     function handleDelete(id: number) {
-        dispatchFreezer(deleteFreezerItem(id, config.monthsToKeepDeletedItems));
+        freezerItemsStore.dispatch(deleteFreezerItem(id, config.monthsToKeepDeletedItems));
     }
 
     function handleUpdate(updatedItem: FreezerItem) {
-        dispatchFreezer(updateFreezerItem(updatedItem));
+        freezerItemsStore.dispatch(updateFreezerItem(updatedItem));
     }
 
     function handleSort(field: FreezerField) {
-        dispatchSorting(sortItems(field));
+        sortedFreezerItemsStore.dispatch(sortItems(field));
     }
 
     async function loadFreezerItems(user: User) {
@@ -61,7 +73,9 @@ export const FreezerManager: React.FC = () => {
         try {
             console.log(`[FreezerManager] Fetching items from Google Drive...`);
             const newFreezerItems: FreezerItem[] = await loadFreezerItemsFromGoogle(user);
-            dispatchFreezer(replaceFreezerItems(newFreezerItems));
+            console.log(`[FreezerManager] Loaded ${newFreezerItems.length} items, dispatching to store...`);
+            freezerItemsStore.dispatch(replaceFreezerItems(newFreezerItems));
+            console.log(`[FreezerManager] Store state after dispatch:`, freezerItemsStore.getState());
         } catch (error) {
             console.error(`[FreezerManager] Error loading items from Drive:`, error);
         }
@@ -93,7 +107,7 @@ export const FreezerManager: React.FC = () => {
                 <hr className="border-gray-900/10" />
                 <SearchFreezerItems className="my-3"
                                     items={freezerItems}
-                                    onSearch={(items) => dispatchSorting(updateAllItems(items))} />
+                                    onSearch={(items) => sortedFreezerItemsStore.dispatch(updateAllItems(items))} />
                 <Table className="p-3">
                     <TableHead>
                         <TableRow>
