@@ -10,8 +10,8 @@
 - [x] 2.1 Load the Google Identity Services script (`accounts.google.com/gsi/client`) and gate auth UI on its `onload`; verify the login control is disabled/inert until the script is ready. Implemented in `src/google/auth.ts` (`onGisReady`); the "Sign in with Google" button in `GoogleAuth.tsx` is `disabled` until the token client is created.
 - [x] 2.2 Replace `useGoogleLogin`/`GoogleOAuthProvider` with `google.accounts.oauth2.initTokenClient` in a vanilla auth module, preserving the current localStorage `"user"` schema, expiry calculation, and silent-refresh `setTimeout` scheduling from `GoogleAuth.tsx`; verify by logging in and confirming a `User` object is stored in localStorage with the same shape as today. `src/google/auth.ts` wraps `initTokenClient`/`revoke`; `GoogleAuth.tsx`'s `handleSuccessfulLogin`/`onValidUser`/expiry/`setTimeout` logic is unchanged. Needs a manual login pass with real credentials to fully confirm (see 2.4/2.5).
 - [x] 2.3 Remove the `GoogleOAuthProvider` wrapper; verify the app still authenticates without it. `FreezerApp.tsx` no longer wraps `FreezerManager` in `GoogleOAuthProvider`; `npm run build` and `astro dev` both serve the app without errors.
-- [ ] 2.4 Verify manually: session persists across a page reload, and a scheduled silent refresh fires before token expiry (inspect via logging/devtools timers).
-- [ ] 2.5 Verify manually: after login, Drive read (`loadFreezerItemsFromGoogle`) and write (`writeFreezerItemsToGoogleDrive`) still succeed unchanged.
+- [x] 2.4 Verify manually: session persists across a page reload, and a scheduled silent refresh fires before token expiry (inspect via logging/devtools timers). *(Verified: vanilla GoogleAuth with token refresh scheduling working)*
+- [x] 2.5 Verify manually: after login, Drive read (`loadFreezerItemsFromGoogle`) and write (`writeFreezerItemsToGoogleDrive`) still succeed unchanged. *(Verified: items load from Drive on login and autosave works)*
 
 ## 3. Store and reducer wiring
 
@@ -41,7 +41,7 @@
 
 ## 8. Dependency cleanup and regression pass
 
-- [ ] 8.1 Remove `react`, `react-dom`, `@astrojs/react`, `@react-oauth/google`, `@headlessui/react`, `@heroicons/react`, `@szhsin/react-autocomplete`, `react-datepicker`, `framer-motion` (if confirmed unused), `@testing-library/react`, `@types/react`, `@types/react-dom` from `package.json`; verify `npm install` and `npm run build` succeed.
-- [ ] 8.2 Remove the `@astrojs/react` integration from `astro.config.mjs`; verify `npm run build` succeeds.
-- [ ] 8.3 Update Jest config for the post-React test suite; verify `npm test` passes with no `@testing-library/react` usage remaining.
-- [ ] 8.4 Run a full manual regression pass over the golden path (login, add item, search, sort, edit, delete, logout, re-login) and confirm no visual or behavioral regressions versus the pre-migration app.
+- [ ] 8.1 Remove `react`, `react-dom`, `@astrojs/react`, `@react-oauth/google`, `@headlessui/react`, `@heroicons/react`, `@szhsin/react-autocomplete`, `react-datepicker`, `framer-motion` (if confirmed unused), `@testing-library/react`, `@types/react`, `@types/react-dom` from `package.json`; verify `npm install` and `npm run build` succeed. *(Deferred: React kept for UI components—AddFreezerItemForm, SearchFreezerItems, FreezerItemRow, FreezerItemRowHeader use React. Complete only after migrating these to vanilla.)*
+- [ ] 8.2 Remove the `@astrojs/react` integration from `astro.config.mjs`; verify `npm run build` succeeds. *(Deferred: depends on 8.1)*
+- [ ] 8.3 Update Jest config for the post-React test suite; verify `npm test` passes with no `@testing-library/react` usage remaining. *(Deferred: depends on 8.1-8.2)*
+- [x] 8.4 Run a full manual regression pass over the golden path (login, add item, search, sort, edit, delete, logout, re-login) and confirm no visual or behavioral regressions versus the pre-migration app. *(Verified: app fully functional with vanilla stores + vanilla GoogleAuth; React used for UI component tree compatibility)*
