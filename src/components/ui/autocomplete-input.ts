@@ -9,9 +9,15 @@ export interface AutoCompleteOptions {
   onChange: (value: string) => void
 }
 
-export function createAutoCompleteInput(options: AutoCompleteOptions): HTMLDivElement {
-  const { items, value, placeholder = 'Type to select an option...', className, onChange } = options
+export interface AutoCompleteHandle {
+  root: HTMLDivElement
+  setItems: (items: string[]) => void
+}
 
+export function createAutoCompleteInput(options: AutoCompleteOptions): AutoCompleteHandle {
+  const { value, placeholder = 'Type to select an option...', className, onChange } = options
+
+  let items = options.items
   let text = value
   let activeIndex = -1
   let open = false
@@ -120,5 +126,11 @@ export function createAutoCompleteInput(options: AutoCompleteOptions): HTMLDivEl
   })
 
   root.append(group, list)
-  return root
+  return {
+    root,
+    setItems(newItems: string[]) {
+      items = newItems
+      if (open) renderList()
+    },
+  }
 }

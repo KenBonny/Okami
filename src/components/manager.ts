@@ -11,8 +11,7 @@ import {loadFreezerItemsFromGoogle, writeFreezerItemsToGoogleDrive} from "../goo
 import {removeDeletedItems} from "./RemoveDeletedItems.ts";
 import {config} from "../config.ts";
 import {createAddFreezerItemForm} from "./ui/add-freezer-item-form.ts";
-import {createSearchFreezerItems} from "./ui/search-freezer-items.ts";
-import {filter} from "./SearchFreezerItems.tsx";
+import {createSearchFreezerItems, filter} from "./ui/search-freezer-items.ts";
 import {createTable, createTableBody, createTableHead, createTableRow, createTableHeader} from "./ui/table.ts";
 import {createFreezerItemRow} from "./ui/freezer-item-row.ts";
 import {createFreezerItemRowHeader} from "./ui/freezer-item-row-header.ts";
@@ -20,9 +19,7 @@ import okamiImage from "../assets/okami.png";
 
 export interface ManagerOptions {
     rootElement: HTMLElement;
-    googleAuthComponent: HTMLElement; // React GoogleAuth component (mounted separately)
-    onAuthSuccess?: (user: User) => void;
-    onAuthLogout?: () => void;
+    googleAuthComponent: HTMLElement;
 }
 
 export function createManager(options: ManagerOptions) {
@@ -95,58 +92,20 @@ export function createManager(options: ManagerOptions) {
     searchContainer.append(search.root);
 
     // Table
+    const sortOnClick = (field: FreezerField) => sortedFreezerItemsStore.dispatch(sortItems(field));
+    const initialSortField = FreezerField.description;
+    const initialSortDirection = SortDirection.ascending;
+
+    const headerDescr = createFreezerItemRowHeader({field: FreezerField.description, sortField: initialSortField, sortDirection: initialSortDirection, className: "w-80", label: "Description", onClick: sortOnClick});
+    const headerType  = createFreezerItemRowHeader({field: FreezerField.type,        sortField: initialSortField, sortDirection: initialSortDirection, className: "w-64", label: "Type",        onClick: sortOnClick});
+    const headerUnit  = createFreezerItemRowHeader({field: FreezerField.unit,        sortField: initialSortField, sortDirection: initialSortDirection, className: "w-42", label: "Amount",      onClick: sortOnClick});
+    const headerFroz  = createFreezerItemRowHeader({field: FreezerField.frozen,      sortField: initialSortField, sortDirection: initialSortDirection, className: "w-32", label: "Frozen on",   onClick: sortOnClick});
+    const headerExp   = createFreezerItemRowHeader({field: FreezerField.expiration,  sortField: initialSortField, sortDirection: initialSortDirection, className: "w-32", label: "Expires on",  onClick: sortOnClick});
+    const sortHeaders = [headerDescr, headerType, headerUnit, headerFroz, headerExp];
+
     const tableHeadRow = createTableRow(undefined, [
         createTableHeader("w-12", []),
-        createFreezerItemRowHeader({
-            field: FreezerField.description,
-            sortField: FreezerField.description,
-            sortDirection: SortDirection.ascending,
-            className: "w-80",
-            label: "Description",
-            onClick: (field) => {
-                sortedFreezerItemsStore.dispatch(sortItems(field));
-            },
-        }),
-        createFreezerItemRowHeader({
-            field: FreezerField.type,
-            sortField: FreezerField.description,
-            sortDirection: SortDirection.ascending,
-            className: "w-64",
-            label: "Type",
-            onClick: (field) => {
-                sortedFreezerItemsStore.dispatch(sortItems(field));
-            },
-        }),
-        createFreezerItemRowHeader({
-            field: FreezerField.unit,
-            sortField: FreezerField.description,
-            sortDirection: SortDirection.ascending,
-            className: "w-42",
-            label: "Amount",
-            onClick: (field) => {
-                sortedFreezerItemsStore.dispatch(sortItems(field));
-            },
-        }),
-        createFreezerItemRowHeader({
-            field: FreezerField.frozen,
-            sortField: FreezerField.description,
-            sortDirection: SortDirection.ascending,
-            className: "w-32",
-            label: "Frozen on",
-            onClick: (field) => {
-                sortedFreezerItemsStore.dispatch(sortItems(field));
-            },
-        }),
-        createFreezerItemRowHeader({
-            field: FreezerField.expiration,
-            sortField: FreezerField.description,
-            sortDirection: SortDirection.ascending,
-            className: "w-32",
-            label: "Expires on",
-            onClick: (field) => {
-                sortedFreezerItemsStore.dispatch(sortItems(field));
-            },
-        }),
+        headerDescr.root, headerType.root, headerUnit.root, headerFroz.root, headerExp.root,
         createTableHeader("w-12", []),
     ]);
 
@@ -194,7 +153,7 @@ export function createManager(options: ManagerOptions) {
 
     sortedFreezerItemsStore.subscribe((sortedState) => {
         console.log("[Manager] Sorted state updated");
-        // Update table with sorted items
+        sortHeaders.forEach(h => h.update(sortedState.field, sortedState.direction));
         tableBody.innerHTML = "";
         sortedState.items.forEach((item) => {
             const row = createFreezerItemRow({

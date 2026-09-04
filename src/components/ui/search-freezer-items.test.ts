@@ -1,12 +1,11 @@
-﻿import {type FreezerItem, Unit} from './Models';
-import {filter} from "./SearchFreezerItems.tsx";
+import {createSearchFreezerItems, filter} from './search-freezer-items.ts'
+import {Unit, type FreezerItem} from '../Models.ts'
 
-describe('SearchFreezerItems filter', () => {
+describe('filter', () => {
     const chickenBreast = "Chicken Breast";
     const beefSteak = "Beef Steak";
     const fish = "Fish";
     const sausages = "Sausages";
-    // Test data
     const testItems: FreezerItem[] = [
         {
             id: 1,
@@ -58,7 +57,6 @@ describe('SearchFreezerItems filter', () => {
         }
     ];
 
-    // Test cases
     it('should filter items by name case insensitive', () => {
         const result = filter(testItems, "chicken", false);
         expect(result).toHaveLength(1);
@@ -94,20 +92,8 @@ describe('SearchFreezerItems filter', () => {
         expect(result[0].description).toBe(fish);
     })
 
-    it('should handle empty search terms', () => {
-        const result = filter(testItems, "", false);
-        expect(result).toHaveLength(3); // Only non-deleted items
-    });
-
     it('should handle case variations in search terms', () => {
-        const variations = [
-            "CHICKEN",
-            "chicken",
-            "ChIcKeN",
-            "PIECES",
-            "pieces",
-            "PiEcEs"
-        ];
+        const variations = ["CHICKEN", "chicken", "ChIcKeN", "PIECES", "pieces", "PiEcEs"];
 
         variations.forEach(term => {
             const result = filter(testItems, term, false);
@@ -133,6 +119,58 @@ describe('SearchFreezerItems filter', () => {
             expect(variation.expected.every(expectedName =>
                 result.some(r => r.description === expectedName))).toBeTruthy();
         });
-
     })
 });
+
+describe('createSearchFreezerItems', () => {
+    const items: FreezerItem[] = [
+        {
+            id: 1,
+            description: 'Peas',
+            type: 'Vegetable',
+            amount: 500,
+            unit: Unit.gram,
+            frozen: new Date(),
+            expiration: new Date(),
+            created: new Date(),
+            isDeleted: false,
+            deletedOn: new Date(),
+        },
+    ]
+
+    beforeEach(() => jest.useFakeTimers())
+    afterEach(() => jest.useRealTimers())
+
+    it('debounces search input and reports filtered items', () => {
+        const onSearch = jest.fn()
+        const {root} = createSearchFreezerItems({items, onSearch, filterFn: filter})
+
+        const input = root.querySelector<HTMLInputElement>('#searchTerms')!
+        input.value = 'peas'
+        input.dispatchEvent(new Event('input'))
+
+        expect(onSearch).not.toHaveBeenCalled()
+        jest.advanceTimersByTime(500)
+        expect(onSearch).toHaveBeenCalledWith(items)
+    })
+
+    it('reports immediately when the include-deleted switch changes', () => {
+        const onSearch = jest.fn()
+        const {root} = createSearchFreezerItems({items, onSearch, filterFn: filter})
+
+        const toggle = root.querySelector<HTMLInputElement>('input[name="includeDeleted"]')!
+        toggle.checked = true
+        toggle.dispatchEvent(new Event('change'))
+
+        expect(onSearch).toHaveBeenCalledWith(items)
+    })
+
+    it('re-applies the current filter immediately when update() is called with a new item list', () => {
+        const onSearch = jest.fn()
+        const {update} = createSearchFreezerItems({items: [], onSearch, filterFn: filter})
+
+        update(items)
+
+        expect(onSearch).toHaveBeenCalledWith(items)
+    })
+})

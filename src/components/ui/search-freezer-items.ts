@@ -1,9 +1,18 @@
 import clsx from "clsx";
 import {debounce} from "../../effects/debounce.ts";
-import type {FreezerItem} from "../Models.ts";
+import {type FreezerItem, Unit} from "../Models.ts";
 import {createInput, createInputGroup} from "./input.ts";
 import {createField, createFieldset, createLabel} from "./fieldset.ts";
 import {createSwitch, createSwitchField} from "./switch.ts";
+
+export function filter(itemsToSearch: FreezerItem[], searchTerms: string, includeDeleted: boolean): FreezerItem[] {
+    const lowerCaseTerms = searchTerms.toLowerCase().split(" ");
+    return [...itemsToSearch]
+        .filter((item: FreezerItem) => lowerCaseTerms.every(term => item.description.toLowerCase().includes(term)
+            || item.type.toLowerCase().includes(term)
+            || Unit[item.unit].toString().toLowerCase() === term))
+        .filter(item => includeDeleted ? true : !item.isDeleted);
+}
 
 export interface SearchFreezerItemsOptions {
     items: FreezerItem[];
@@ -75,6 +84,7 @@ export function createSearchFreezerItems(options: SearchFreezerItemsOptions): {
         root: fieldset,
         update(newItems: FreezerItem[]) {
             items = newItems;
+            performSearch();
         },
     };
 }

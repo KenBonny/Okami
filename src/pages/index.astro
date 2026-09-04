@@ -1,8 +1,41 @@
 ---
-import FreezerApp from "../components/FreezerApp";
-import DefaultLayout from "../layouts/defaultLayout.astro";
+import "../styles/global.css";
 ---
 
-<DefaultLayout>
-    <FreezerApp client:load />
-</DefaultLayout>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="/okami.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="generator" content={Astro.generator}/>
+    <title>Okami</title>
+</head>
+<body class="min-h-screen flex flex-col bg-white">
+    <div id="app-root" class="flex-1 pb-16"></div>
+    <footer class="fixed bottom-0 left-0 right-0 z-10 h-16 w-full bg-white border-t border-gray-900/10 dark:border-white/10">
+        <div class="my-4 px-4 mx-auto max-w-screen-2xl">
+            <p class="text-sm/6 text-gray-600 dark:text-gray-400">
+                &copy; {new Date().getFullYear()} More Than Code BV.
+                Check out the <a href="/about">Privacy Policy</a> here.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
+
+<script>
+    import {createManager} from "../components/manager.ts";
+    import {createGoogleAuth} from "../components/ui/google-auth.ts";
+
+    const rootElement = document.getElementById("app-root")!;
+    const auth = createGoogleAuth({
+        className: "justify-end",
+        onSuccess: (user) => manager.setUser(user),
+        onLogout: () => manager.setUser(null),
+    });
+
+    const manager = createManager({
+        rootElement,
+        googleAuthComponent: auth.root,
+    });
+</script>

@@ -1,4 +1,4 @@
-import type {FreezerItem, Unit} from "../Models.ts";
+import {Unit, type FreezerItem} from "../Models.ts";
 import {createTableCell, createTableRow} from "./table.ts";
 import {createInput} from "./input.ts";
 import {determineWarning} from "../DetermineWarning.ts";
@@ -131,7 +131,7 @@ export function createFreezerItemRow(options: FreezerItemRowOptions): {
             amountCell.append(amountRoot);
             const unitSpan = document.createElement("p");
             unitSpan.className = "basis-1/3";
-            unitSpan.textContent = String(editedItem.unit);
+            unitSpan.textContent = Unit[editedItem.unit];
             amountCell.append(unitSpan);
 
             const frozenCell = createTableCell(undefined, [document.createTextNode(editedItem.frozen.toLocaleDateString())]);
@@ -151,7 +151,7 @@ export function createFreezerItemRow(options: FreezerItemRowOptions): {
 
             const descriptionCell = createTableCell(undefined, [descText, notesBr, notesSpan]);
             const typeCell = createTableCell(undefined, [document.createTextNode(item.type)]);
-            const amountCell = createTableCell(undefined, [document.createTextNode(`${item.amount} ${item.unit}`)]);
+            const amountCell = createTableCell(undefined, [document.createTextNode(`${item.amount} ${Unit[item.unit]}`)]);
             const frozenCell = createTableCell(undefined, [document.createTextNode(item.frozen.toLocaleDateString())]);
             const expirationCell = createTableCell(undefined, [document.createTextNode(item.expiration.toLocaleDateString())]);
             const deleteCell = createTableCell(undefined, [deleteButton]);

@@ -98,7 +98,7 @@ describe('table factories', () => {
 describe('createAutoCompleteInput', () => {
   it('filters suggestions as the user types and reports the raw value', () => {
     const onChange = jest.fn()
-    const root = createAutoCompleteInput({ items: ['Peas', 'Pears', 'Carrots'], value: '', onChange })
+    const { root } = createAutoCompleteInput({ items: ['Peas', 'Pears', 'Carrots'], value: '', onChange })
     const input = root.querySelector('input')!
     const list = root.querySelector('ul')!
 
@@ -114,7 +114,7 @@ describe('createAutoCompleteInput', () => {
 
   it('selects a suggestion on Enter and closes the list', () => {
     const onChange = jest.fn()
-    const root = createAutoCompleteInput({ items: ['Peas', 'Pears'], value: '', onChange })
+    const { root } = createAutoCompleteInput({ items: ['Peas', 'Pears'], value: '', onChange })
     const input = root.querySelector('input')!
     const list = root.querySelector('ul')!
 
@@ -128,7 +128,7 @@ describe('createAutoCompleteInput', () => {
 
   it('closes the list on Escape without changing the value', () => {
     const onChange = jest.fn()
-    const root = createAutoCompleteInput({ items: ['Peas', 'Pears'], value: '', onChange })
+    const { root } = createAutoCompleteInput({ items: ['Peas', 'Pears'], value: '', onChange })
     const input = root.querySelector('input')!
     const list = root.querySelector('ul')!
 

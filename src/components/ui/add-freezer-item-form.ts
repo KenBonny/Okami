@@ -100,7 +100,7 @@ export function createAddFreezerItemForm(options: AddFreezerItemFormOptions): {
             formItem.type = value;
         },
     });
-    const typeField = createField("w-full lg:basis-64 lg:grow-0 lg:shrink-0", [typeLabel, typeAutocomplete]);
+    const typeField = createField("w-full lg:basis-64 lg:grow-0 lg:shrink-0", [typeLabel, typeAutocomplete.root]);
 
     // Amount + Unit field
     const amountLabel = createLabel("Amount", {htmlFor: "amount"});
@@ -220,10 +220,7 @@ export function createAddFreezerItemForm(options: AddFreezerItemFormOptions): {
         root: form,
         update(newItems: FreezerItem[]) {
             items = newItems;
-            // Update autocomplete items if types changed
-            const typeOptions = uniqueTypes();
-            // Would need to recreate the autocomplete with new items here
-            // For now, items are updated but autocomplete won't reflect new types until re-render
+            typeAutocomplete.setItems(uniqueTypes());
         },
     };
 }
