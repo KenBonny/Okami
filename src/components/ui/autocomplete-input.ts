@@ -12,6 +12,7 @@ export interface AutoCompleteOptions {
 export interface AutoCompleteHandle {
   root: HTMLDivElement
   setItems: (items: string[]) => void
+  getValue: () => string
 }
 
 export function createAutoCompleteInput(options: AutoCompleteOptions): AutoCompleteHandle {
@@ -131,6 +132,9 @@ export function createAutoCompleteInput(options: AutoCompleteOptions): AutoCompl
     setItems(newItems: string[]) {
       items = newItems
       if (open) renderList()
+    },
+    getValue() {
+      return text
     },
   }
 }

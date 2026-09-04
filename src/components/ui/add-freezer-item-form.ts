@@ -202,7 +202,9 @@ export function createAddFreezerItemForm(options: AddFreezerItemFormOptions): {
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         onAddItem(formItem);
+        const preservedType = typeAutocomplete.getValue();
         formItem = defaultFreezerItem();
+        formItem.type = preservedType;
         descriptionInput.value = "";
         amountInput.value = "1";
         unitSelect.value = String(Unit.gram);
