@@ -1,9 +1,9 @@
 import {AddFreezerItemForm} from "./AddFreezerItemForm.tsx";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {type FreezerItem, type User} from "./Models.ts";
 import {SearchFreezerItems} from "./SearchFreezerItems.tsx";
 import FreezerItemRow from "./FreezerItemRow.tsx";
-import GoogleAuth from "./GoogleAuth.tsx";
+import {createGoogleAuth} from "./ui/google-auth.ts";
 import {loadFreezerItemsFromGoogle, writeFreezerItemsToGoogleDrive} from "../google/drive.ts";
 import {removeDeletedItems} from "./RemoveDeletedItems.ts";
 import {config} from "../config.ts";
@@ -27,13 +27,26 @@ export const FreezerManager: React.FC = () => {
     const [freezerItems, setFreezerItems] = useState(freezerItemsStore.getState());
     const [sortedItems, setSortedItems] = useState(sortedFreezerItemsStore.getState());
     const [user, setUser] = useState<User | null>(null);
+    const authContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        console.log("[FreezerManager] Setting up freezerItems subscription, current state:", freezerItemsStore.getState());
-        const unsubscribe = freezerItemsStore.subscribe((items) => {
-            console.log("[FreezerManager] freezerItems updated:", items.length, "items");
-            setFreezerItems(items);
+        if (!authContainerRef.current) return;
+
+        const auth = createGoogleAuth({
+            className: "justify-end",
+            onSuccess: loadFreezerItems,
+            onLogout: logout
         });
+
+        authContainerRef.current.appendChild(auth.root);
+
+        return () => {
+            auth.cleanup();
+        };
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe = freezerItemsStore.subscribe(setFreezerItems);
         return unsubscribe;
     }, []);
 
@@ -68,16 +81,12 @@ export const FreezerManager: React.FC = () => {
     }
 
     async function loadFreezerItems(user: User) {
-        console.log(`[FreezerManager] loadFreezerItems called for: ${user.name}`);
         setUser(user);
         try {
-            console.log(`[FreezerManager] Fetching items from Google Drive...`);
             const newFreezerItems: FreezerItem[] = await loadFreezerItemsFromGoogle(user);
-            console.log(`[FreezerManager] Loaded ${newFreezerItems.length} items, dispatching to store...`);
             freezerItemsStore.dispatch(replaceFreezerItems(newFreezerItems));
-            console.log(`[FreezerManager] Store state after dispatch:`, freezerItemsStore.getState());
         } catch (error) {
-            console.error(`[FreezerManager] Error loading items from Drive:`, error);
+            console.error(`Error loading items from Drive:`, error);
         }
     }
 
@@ -94,9 +103,7 @@ export const FreezerManager: React.FC = () => {
                         <span className="font-semibold text-amber-400 text-lg leading-none">Okami</span>
                     </a>
                     <a href="/about" className="text-sm shrink-0">About</a>
-                    <div className="flex-1 flex justify-end">
-                        <GoogleAuth className="justify-end" onSuccess={loadFreezerItems} onLogout={logout} />
-                    </div>
+                    <div ref={authContainerRef} className="flex-1 flex justify-end" />
                 </div>
             </nav>
 
