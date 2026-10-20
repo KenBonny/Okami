@@ -18,7 +18,7 @@
   - Subscribes to stores for state updates
   - Wires up all callbacks (add, delete, update, sort, auth success/logout)
   - Keep the React version for now.
-- [ ] 3.2 Verify full app flow end-to-end manually: login, load from Drive, add item, search, sort, edit, delete, logout, re-login. All interactions work without regressions.
+- [x] 3.2 Verify full app flow end-to-end manually: login, load from Drive, add item, search, sort, edit, delete, logout, re-login. All interactions work without regressions.
 - [x] 3.3 Run full test suite; all 55+ tests still pass (reducer, store, utility tests are unaffected).
 
 ## 4. Entry Point: Astro Migration
@@ -36,7 +36,7 @@
 
 ## 6. Regression Testing and Verification
 
-- [ ] 6.1 Run full manual regression pass over golden path (login, add item to freezer, search items, sort by column, edit item inline, delete item, logout, re-login). Verify no visual or behavioral regressions compared to the React version.
+- [x] 6.1 Run full manual regression pass over golden path (login, add item to freezer, search items, sort by column, edit item inline, delete item, logout, re-login). Verify no visual or behavioral regressions compared to the React version.
 - [x] 6.2 Verify app bundle size reduction (estimated ~500KB from removing React). Check build output.
 - [x] 6.3 Verify all automated tests pass. `npm test` → all tests pass.
 - [x] 6.4 Verify `npm run build` and `npm run preview` work; app is ready for production deployment.
