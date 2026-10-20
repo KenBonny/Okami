@@ -57,8 +57,9 @@ export function createSearchFreezerItems(options: SearchFreezerItemsOptions): {
 
     const inputGroup = createInputGroup([searchIcon, inputRoot]);
 
-    const includeDeletedLabel = createLabel("Include deleted");
+    const includeDeletedLabel = createLabel("Include deleted", {htmlFor: "includeDeleted"});
     const includeDeletedSwitch = createSwitch({name: "includeDeleted"});
+    includeDeletedSwitch.id = "includeDeleted";
     const switchField = createSwitchField("shrink-0", [includeDeletedLabel, includeDeletedSwitch]);
 
     const searchField = createField("w-full md:flex-1", [inputGroup]);
