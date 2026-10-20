@@ -9,6 +9,10 @@ export const WarningText = {
 
 type WarningStatus = typeof WarningText[keyof typeof WarningText];
 
+export function warningAccentBar(warning: WarningStatus): string {
+    return warning === WarningText.ok ? "" : `${warning}-bar`;
+}
+
 export function determineWarning(expiration: Date, today: Date, config: WarningConfig): WarningStatus {
     if (today >= expiration) return WarningText.expired;
 

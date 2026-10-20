@@ -44,4 +44,16 @@ blockquote p a {
     .expired {
         @apply bg-red-700 text-white;
     }
+
+    .first-warning-bar {
+        box-shadow: inset 6px 0 0 var(--color-yellow-500);
+    }
+
+    .second-warning-bar {
+        box-shadow: inset 6px 0 0 var(--color-orange-600);
+    }
+
+    .expired-bar {
+        box-shadow: inset 6px 0 0 var(--color-red-950);
+    }
 }

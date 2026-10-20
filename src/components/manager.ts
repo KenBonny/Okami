@@ -14,6 +14,7 @@ import {createAddFreezerItemForm} from "./ui/add-freezer-item-form.ts";
 import {createSearchFreezerItems, filter} from "./ui/search-freezer-items.ts";
 import {createTable, createTableBody, createTableHead, createTableRow, createTableHeader} from "./ui/table.ts";
 import {createFreezerItemRow} from "./ui/freezer-item-row.ts";
+import {createFreezerItemCard} from "./ui/freezer-item-card.ts";
 import {createFreezerItemRowHeader} from "./ui/freezer-item-row-header.ts";
 import okamiImage from "../assets/okami.png";
 
@@ -113,7 +114,31 @@ export function createManager(options: ManagerOptions) {
     const tableBody = createTableBody([]);
     const table = createTable("p-3", [tableHead, tableBody]);
 
-    mainDiv.append(formContainer, document.createElement("hr"), searchContainer, table);
+    // Table from md up, cards below
+    const tableWrapper = document.createElement("div");
+    tableWrapper.className = "hidden md:block";
+    tableWrapper.append(table);
+
+    const cardList = document.createElement("div");
+    cardList.className = "md:hidden flex flex-col gap-3 py-3";
+
+    mainDiv.append(formContainer, document.createElement("hr"), searchContainer, tableWrapper, cardList);
+
+    const itemHandlers = {
+        onDelete: (id: number) => {
+            freezerItemsStore.dispatch(deleteFreezerItem(id, config.monthsToKeepDeletedItems));
+        },
+        onSave: (updatedItem: FreezerItem) => {
+            freezerItemsStore.dispatch(updateFreezerItem(updatedItem));
+        },
+    };
+
+    const renderItems = (items: FreezerItem[]) => {
+        tableBody.replaceChildren(...items.map((item) => createFreezerItemRow({item, ...itemHandlers}).root));
+
+        const byExpiration = [...items].sort((a, b) => a.expiration.getTime() - b.expiration.getTime());
+        cardList.replaceChildren(...byExpiration.map((item) => createFreezerItemCard({item, ...itemHandlers}).root));
+    };
 
     // Root
     const appRoot = document.createElement("div");
@@ -126,21 +151,7 @@ export function createManager(options: ManagerOptions) {
         search.update(items);
         addForm.update(items);
 
-        // Update table body
-        tableBody.innerHTML = "";
-        const sortedState = sortedFreezerItemsStore.getState();
-        sortedState.items.forEach((item) => {
-            const row = createFreezerItemRow({
-                item,
-                onDelete: (id) => {
-                    freezerItemsStore.dispatch(deleteFreezerItem(id, config.monthsToKeepDeletedItems));
-                },
-                onSave: (updatedItem) => {
-                    freezerItemsStore.dispatch(updateFreezerItem(updatedItem));
-                },
-            });
-            tableBody.append(row.root);
-        });
+        renderItems(sortedFreezerItemsStore.getState().items);
 
         // Autosave to Drive
         if (currentUser) {
@@ -154,19 +165,7 @@ export function createManager(options: ManagerOptions) {
     sortedFreezerItemsStore.subscribe((sortedState) => {
         console.log("[Manager] Sorted state updated");
         sortHeaders.forEach(h => h.update(sortedState.field, sortedState.direction));
-        tableBody.innerHTML = "";
-        sortedState.items.forEach((item) => {
-            const row = createFreezerItemRow({
-                item,
-                onDelete: (id) => {
-                    freezerItemsStore.dispatch(deleteFreezerItem(id, config.monthsToKeepDeletedItems));
-                },
-                onSave: (updatedItem) => {
-                    freezerItemsStore.dispatch(updateFreezerItem(updatedItem));
-                },
-            });
-            tableBody.append(row.root);
-        });
+        renderItems(sortedState.items);
     });
 
     return {

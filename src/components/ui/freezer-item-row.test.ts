@@ -69,4 +69,42 @@ describe('createFreezerItemRow', () => {
         expect(root.textContent).toContain('Sprouts')
         expect(root.querySelector('input#description')).toBeNull()
     })
+
+    describe('expiration severity', () => {
+        const expired = () => makeItem({expiration: new Date('2000-01-01')})
+        const fine = () => makeItem({expiration: new Date('2999-01-01')})
+
+        it('puts the severity classes on data cells and not on the row or action cells', () => {
+            const {root} = createFreezerItemRow({item: expired(), onDelete: jest.fn(), onSave: jest.fn()})
+            const cells = Array.from(root.children)
+
+            expect(root.className).toBe('')
+            expect(cells[0].classList.contains('expired')).toBe(false)
+            expect(cells[6].classList.contains('expired')).toBe(false)
+            cells.slice(1, 6).forEach(cell => expect(cell.classList.contains('expired')).toBe(true))
+        })
+
+        it('puts the accent bar on the first data cell only', () => {
+            const {root} = createFreezerItemRow({item: expired(), onDelete: jest.fn(), onSave: jest.fn()})
+            const cells = Array.from(root.children)
+
+            expect(cells[1].classList.contains('expired-bar')).toBe(true)
+            cells.filter((_, i) => i !== 1).forEach(cell => expect(cell.classList.contains('expired-bar')).toBe(false))
+        })
+
+        it('keeps action cells unstyled in edit mode', () => {
+            const {root} = createFreezerItemRow({item: expired(), onDelete: jest.fn(), onSave: jest.fn()})
+            root.querySelector('button')!.click()
+            const cells = Array.from(root.children)
+
+            expect(cells[0].classList.contains('expired')).toBe(false)
+            expect(cells[6].classList.contains('expired')).toBe(false)
+            cells.slice(1, 6).forEach(cell => expect(cell.classList.contains('expired')).toBe(true))
+        })
+
+        it('shows no severity classes for an item without warning', () => {
+            const {root} = createFreezerItemRow({item: fine(), onDelete: jest.fn(), onSave: jest.fn()})
+            expect(root.innerHTML).not.toMatch(/-warning|expired/)
+        })
+    })
 })
